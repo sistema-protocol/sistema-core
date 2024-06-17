@@ -26,7 +26,7 @@ fn partial_one_collateral_one_slot() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -36,7 +36,7 @@ fn partial_one_collateral_one_slot() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -55,7 +55,7 @@ fn partial_one_collateral_one_slot() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -89,7 +89,7 @@ fn partial_one_collateral_one_slot() {
         },
         collateral_amount: Uint256::from(999u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -114,7 +114,7 @@ fn partial_one_collateral_one_slot_w_fees() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -125,7 +125,7 @@ fn partial_one_collateral_one_slot_w_fees() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -144,7 +144,7 @@ fn partial_one_collateral_one_slot_w_fees() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -178,7 +178,7 @@ fn partial_one_collateral_one_slot_w_fees() {
         },
         collateral_amount: Uint256::from(1110u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -203,7 +203,7 @@ fn one_collateral_one_slot() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -213,7 +213,7 @@ fn one_collateral_one_slot() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -232,7 +232,7 @@ fn one_collateral_one_slot() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -266,7 +266,7 @@ fn one_collateral_one_slot() {
         },
         collateral_amount: Uint256::from(1000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -291,7 +291,7 @@ fn one_collateral_one_slot_w_fees() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -302,7 +302,7 @@ fn one_collateral_one_slot_w_fees() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -321,7 +321,7 @@ fn one_collateral_one_slot_w_fees() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -355,7 +355,7 @@ fn one_collateral_one_slot_w_fees() {
         },
         collateral_amount: Uint256::from(1112u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -380,7 +380,7 @@ fn two_slot_w_fees() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -391,7 +391,7 @@ fn two_slot_w_fees() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -411,7 +411,7 @@ fn two_slot_w_fees() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -429,7 +429,7 @@ fn two_slot_w_fees() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -463,7 +463,7 @@ fn two_slot_w_fees() {
         },
         collateral_amount: Uint256::from(2000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -488,7 +488,7 @@ fn partial_two_slot_w_fees() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -499,7 +499,7 @@ fn partial_two_slot_w_fees() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -519,7 +519,7 @@ fn partial_two_slot_w_fees() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -537,7 +537,7 @@ fn partial_two_slot_w_fees() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -572,7 +572,7 @@ fn partial_two_slot_w_fees() {
         },
         collateral_amount: Uint256::from(2111u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -597,7 +597,7 @@ fn partial_two_slot_w_fees_bignums() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(100_000_000_000_000u128),
@@ -608,7 +608,7 @@ fn partial_two_slot_w_fees_bignums() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -628,7 +628,7 @@ fn partial_two_slot_w_fees_bignums() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -646,7 +646,7 @@ fn partial_two_slot_w_fees_bignums() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -681,7 +681,7 @@ fn partial_two_slot_w_fees_bignums() {
         },
         collateral_amount: Uint256::from(1_111_111_111u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);

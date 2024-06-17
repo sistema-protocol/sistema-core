@@ -81,7 +81,7 @@ mod tests {
             bank.init_balance(
                 storage,
                 &Addr::unchecked("contract3"),
-                vec![coin(30_000_000_000_000, "mbrn_denom")],
+                vec![coin(30_000_000_000_000, "tema_denom")],
             )
             .unwrap(); //contract3 = Builders contract
             bank.init_balance(

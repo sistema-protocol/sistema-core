@@ -5,7 +5,7 @@
   "type": "object",
   "required": [
     "expedited_proposal_voting_period",
-    "mbrn_denom",
+    "tema_denom",
     "minimum_total_stake",
     "proposal_effective_delay",
     "proposal_expiration_period",
@@ -26,8 +26,8 @@
       "format": "uint64",
       "minimum": 0.0
     },
-    "mbrn_denom": {
-      "description": "MBRN native token fulldenom",
+    "tema_denom": {
+      "description": "TEMA native token fulldenom",
       "type": "string"
     },
     "minimum_total_stake": {
@@ -85,7 +85,7 @@
       "type": "boolean"
     },
     "staking_contract_addr": {
-      "description": "MBRN staking contract",
+      "description": "TEMA staking contract",
       "allOf": [
         {
           "$ref": "#/definitions/Addr"

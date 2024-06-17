@@ -128,7 +128,7 @@
       ]
     },
     "staking_contract": {
-      "description": "MBRN Staking contract",
+      "description": "TEMA Staking contract",
       "type": [
         "string",
         "null"

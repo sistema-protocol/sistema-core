@@ -56,7 +56,7 @@ pub fn instantiate(
             max_commission_rate: Decimal::percent(10),
             keep_raw_cdt: true,
             vesting_rev_multiplier: Decimal::percent(20),
-            mbrn_denom: msg.mbrn_denom,
+            tema_denom: msg.tema_denom,
         };
     } else {
         config = Config {
@@ -74,7 +74,7 @@ pub fn instantiate(
             max_commission_rate: Decimal::percent(10),
             keep_raw_cdt: true,
             vesting_rev_multiplier: Decimal::percent(20),
-            mbrn_denom: msg.mbrn_denom,
+            tema_denom: msg.tema_denom,
         };
     }
 
@@ -127,7 +127,7 @@ pub fn instantiate(
         .add_attribute("contract_address", env.contract.address))
 }
 
-/// Return total MBRN vesting
+/// Return total TEMA vesting
 pub fn get_total_vesting(
     querier: QuerierWrapper,    
     vesting_contract: String,
@@ -150,7 +150,7 @@ pub fn execute(
     match msg {
         ExecuteMsg::UpdateConfig {
             owner,
-            mbrn_denom,
+            tema_denom,
             vesting_contract,
             governance_contract,
             osmosis_proxy,
@@ -171,7 +171,7 @@ pub fn execute(
             vesting_contract,
             governance_contract,
             osmosis_proxy,
-            mbrn_denom,
+            tema_denom,
             incentive_schedule,
             unstaking_period,
             max_commission_rate,
@@ -179,24 +179,24 @@ pub fn execute(
             vesting_rev_multiplier,
         ),
         ExecuteMsg::Stake { user } => stake(deps, env, info, user),
-        ExecuteMsg::Unstake { mbrn_amount } => unstake(deps, env, info, mbrn_amount),
-        ExecuteMsg::UpdateDelegations { governator_addr, mbrn_amount, delegate, fluid, voting_power_delegation, commission } => update_delegations(
+        ExecuteMsg::Unstake { tema_amount } => unstake(deps, env, info, tema_amount),
+        ExecuteMsg::UpdateDelegations { governator_addr, tema_amount, delegate, fluid, voting_power_delegation, commission } => update_delegations(
             deps,
             env,
             info,
             governator_addr,
-            mbrn_amount,
+            tema_amount,
             fluid,
             delegate,
             commission,
             voting_power_delegation,
         ),
-        ExecuteMsg::DelegateFluidDelegations { governator_addr, mbrn_amount } => delegate_fluid_delegations(
+        ExecuteMsg::DelegateFluidDelegations { governator_addr, tema_amount } => delegate_fluid_delegations(
             deps,
             env,
             info,
             governator_addr,
-            mbrn_amount,
+            tema_amount,
         ),
         ExecuteMsg::DeclareDelegate { delegate_info, remove } => delegate_declarations(
             deps,
@@ -205,7 +205,7 @@ pub fn execute(
             delegate_info,
             remove,
         ),
-        ExecuteMsg::Restake { mbrn_amount } => restake(deps, env, info, mbrn_amount),
+        ExecuteMsg::Restake { tema_amount } => restake(deps, env, info, tema_amount),
         ExecuteMsg::ClaimRewards {
             send_to,
             restake,
@@ -311,7 +311,7 @@ fn update_config(
     vesting_contract: Option<String>,
     governance_contract: Option<String>,
     osmosis_proxy: Option<String>,
-    mbrn_denom: Option<String>,
+    tema_denom: Option<String>,
     incentive_schedule: Option<StakeDistribution>,
     unstaking_period: Option<u64>,
     max_commission_rate: Option<Decimal>,
@@ -365,8 +365,8 @@ fn update_config(
         //Config is only updated once vesting contract has claimed rewards
         VESTING_REV_MULTIPLIER.save(deps.storage, &vesting_rev_multiplier)?;
     };
-    if let Some(mbrn_denom) = mbrn_denom {
-        config.mbrn_denom = mbrn_denom.clone();
+    if let Some(tema_denom) = tema_denom {
+        config.tema_denom = tema_denom.clone();
     };
     if let Some(vesting_contract) = vesting_contract {
         config.vesting_contract = Some(deps.api.addr_validate(&vesting_contract)?);
@@ -391,7 +391,7 @@ fn update_config(
     Ok(Response::new().add_attributes(attrs))
 }
 
-/// Stake MBRN
+/// Stake TEMA
 pub fn stake(
     deps: DepsMut,
     env: Env,
@@ -401,18 +401,18 @@ pub fn stake(
     let config = CONFIG.load(deps.storage)?;
 
     let valid_asset: Asset;
-    //Assert only MBRN was sent && its at least 1 MBRN
-    if info.funds.len() == 1 && info.funds[0].denom == config.mbrn_denom {
-        //The contract can stake less than 1 MBRN, but the user must stake at least 1 MBRN
+    //Assert only TEMA was sent && its at least 1 TEMA
+    if info.funds.len() == 1 && info.funds[0].denom == config.tema_denom {
+        //The contract can stake less than 1 TEMA, but the user must stake at least 1 TEMA
         if info.clone().sender != env.contract.address && info.funds[0].amount < Uint128::from(1_000_000u128) {
             return Err(ContractError::CustomError {
-                val: "Must stake at least 1 MBRN".to_string(),
+                val: "Must stake at least 1 TEMA".to_string(),
             });
         }
 
         valid_asset = assert_sent_native_token_balance(
             AssetInfo::NativeToken {
-                denom: config.clone().mbrn_denom,
+                denom: config.clone().tema_denom,
             },
             &info,
         )?;
@@ -501,7 +501,7 @@ pub fn unstake(
     deps: DepsMut,
     env: Env,
     info: MessageInfo,
-    mbrn_withdraw_amount: Option<Uint128>,
+    tema_withdraw_amount: Option<Uint128>,
 ) -> Result<Response, ContractError> {
     let config = CONFIG.load(deps.storage)?;
 
@@ -528,7 +528,7 @@ pub fn unstake(
     };
 
     //Enforce valid withdraw amount
-    let mut withdraw_amount = mbrn_withdraw_amount.unwrap_or(total_stake).min(total_stake);
+    let mut withdraw_amount = tema_withdraw_amount.unwrap_or(total_stake).min(total_stake);
 
     //info.sender is user
     let (claimables, accrued_interest, withdrawable_amount) = withdraw_from_state(
@@ -572,7 +572,7 @@ pub fn unstake(
         //Push to native claims list
         native_claims.push(asset_to_coin(Asset {
             info: AssetInfo::NativeToken {
-                denom: config.clone().mbrn_denom,
+                denom: config.clone().tema_denom,
             },
             amount: withdrawable_amount,
         })?);     
@@ -716,15 +716,15 @@ pub fn unstake(
     Ok(response)
 }
 
-/// (Un)Delegate MBRN to a Governator
-/// If mbrn_amount is None, then act on the user's total stake
+/// (Un)Delegate TEMA to a Governator
+/// If tema_amount is None, then act on the user's total stake
 /// Only edits delegations for the user's stake, not their fluid delegated stake
 fn update_delegations(
     deps: DepsMut,
     env: Env,
     info: MessageInfo,
     governator_addr: Option<String>,
-    mbrn_amount: Option<Uint128>,
+    tema_amount: Option<Uint128>,
     fluid: Option<bool>,
     delegate: Option<bool>,
     mut commission: Option<Decimal>,
@@ -739,7 +739,7 @@ fn update_delegations(
     }
 
     //If a delegate is simply changing their commission, no need to check for half the logic
-    if commission.is_some() && governator_addr.is_none() && mbrn_amount.is_none() && delegate.is_none() && fluid.is_none(){
+    if commission.is_some() && governator_addr.is_none() && tema_amount.is_none() && delegate.is_none() && fluid.is_none(){
         //Edit & save user's commission
         if let Ok(mut user_delegation_info) = DELEGATIONS.load(deps.storage, info.sender.clone()){
             user_delegation_info.commission = commission.unwrap();
@@ -813,17 +813,17 @@ fn update_delegations(
 
             //If delegating, add to staker's delegated_to & delegates delegated
             if delegate {                
-                //Validate MBRN amount
-                let mbrn_amount = mbrn_amount.unwrap_or(total_delegatible_amount).min(total_delegatible_amount);
-                attrs.push(attr("amount", mbrn_amount));
-                //If mbrn_amount is greater than total delegatible amount, return error
-                if mbrn_amount > total_delegatible_amount {
+                //Validate TEMA amount
+                let tema_amount = tema_amount.unwrap_or(total_delegatible_amount).min(total_delegatible_amount);
+                attrs.push(attr("amount", tema_amount));
+                //If tema_amount is greater than total delegatible amount, return error
+                if tema_amount > total_delegatible_amount {
                     return Err(ContractError::CustomError {
-                        val: String::from("MBRN amount exceeds delegatible amount"),
+                        val: String::from("TEMA amount exceeds delegatible amount"),
                     });
-                } else if mbrn_amount < 1_000_000u128.into(){
+                } else if tema_amount < 1_000_000u128.into(){
                     return Err(ContractError::CustomError {
-                        val: String::from("MBRN amount must be greater than 1"),
+                        val: String::from("TEMA amount must be greater than 1"),
                     });
                 }
                 //If no delegatible amount, return error
@@ -844,11 +844,11 @@ fn update_delegations(
                 };
                 //Add to existing "delegated" from the Staker or add new Delegation object 
                 match delegates_delegations.delegated.iter().enumerate().find(|(_i, delegation)| delegation.delegate == info.sender.clone()){
-                    Some((index, _)) => delegates_delegations.delegated[index].amount += mbrn_amount,
+                    Some((index, _)) => delegates_delegations.delegated[index].amount += tema_amount,
                     None => {
                         delegates_delegations.delegated.push(Delegation {
                             delegate: info.sender.clone(),
-                            amount: mbrn_amount,
+                            amount: tema_amount,
                             fluidity: fluid.unwrap_or(false),
                             voting_power_delegation: voting_power_delegation.unwrap_or(true),
                             time_of_delegation: env.block.time.seconds(),
@@ -862,11 +862,11 @@ fn update_delegations(
                 //Add to staker's delegated_to
                 //Add to existing "delegated_to" or add new Delegation object 
                 match user_delegation_info.delegated_to.iter().enumerate().find(|(_i, delegation)| delegation.delegate == valid_gov_addr.clone()){
-                    Some((index, _)) => user_delegation_info.delegated_to[index].amount += mbrn_amount,
+                    Some((index, _)) => user_delegation_info.delegated_to[index].amount += tema_amount,
                     None => {
                         user_delegation_info.delegated_to.push(Delegation {
                             delegate: valid_gov_addr.clone(),
-                            amount: mbrn_amount,
+                            amount: tema_amount,
                             fluidity: fluid.unwrap_or(false),
                             voting_power_delegation: voting_power_delegation.unwrap_or(true),
                             time_of_delegation: env.block.time.seconds(),
@@ -877,17 +877,17 @@ fn update_delegations(
                 //Save staker's info
                 DELEGATIONS.save(deps.storage, info.sender.clone(), &user_delegation_info)?;
             } else {
-                //Validate MBRN amount
-                let mbrn_amount = mbrn_amount.unwrap_or(total_delegated_amount).min(total_delegated_amount);
-                attrs.push(attr("amount", mbrn_amount));
-                //If mbrn_amount is greater than total delegated amount, return error
-                if mbrn_amount > total_delegated_amount {
+                //Validate TEMA amount
+                let tema_amount = tema_amount.unwrap_or(total_delegated_amount).min(total_delegated_amount);
+                attrs.push(attr("amount", tema_amount));
+                //If tema_amount is greater than total delegated amount, return error
+                if tema_amount > total_delegated_amount {
                     return Err(ContractError::CustomError {
-                        val: String::from("MBRN amount exceeds delegated amount"),
+                        val: String::from("TEMA amount exceeds delegated amount"),
                     });
-                } else if mbrn_amount < 1_000_000u128.into(){
+                } else if tema_amount < 1_000_000u128.into(){
                     return Err(ContractError::CustomError {
-                        val: String::from("MBRN amount must be greater than 1"),
+                        val: String::from("TEMA amount must be greater than 1"),
                     });
                 }
                 //If no delegatible amount, return error
@@ -900,9 +900,9 @@ fn update_delegations(
                 //Remove from delegate's
                 let mut delegates_delegations = DELEGATIONS.load(deps.storage, valid_gov_addr.clone())?;
                 match delegates_delegations.delegated.iter().enumerate().find(|(_i, delegation)| delegation.delegate == info.clone().sender){
-                    Some((index, _)) => match delegates_delegations.delegated[index].amount.checked_sub(mbrn_amount){
+                    Some((index, _)) => match delegates_delegations.delegated[index].amount.checked_sub(tema_amount){
                         Ok(new_amount) => {
-                            //Can't leave less than 1 MBRN in delegation
+                            //Can't leave less than 1 TEMA in delegation
                             if new_amount < 1_000_000u128.into(){
                                 //Remove
                                 delegates_delegations.delegated.remove(index);
@@ -932,9 +932,9 @@ fn update_delegations(
 
                 //Subtract from staker's delegated_to
                 match user_delegation_info.delegated_to.iter().enumerate().find(|(_i, delegation)| delegation.delegate == valid_gov_addr.clone()){
-                    Some((index, _)) => match user_delegation_info.delegated_to[index].amount.checked_sub(mbrn_amount){
+                    Some((index, _)) => match user_delegation_info.delegated_to[index].amount.checked_sub(tema_amount){
                         Ok(new_amount) => 
-                            //Can't leave less than 1 MBRN in delegation
+                            //Can't leave less than 1 TEMA in delegation
                             if new_amount < 1_000_000u128.into(){
                                 //Remove
                                 user_delegation_info.delegated_to.remove(index);
@@ -1037,7 +1037,7 @@ fn delegate_fluid_delegations(
     env: Env,
     info: MessageInfo,
     governator_addr: String,
-    mbrn_amount: Option<Uint128>,
+    tema_amount: Option<Uint128>,
 ) -> Result<Response, ContractError>{
     //Validate Governator, doesn't need to be a staker but can't be the user
     let valid_gov_addr = deps.api.addr_validate(&governator_addr)?;
@@ -1084,16 +1084,16 @@ fn delegate_fluid_delegations(
         .collect::<Vec<Uint128>>()
         .into_iter()
         .sum::<Uint128>();
-    //Validate MBRN amount
-    let mut mbrn_amount = mbrn_amount.unwrap_or(total_fluid_delegatible_amount).min(total_fluid_delegatible_amount);
+    //Validate TEMA amount
+    let mut tema_amount = tema_amount.unwrap_or(total_fluid_delegatible_amount).min(total_fluid_delegatible_amount);
     
-    if total_fluid_delegatible_amount < mbrn_amount {
+    if total_fluid_delegatible_amount < tema_amount {
         return Err(ContractError::CustomError {
-            val: String::from("MBRN amount exceeds total fluid delegatible amount"),
+            val: String::from("TEMA amount exceeds total fluid delegatible amount"),
         });
-    } else if mbrn_amount < 1_000_000u128.into(){
+    } else if tema_amount < 1_000_000u128.into(){
         return Err(ContractError::CustomError {
-            val: String::from("MBRN amount must be greater than 1"),
+            val: String::from("TEMA amount must be greater than 1"),
         });
     }
     if total_fluid_delegatible_amount.is_zero() {
@@ -1105,27 +1105,27 @@ fn delegate_fluid_delegations(
     //Parse through delegate's fluid delegations
     for (i, delegation) in fluid_delegations.clone().into_iter().enumerate() {
         /////////Calc delegation amount & update fluid_delegations
-        //If delegation amount is less than mbrn_amount, remove delegation from delegate's delegated
-        let delegation_amount = if delegation.amount <= mbrn_amount {
+        //If delegation amount is less than tema_amount, remove delegation from delegate's delegated
+        let delegation_amount = if delegation.amount <= tema_amount {
             fluid_delegations.remove(i);
-            //Subtract delegation amount from mbrn_amount
-            mbrn_amount -= delegation.amount;
+            //Subtract delegation amount from tema_amount
+            tema_amount -= delegation.amount;
 
             delegation.amount
         } else {
-            //If delegation amount is greater than mbrn_amount, subtract mbrn_amount from delegation amount
-            fluid_delegations[i].amount -= mbrn_amount;
+            //If delegation amount is greater than tema_amount, subtract tema_amount from delegation amount
+            fluid_delegations[i].amount -= tema_amount;
 
             //Assert remaining delegation amount is greater than 1
             if fluid_delegations[i].amount < 1_000_000u128.into(){
-                mbrn_amount += fluid_delegations[i].amount;
+                tema_amount += fluid_delegations[i].amount;
                 fluid_delegations.remove(i);
             }
 
-            let delegation_amount = mbrn_amount;         
+            let delegation_amount = tema_amount;         
             
-            //Set mbrn_amount to 0
-            mbrn_amount = Uint128::zero();
+            //Set tema_amount to 0
+            tema_amount = Uint128::zero();
 
             delegation_amount
         };
@@ -1184,8 +1184,8 @@ fn delegate_fluid_delegations(
         //Save initial delegate's info
         DELEGATIONS.save(deps.storage, delegation.delegate.clone(), &initial_delegator_delegation_info)?;
 
-        //If mbrn_amount is 0, break
-        if mbrn_amount == Uint128::zero() {
+        //If tema_amount is 0, break
+        if tema_amount == Uint128::zero() {
             break;
         }
     }
@@ -1200,7 +1200,7 @@ fn delegate_fluid_delegations(
         attr("action", "delegate_fluid_delegations"),
         attr("delegator", info.sender),
         attr("delegate", valid_gov_addr),
-        attr("amount", mbrn_amount),
+        attr("amount", tema_amount),
     ]))
 }
 
@@ -1311,9 +1311,9 @@ pub fn claim_rewards(
         send_to.clone(),
     )?;
 
-    //Create MBRN Mint Msg
+    //Create TEMA Mint Msg
     if config.osmosis_proxy.is_some() {
-        //Vesting contract gets no MBRN inflation
+        //Vesting contract gets no TEMA inflation
         if info.sender != config.clone().vesting_contract.unwrap_or_else(|| Addr::unchecked("")) && !accrued_interest.is_zero() {
             //Who to send to?
             if send_to.is_some() {
@@ -1322,7 +1322,7 @@ pub fn claim_rewards(
                 let message = CosmosMsg::Wasm(WasmMsg::Execute {
                     contract_addr: config.clone().osmosis_proxy.unwrap().to_string(),
                     msg: to_binary(&OsmoExecuteMsg::MintTokens {
-                        denom: config.mbrn_denom,
+                        denom: config.tema_denom,
                         amount: accrued_interest,
                         mint_to_address: valid_recipient.to_string(),
                     })?,
@@ -1334,7 +1334,7 @@ pub fn claim_rewards(
                 let message = CosmosMsg::Wasm(WasmMsg::Execute {
                     contract_addr: config.clone().osmosis_proxy.unwrap().to_string(),
                     msg: to_binary(&OsmoExecuteMsg::MintTokens {
-                        denom: config.clone().mbrn_denom,
+                        denom: config.clone().tema_denom,
                         amount: accrued_interest,
                         mint_to_address: env.contract.address.to_string(),
                     })?,
@@ -1347,7 +1347,7 @@ pub fn claim_rewards(
                     msg: to_binary(&ExecuteMsg::Stake {
                         user: Some(info.sender.to_string()),
                     })?,
-                    funds: vec![coin(accrued_interest.u128(), config.mbrn_denom)],
+                    funds: vec![coin(accrued_interest.u128(), config.tema_denom)],
                 });
                 messages.push(message);
             } else {
@@ -1355,7 +1355,7 @@ pub fn claim_rewards(
                 let message = CosmosMsg::Wasm(WasmMsg::Execute {
                     contract_addr: config.osmosis_proxy.unwrap().to_string(),
                     msg: to_binary(&OsmoExecuteMsg::MintTokens {
-                        denom: config.mbrn_denom,
+                        denom: config.tema_denom,
                         amount: accrued_interest,
                         mint_to_address: info.sender.to_string(),
                     })?,
@@ -1387,7 +1387,7 @@ pub fn claim_rewards(
         .add_attribute("user", info.sender)
         .add_attribute("send_to", send_to.unwrap_or_else(|| String::from("None")))
         .add_attribute("restake", restake.to_string())
-        .add_attribute("mbrn_rewards", accrued_interest.to_string())
+        .add_attribute("tema_rewards", accrued_interest.to_string())
         .add_attribute("fee_rewards", format!("{:?}", user_claimables_string));
 
     Ok(res.add_messages(messages))
@@ -1505,7 +1505,7 @@ fn deposit_fee(
             fee_events.push(FeeEvent {
                 time_of_event: env.block.time.seconds(),
                 fee: LiqAsset {
-                    //Amount = Amount per Staked MBRN
+                    //Amount = Amount per Staked TEMA
                     info: asset.info,
                     amount: decimal_division(amount, decimal_total)?,
                 },
@@ -1575,7 +1575,7 @@ fn create_rewards_msgs(
         let msg = CosmosMsg::Wasm(WasmMsg::Execute {
             contract_addr: config.osmosis_proxy.unwrap().to_string(),
             msg: to_binary(&OsmoExecuteMsg::MintTokens {
-                denom: config.mbrn_denom,
+                denom: config.tema_denom,
                 amount: accrued_interest,
                 mint_to_address: env.contract.address.to_string(),
             })?,
@@ -1810,7 +1810,7 @@ fn withdraw_from_state(
     if withdrawal_amount != Uint128::zero() {
         return Err(StdError::GenericErr {
             msg: format!(
-                "Attempting to withdraw {} MBRN over ( {} )'s total currently staked amount",
+                "Attempting to withdraw {} TEMA over ( {} )'s total currently staked amount",
                 withdrawal_amount, staker
             ),
         });
@@ -2091,7 +2091,7 @@ fn get_user_claimables(
                                 }
                             }
 
-                            //Add MBRN interest
+                            //Add TEMA interest
                             interest += delegate_accrued_interest;        
 
                             Ok((claims, interest))
@@ -2225,7 +2225,7 @@ pub fn get_delegation_commission(
         return Ok((Decimal::zero(), Decimal::zero()))
     }
 
-    //Initialize the total the amount of MBRN delegated_to a delegate
+    //Initialize the total the amount of TEMA delegated_to a delegate
     let mut total_delegated_to = Uint128::zero();
 
     //Get the average commission rate of the delegations
@@ -2270,7 +2270,7 @@ pub fn get_delegation_commission(
     
     ///////Now do the same for delegated, to add to this deposit's claimables///////
     /// Don't need an average commission bc its the commission of the User
-    /// //Initialize the total the amount of MBRN delegated to the depositor
+    /// //Initialize the total the amount of TEMA delegated to the depositor
     let total_delegated: Uint128 = delegated.clone()
         .into_iter()
         .map(|delegation| delegation.amount)
@@ -2368,7 +2368,7 @@ pub fn get_deposit_claimables(
         config.incentive_schedule.rate = Decimal::zero();
     }
 
-    //Calc MBRN denominated rewards
+    //Calc TEMA denominated rewards
     let deposit_interest = if !config.incentive_schedule.rate.is_zero() {
         let time_elapsed = env.block.time.seconds() - deposit.last_accrued.unwrap_or_else(|| deposit.stake_time);        
         accumulate_interest(deposit.amount, config.incentive_schedule.rate, time_elapsed)?
@@ -2417,52 +2417,52 @@ pub fn migrate(deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Response, C
 
     let current_delegates = vec![
         Delegate { 
-            delegate: Addr::unchecked("osmo1d9ryqp7yfmr92vkk2yal96824pewf2g5wx0h2r"), 
-            alias: Some(String::from("Frontend Host")), 
-            discord_username: Some(String::from("cyph3rpunk")),
-            twitter_username: Some(String::from("Cyph3rpunk1")),
+            delegate: Addr::unchecked("furya197lfuc8s5amj4lhkmyv5dex7qsdu3m5jh40tp6"), 
+            alias: Some(String::from("Argentina")), 
+            discord_username: Some(String::from("JinxVentures")),
+            twitter_username: Some(String::from("JinxVentures")),
             url: None,
         },        
         Delegate { 
-            delegate: Addr::unchecked("osmo1nktatq53eah8efefsry33yg3zkhrrzwq3k6wg7"), 
-            alias: Some(String::from("RoboMcGobo")), 
-            discord_username: Some(String::from("robomcgobo")),
-            twitter_username: Some(String::from("RoboMcGobo")),
+            delegate: Addr::unchecked("furya133dalktxc8uj94q07hjekrpucpl49fg783q628"), 
+            alias: Some(String::from("Arsenal")), 
+            discord_username: Some(String::from("ArgentinaDao")),
+            twitter_username: Some(String::from("ArgentinaDao")),
             url: None,
         },        
         Delegate { 
-            delegate: Addr::unchecked("osmo1dplx2zw3mjk5lam6fnv5q2yxldcshs3wl3s8ph"), 
-            alias: Some(String::from("Johnny Wyles")), 
-            discord_username: Some(String::from("johnnywyles")),
-            twitter_username: Some(String::from("JohnnyWyles87")),
+            delegate: Addr::unchecked("furya1kdhac2qmk2y0zpfmh3hhquxqkw463tunjpgejt"), 
+            alias: Some(String::from("Brooklyn Nets")), 
+            discord_username: Some(String::from("bnetts")),
+            twitter_username: Some(String::from("BNetts")),
             url: None,
         },        
         Delegate { 
-            delegate: Addr::unchecked("osmo1ckgwfferpjy6usm3nvyjknat5d6frrhypl6kku"), 
-            alias: Some(String::from("Macks Wolfard")), 
-            discord_username: Some(String::from("nostradamus.nosnode")),
-            twitter_username: Some(String::from("nostradamus411")),
+            delegate: Addr::unchecked("furya1fdqgj600jv0ydjas89kgel2gt880j44jt0l7ls"), 
+            alias: Some(String::from("Brazil")), 
+            discord_username: Some(String::from("SoSoDao")),
+            twitter_username: Some(String::from("SoSoDao")),
             url: None,
         },        
         Delegate { 
-            delegate: Addr::unchecked("osmo1xp0qs6pkay2jssu58p8eap0epdhwx5mqlhs4v7"), 
-            alias: Some(String::from("Nostradamus")), 
-            discord_username: Some(String::from("nostradamus.nosnode")),
-            twitter_username: Some(String::from("nostradamus411")),
+            delegate: Addr::unchecked("furya1kt4pap9rdcm72gcppvm0l2khnku98padg8nrte"), 
+            alias: Some(String::from("England")), 
+            discord_username: Some(String::from("polaris")),
+            twitter_username: Some(String::from("polaris")),
             url: None,
         },        
         Delegate { 
-            delegate: Addr::unchecked("osmo1uvnk984yhpw48jfu5srvsrqdt03kkvlcjqx8x5"), 
-            alias: Some(String::from("Banana DAO")), 
-            discord_username: Some(String::from("arcmosis")),
-            twitter_username: Some(String::from("thebananadao")),
+            delegate: Addr::unchecked("furya1fqspuscrlzrtpghqnmqmj8j9dqr9hdmzlatcu6"), 
+            alias: Some(String::from("LA Lakers")), 
+            discord_username: Some(String::from("Cali")),
+            twitter_username: Some(String::from("Cali")),
             url: None,
         },        
         Delegate { 
-            delegate: Addr::unchecked("osmo13gu58hzw3e9aqpj25h67m7snwcjuccd7v4p55w"), 
-            alias: Some(String::from("Trix")), 
-            discord_username: Some(String::from("tri.xxx")),
-            twitter_username: Some(String::from("brane_trix")),
+            delegate: Addr::unchecked("furya1pg9t4kxgwhtsp72dgd42x42pxzswaze35fxxlq"), 
+            alias: Some(String::from("NY Yankees")), 
+            discord_username: Some(String::from("stateofmind")),
+            twitter_username: Some(String::from("StateOfMind")),
             url: None,
         }
     ];

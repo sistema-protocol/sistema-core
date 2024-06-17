@@ -34,7 +34,7 @@ use crate::error::ContractError;
 use crate::state::{CONFIG, PROPOSALS, PROPOSAL_COUNT, PENDING_PROPOSALS};
 
 // Contract name and version used for migration.
-const CONTRACT_NAME: &str = "mbrn-governance";
+const CONTRACT_NAME: &str = "tema-governance";
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 // Default pagination constants
@@ -56,21 +56,21 @@ pub fn instantiate(
 ) -> Result<Response, ContractError> {
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
 
-    let mbrn_denom = deps
+    let tema_denom = deps
         .querier
         .query::<StakingConfig>(&QueryRequest::Wasm(WasmQuery::Smart {
             contract_addr: deps
                 .api
-                .addr_validate(&msg.mbrn_staking_contract_addr)?
+                .addr_validate(&msg.tema_staking_contract_addr)?
                 .to_string(),
             msg: to_binary(&StakingQueryMsg::Config {})?,
         }))?
-        .mbrn_denom;
+        .tema_denom;
 
     let config = Config {
-        mbrn_denom,
-        minimum_total_stake: Uint128::new(1_000_000_000_000),  //1M MBRN
-        staking_contract_addr: deps.api.addr_validate(&msg.mbrn_staking_contract_addr)?,
+        tema_denom,
+        minimum_total_stake: Uint128::new(1_000_000_000_000),  //1M TEMA
+        staking_contract_addr: deps.api.addr_validate(&msg.tema_staking_contract_addr)?,
         vesting_contract_addr: deps.api.addr_validate(&msg.vesting_contract_addr)?,
         vesting_voting_power_multiplier: msg.vesting_voting_power_multiplier,
         proposal_voting_period: msg.proposal_voting_period,
@@ -628,9 +628,9 @@ pub fn check_messages(
 
     //Create additional check messages for system contracts\
     //Set contracts
-    let cdp_contract = "osmo1gy5gpqqlth0jpm9ydxlmff6g5mpnfvrfxd3mfc8dhyt03waumtzqt8exxr".to_string();
-    let lq_contract = "osmo1ycmtfa7h0efexjxuaw7yh3h3qayy5lspt9q4n4e3stn06cdcgm8s50zmjl".to_string();
-    let op_contract = "osmo1s794h9rxggytja3a4pmwul53u98k06zy2qtrdvjnfuxruh7s8yjs6cyxgd".to_string();
+    let cdp_contract = "furya1nes05572upvgkyz9ctsz787qt9r3pzy5nfe0r0n49m2fh002ytmspeuw8u".to_string();
+    let lq_contract = "furya1kppp8ywzdgtmqlup25ws33fdlhwwuu8he2yk3vgkuldzcfr5a2jqp8qcsa".to_string();
+    let op_contract = "furya1qte5mlv06nwu7wqewxg9066xjvlmlyghs9d5udkf8el5vvn50sfscgnylk".to_string();
     //CDP
     if msg_switch == Some(0) {
         //Query CDP basket
@@ -642,15 +642,15 @@ pub fn check_messages(
                 &CDP_QueryMsg::GetBasket {}
                 )?,
             };    
-        //Check if the contract has uosmo && deposit it all if it does
-        let uosmo_balance = match deps.querier.query_balance(env.clone().contract.address, "uosmo"){
+        //Check if the contract has ufury && deposit it all if it does
+        let ufury_balance = match deps.querier.query_balance(env.clone().contract.address, "ufury"){
             Ok(balance) => balance.amount,
             Err(_) => Uint128::zero(),
         };
-        if !uosmo_balance.is_zero() {
+        if !ufury_balance.is_zero() {
             //Get the next position id
             let position_id = basket.current_position_id;
-            //Deposit all uosmo
+            //Deposit all ufury
             messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: cdp_contract.clone(),
                 msg: to_binary(&CDP_ExecuteMsg::Deposit {
@@ -661,9 +661,9 @@ pub fn check_messages(
                     asset_to_coin(
                         Asset {
                             info: AssetInfo::NativeToken {
-                                denom: String::from("uosmo"),
+                                denom: String::from("ufury"),
                             },
-                            amount: uosmo_balance,
+                            amount: ufury_balance,
                         }
                     )?
                 ],
@@ -675,7 +675,7 @@ pub fn check_messages(
             )?;
 
 
-            //Mint minimum CDT, this may error if there isn't enough OSMO in the contract
+            //Mint minimum CDT, this may error if there isn't enough FURY in the contract
             messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: cdp_contract.clone(),
                 msg: to_binary(&CDP_ExecuteMsg::IncreaseDebt { 
@@ -705,7 +705,7 @@ pub fn check_messages(
                 ],
             }));
 
-            //Withdraw all OSMO
+            //Withdraw all FURY
             messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
                 contract_addr: cdp_contract.clone(),
                 msg: to_binary(&CDP_ExecuteMsg::Withdraw { 
@@ -713,9 +713,9 @@ pub fn check_messages(
                     assets: vec![
                         Asset {
                             info: AssetInfo::NativeToken {
-                                denom: String::from("uosmo"),
+                                denom: String::from("ufury"),
                             },
-                            amount: uosmo_balance,
+                            amount: ufury_balance,
                         }
                     ],
                     send_to: None
@@ -728,19 +728,19 @@ pub fn check_messages(
     if msg_switch == Some(1) {
         let config = CONFIG.load(deps.storage)?;
         //Set minimum stake
-        let minimum_stake = Uint128::new(1_000_000); //1 MBRN
+        let minimum_stake = Uint128::new(1_000_000); //1 TEMA
 
-        //Unstake MBRN if the contract already has stake
-        //Unstake the MBRN (claimable)
+        //Unstake TEMA if the contract already has stake
+        //Unstake the TEMA (claimable)
         messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
             contract_addr: config.clone().staking_contract_addr.to_string(),
             msg: to_binary(&Staking_ExecuteMsg::Unstake { 
-                mbrn_amount: None,
+                tema_amount: None,
             })?,
             funds: vec![],
         }));
 
-        //Stake minimum MBRN from the unstake
+        //Stake minimum TEMA from the unstake
         messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
             contract_addr: config.clone().staking_contract_addr.to_string(),
             msg: to_binary(&Staking_ExecuteMsg::Stake { 
@@ -750,7 +750,7 @@ pub fn check_messages(
                 asset_to_coin(
                     Asset {
                         info: AssetInfo::NativeToken {
-                            denom: config.clone().mbrn_denom,
+                            denom: config.clone().tema_denom,
                         },
                         amount: minimum_stake,
                     }
@@ -758,11 +758,11 @@ pub fn check_messages(
             ],
         }));
 
-        //Start the unstake for the recently staked MBRN
+        //Start the unstake for the recently staked TEMA
         messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
             contract_addr: config.clone().staking_contract_addr.to_string(),
             msg: to_binary(&Staking_ExecuteMsg::Unstake { 
-                mbrn_amount: None,
+                tema_amount: None,
             })?,
             funds: vec![],
         }));
@@ -803,19 +803,19 @@ pub fn check_messages(
         }
 
         //Query Queue to get the bid_id
-        let uosmo_queue: QueueResponse = deps.querier.query_wasm_smart::<QueueResponse>(
+        let ufury_queue: QueueResponse = deps.querier.query_wasm_smart::<QueueResponse>(
             lq_contract.clone(),
-            &LQ_QueryMsg::Queue { bid_for: AssetInfo::NativeToken { denom: String::from("uosmo") } 
+            &LQ_QueryMsg::Queue { bid_for: AssetInfo::NativeToken { denom: String::from("ufury") } 
             }
         )?;
-        let bid_id = uosmo_queue.current_bid_id;
+        let bid_id = ufury_queue.current_bid_id;
 
         //Minimum CDT Bid
         messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
             contract_addr: lq_contract.clone(),
             msg: to_binary(&LQ_ExecuteMsg::SubmitBid { 
                 bid_input: BidInput {
-                    bid_for: AssetInfo::NativeToken { denom: String::from("uosmo") },
+                    bid_for: AssetInfo::NativeToken { denom: String::from("ufury") },
                     liq_premium: 0u8
                 },
                 bid_owner: None,
@@ -835,7 +835,7 @@ pub fn check_messages(
             contract_addr: lq_contract.clone(),
             msg: to_binary(&LQ_ExecuteMsg::RetractBid { 
                 bid_id,
-                bid_for: AssetInfo::NativeToken { denom: String::from("uosmo") },
+                bid_for: AssetInfo::NativeToken { denom: String::from("ufury") },
                 amount: None,
             })?,
             funds: vec![],
@@ -894,7 +894,7 @@ pub fn passed_messages(deps: DepsMut, env: Env, error: Option<bool>) -> Result<R
     //Query a vesting recipient
     deps.querier.query::<AllocationResponse>(&QueryRequest::Wasm(WasmQuery::Smart {
         contract_addr: config.vesting_contract_addr.to_string(),
-        msg: to_binary(&VestingQueryMsg::Allocation { recipient: String::from("osmo1988s5h45qwkaqch8km4ceagw2e08vdw28mwk4n") })?,
+        msg: to_binary(&VestingQueryMsg::Allocation { recipient: String::from("furya16w6chfrrg930cqcfewdzse6szgjk657764dll7") })?,
     }))?;
 
     //Query the contracts config to ensure we don't migrate to a code_id that is not a Gov contract
@@ -910,7 +910,7 @@ pub fn passed_messages(deps: DepsMut, env: Env, error: Option<bool>) -> Result<R
             limit: Some(1),
             start_after: None,
             end_before: None,
-            user: Some("osmo13gu58hzw3e9aqpj25h67m7snwcjuccd7v4p55w".to_string()),
+            user: Some("furya1pg9t4kxgwhtsp72dgd42x42pxzswaze35fxxlq".to_string()),
         })?,
     }))?;
 
@@ -990,8 +990,8 @@ pub fn update_config(
         return Err(ContractError::Unauthorized {});
     }
 
-    if let Some(mbrn_denom) = updated_config.mbrn_denom {
-        config.mbrn_denom = mbrn_denom;
+    if let Some(tema_denom) = updated_config.tema_denom {
+        config.tema_denom = tema_denom;
     }
     if let Some(minimum_total_stake) = updated_config.minimum_total_stake {
         config.minimum_total_stake = minimum_total_stake;
@@ -1065,7 +1065,7 @@ pub fn calc_total_voting_power_at(
     let mut total: Uint128 = Uint128::zero();
 
     //Query stake from before Proposal's start_time
-    let mut staked_mbrn = match deps.querier
+    let mut staked_tema = match deps.querier
         .query::<StakedResponse>(&QueryRequest::Wasm(WasmQuery::Smart {
             contract_addr: config.staking_contract_addr.to_string(),
             msg: to_binary(&StakingQueryMsg::Staked {
@@ -1081,11 +1081,11 @@ pub fn calc_total_voting_power_at(
         
     //This will provide the lowest total voting power if quadratic voting is enabled
     //bc the stake can be split into delegations which are individually square rooted
-    for staker in staked_mbrn.clone() {
+    for staker in staked_tema.clone() {
         let mut staker_total = Uint128::zero();
         let mut remove_list = vec![];
 
-        for (i, stake) in staked_mbrn.clone().into_iter().enumerate(){
+        for (i, stake) in staked_tema.clone().into_iter().enumerate(){
             if stake.staker == staker.staker {
                 //Remove to shorten subsequent iterations
                 remove_list.push(i);
@@ -1099,7 +1099,7 @@ pub fn calc_total_voting_power_at(
         remove_list.reverse();
         //Remove staker from list
         for i in remove_list {
-            staked_mbrn.remove(i);
+            staked_tema.remove(i);
         }
         //Transform w/ quadratics if enabled
         if quadratic_voting {
@@ -1338,7 +1338,7 @@ fn freeze_positions(
     freeze_these_assets: Vec<String>,
 ) -> Result<Response, ContractError>{
     // Only the founder addr is allowed
-    if info.sender != Addr::unchecked("osmo1988s5h45qwkaqch8km4ceagw2e08vdw28mwk4n") {
+    if info.sender != Addr::unchecked("furya16w6chfrrg930cqcfewdzse6szgjk657764dll7") {
         return Err(ContractError::Unauthorized {});
     }
 
@@ -1360,7 +1360,7 @@ fn freeze_positions(
     if !supply_caps.is_empty() {
         Ok(Response::new()
             .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-                contract_addr: String::from("osmo1gy5gpqqlth0jpm9ydxlmff6g5mpnfvrfxd3mfc8dhyt03waumtzqt8exxr"),
+                contract_addr: String::from("furya1nes05572upvgkyz9ctsz787qt9r3pzy5nfe0r0n49m2fh002ytmspeuw8u"),
                 msg: to_binary(&CDP_ExecuteMsg::EditBasket(EditBasket {
                     frozen: Some(frozen),
                     added_cAsset: None,
@@ -1380,7 +1380,7 @@ fn freeze_positions(
     } else { //Only set freeze
         Ok(Response::new()
             .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-                contract_addr: String::from("osmo1gy5gpqqlth0jpm9ydxlmff6g5mpnfvrfxd3mfc8dhyt03waumtzqt8exxr"),
+                contract_addr: String::from("furya1nes05572upvgkyz9ctsz787qt9r3pzy5nfe0r0n49m2fh002ytmspeuw8u"),
                 msg: to_binary(&CDP_ExecuteMsg::EditBasket(EditBasket {
                     frozen: Some(frozen),
                     added_cAsset: None,

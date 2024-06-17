@@ -18,7 +18,7 @@ mod tests {
             owner: Some(String::from("owner0000")),
             initial_allocation: Uint128::new(30_000_000_000_000u128),
             pre_launch_community: vec![String::from("community0000"), String::from("community0000"), String::from("community0001"), String::from("community0002"), String::from("0")],
-            mbrn_denom: String::from("mbrn_denom"),
+            tema_denom: String::from("tema_denom"),
             osmosis_proxy: String::from("osmosis_proxy"),
             staking_contract: String::from("staking_contract"),
             pre_launch_contributors: String::from("labs")
@@ -106,7 +106,7 @@ mod tests {
             owner: Some(String::from("owner0000")),
             initial_allocation: Uint128::new(30_000_000_000_000u128),
             pre_launch_community: vec![],
-            mbrn_denom: String::from("mbrn_denom"),
+            tema_denom: String::from("tema_denom"),
             osmosis_proxy: String::from("osmosis_proxy"),
             staking_contract: String::from("staking_contract"),
             pre_launch_contributors: String::from("labs")
@@ -119,7 +119,7 @@ mod tests {
         //Update Config: Increase allocations
         let msg = ExecuteMsg::UpdateConfig { 
             owner: None, 
-            mbrn_denom: None,
+            tema_denom: None,
             osmosis_proxy: None,
             staking_contract: None,
             additional_allocation: Some( Uint128::new(1_000_000_000_000u128) ),
@@ -256,7 +256,7 @@ mod tests {
             owner: Some(String::from("owner0000")),
             initial_allocation: Uint128::new(30_000_000_000_000u128),
             pre_launch_community: vec![],
-            mbrn_denom: String::from("mbrn_denom"),
+            tema_denom: String::from("tema_denom"),
             osmosis_proxy: String::from("osmosis_proxy"),
             staking_contract: String::from("staking_contract"),
             pre_launch_contributors: String::from("labs")
@@ -293,7 +293,7 @@ mod tests {
         //Update Config: Increase allocations
         let msg = ExecuteMsg::UpdateConfig { 
             owner: None, 
-            mbrn_denom: None,
+            tema_denom: None,
             osmosis_proxy: None,
             staking_contract: None,
             additional_allocation: Some( Uint128::new(1_000_000_000_000u128) ),
@@ -367,7 +367,7 @@ mod tests {
                 contract_addr: String::from("osmosis_proxy"),
                 funds: vec![],
                 msg: to_binary(&OsmoExecuteMsg::MintTokens { 
-                    denom: String::from("mbrn_denom"), 
+                    denom: String::from("tema_denom"), 
                     amount: Uint128::new(500000000000), 
                     mint_to_address: String::from("recipient0000") 
                 })
@@ -421,7 +421,7 @@ mod tests {
                 contract_addr: String::from("osmosis_proxy"),
                 funds: vec![],
                 msg: to_binary(&OsmoExecuteMsg::MintTokens { 
-                    denom: String::from("mbrn_denom"), 
+                    denom: String::from("tema_denom"), 
                     amount: Uint128::new(500000000000), 
                     mint_to_address: String::from("recipient0000") 
                 })

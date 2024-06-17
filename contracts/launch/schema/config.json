@@ -11,9 +11,9 @@
     "governance_id",
     "liq_queue_id",
     "liquidity_check_id",
-    "mbrn_auction_id",
-    "mbrn_denom",
-    "mbrn_launch_amount",
+    "tema_auction_id",
+    "tema_denom",
+    "tema_launch_amount",
     "oracle_id",
     "osmo_denom",
     "osmosis_proxy_id",
@@ -41,7 +41,7 @@
       "type": "string"
     },
     "atomosmo_pool_id": {
-      "description": "ATOM/OSMO pool id",
+      "description": "ATOM/FURY pool id",
       "type": "integer",
       "format": "uint64",
       "minimum": 0.0
@@ -74,18 +74,18 @@
       "format": "uint64",
       "minimum": 0.0
     },
-    "mbrn_auction_id": {
-      "description": "MBRN Auction contract id",
+    "tema_auction_id": {
+      "description": "TEMA Auction contract id",
       "type": "integer",
       "format": "uint64",
       "minimum": 0.0
     },
-    "mbrn_denom": {
-      "description": "MBRN token denom",
+    "tema_denom": {
+      "description": "TEMA token denom",
       "type": "string"
     },
-    "mbrn_launch_amount": {
-      "description": "Amount of MBRN for launch incentives & LPs",
+    "tema_launch_amount": {
+      "description": "Amount of TEMA for launch incentives & LPs",
       "allOf": [
         {
           "$ref": "#/definitions/Uint128"
@@ -99,7 +99,7 @@
       "minimum": 0.0
     },
     "osmo_denom": {
-      "description": "OSMO denom",
+      "description": "FURY denom",
       "type": "string"
     },
     "osmosis_proxy_id": {
@@ -109,7 +109,7 @@
       "minimum": 0.0
     },
     "osmousdc_pool_id": {
-      "description": "USDC/OSMO pool id",
+      "description": "USDC/FURY pool id",
       "type": "integer",
       "format": "uint64",
       "minimum": 0.0

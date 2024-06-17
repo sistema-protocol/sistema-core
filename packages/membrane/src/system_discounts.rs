@@ -43,8 +43,8 @@ pub enum QueryMsg {
 pub struct Config {
     /// Contract owner
     pub owner: Addr,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
     /// Oracle contract address
     pub oracle_contract: Addr,
     /// Positions contract address

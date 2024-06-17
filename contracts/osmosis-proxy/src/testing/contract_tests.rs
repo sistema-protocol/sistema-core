@@ -21,7 +21,7 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let msg = InstantiateMsg {};
-        let info = mock_info("creator", &coins(1000, "uosmo"));
+        let info = mock_info("creator", &coins(1000, "ufury"));
 
         let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
         assert_eq!(0, res.messages.len());
@@ -32,7 +32,7 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let msg = InstantiateMsg {};
-        let info = mock_info("creator", &coins(1000, "uosmo"));
+        let info = mock_info("creator", &coins(1000, "ufury"));
 
         let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
@@ -105,7 +105,7 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let msg = InstantiateMsg {};
-        let info = mock_info("creator", &coins(1000, "uosmo"));
+        let info = mock_info("creator", &coins(1000, "ufury"));
         let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
         
 
@@ -130,7 +130,7 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let msg = InstantiateMsg {};
-        let info = mock_info("creator", &coins(1000, "uosmo"));
+        let info = mock_info("creator", &coins(1000, "ufury"));
 
         let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
         
@@ -157,7 +157,7 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let msg = InstantiateMsg {};
-        let info = mock_info("creator", &coins(1000, "uosmo"));
+        let info = mock_info("creator", &coins(1000, "ufury"));
 
         let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
         
@@ -192,7 +192,7 @@ mod tests {
         let mut deps = mock_dependencies();
 
         let msg = InstantiateMsg {};
-        let info = mock_info("creator", &coins(1000, "uosmo"));
+        let info = mock_info("creator", &coins(1000, "ufury"));
         let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
         
         const NEW_ADMIN_ADDR: &str = "newadmin";

@@ -410,7 +410,7 @@ pub fn callback_handler(
     }
 }
 
-/// Check and recapitilize Bad Debt w/ revenue or MBRN auctions
+/// Check and recapitilize Bad Debt w/ revenue or TEMA auctions
 fn check_and_fulfill_bad_debt(
     deps: DepsMut,
     _env: Env,

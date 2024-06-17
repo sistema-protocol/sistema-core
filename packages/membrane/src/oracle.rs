@@ -29,11 +29,11 @@ pub enum ExecuteMsg {
         positions_contract: Option<String>,
         /// Osmosis Proxy contract address
         osmosis_proxy_contract: Option<String>,
-        /// OSMO/USD Pyth price feed id
+        /// FURY/USD Pyth price feed id
         osmo_usd_pyth_feed_id: Option<PriceIdentifier>,
         /// Pyth Osmosis address
         pyth_osmosis_address: Option<String>,
-        /// Osmosis pools for OSMO/USD-par TWAP.
+        /// Osmosis pools for FURY/USD-par TWAP.
         /// Replaces saved state.
         pools_for_usd_par_twap: Option<Vec<TWAPPoolInfo>>,
     },
@@ -98,11 +98,11 @@ pub struct Config {
     /// Osmosis Proxy contract address
     /// Used to check for removed assets in Positions Owners
     pub osmosis_proxy_contract: Option<Addr>,
-    /// OSMO/USD Pyth price feed id
+    /// FURY/USD Pyth price feed id
     pub osmo_usd_pyth_feed_id: PriceIdentifier,
     /// Pyth Osmosis address
     pub pyth_osmosis_address: Option<Addr>,
-    /// Osmosis pools for OSMO/USD-par TWAP.
+    /// Osmosis pools for FURY/USD-par TWAP.
     /// This list of pools will be used separately and medianized.
     pub pools_for_usd_par_twap: Vec<TWAPPoolInfo>,
 }

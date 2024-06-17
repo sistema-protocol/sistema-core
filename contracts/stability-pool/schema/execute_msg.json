@@ -93,7 +93,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Claim ALL liquidation revenue && MBRN incentives",
+      "description": "Claim ALL liquidation revenue && TEMA incentives",
       "type": "object",
       "required": [
         "claim_rewards"
@@ -325,8 +325,8 @@
             }
           ]
         },
-        "mbrn_denom": {
-          "description": "MBRN denom",
+        "tema_denom": {
+          "description": "TEMA denom",
           "type": [
             "string",
             "null"

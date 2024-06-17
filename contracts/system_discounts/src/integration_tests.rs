@@ -190,7 +190,7 @@ mod tests {
                     Staking_MockQueryMsg::Config { } => {
                         Ok(to_binary(&Staking_Config {
                             owner: Addr::unchecked(""),
-                            mbrn_denom: String::from("mbrn_denom"),
+                            tema_denom: String::from("tema_denom"),
                             incentive_schedule: StakeDistribution { rate: Decimal::zero(), duration: 0 },
                             max_commission_rate: Decimal::zero(),
                             unstaking_period: 0,
@@ -346,7 +346,7 @@ mod tests {
             // bank.init_balance(
             //     storage,
             //     &Addr::unchecked("contract3"),
-            //     vec![coin(30_000_000_000_000, "mbrn_denom")],
+            //     vec![coin(30_000_000_000_000, "tema_denom")],
             // )
             // .unwrap(); //contract3 = Builders contract
             // bank.init_balance(
@@ -527,7 +527,7 @@ mod tests {
                 config, 
                 Config {
                     owner: Addr::unchecked(ADMIN), 
-                    mbrn_denom: String::from("mbrn_denom"),
+                    tema_denom: String::from("tema_denom"),
                     positions_contract: Addr::unchecked("new_pos_contract"),                
                     oracle_contract: Addr::unchecked("new_oracle_contract"), 
                     staking_contract: Addr::unchecked("contract2"), 
@@ -564,7 +564,7 @@ mod tests {
                 config, 
                 Config {
                     owner: Addr::unchecked("new_owner"), 
-                    mbrn_denom: String::from("mbrn_denom"),
+                    tema_denom: String::from("tema_denom"),
                     positions_contract: Addr::unchecked("new_pos_contract"),                
                     oracle_contract: Addr::unchecked("new_oracle_contract"), 
                     staking_contract: Addr::unchecked("contract2"), 

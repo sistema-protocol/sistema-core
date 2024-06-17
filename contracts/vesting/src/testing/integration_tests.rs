@@ -181,7 +181,7 @@ mod tests {
             bank.init_balance(
                 storage,
                 &Addr::unchecked("contract3"),
-                vec![coin(60_000_000_000_000, "mbrn_denom")],
+                vec![coin(60_000_000_000_000, "tema_denom")],
             )
             .unwrap(); //contract3 = Builders contract
             bank.init_balance(
@@ -245,7 +245,7 @@ mod tests {
         let msg = InstantiateMsg {
             owner: None,
             initial_allocation: Uint128::new(30_000_000_000_000u128),
-            mbrn_denom: String::from("mbrn_denom"),
+            tema_denom: String::from("tema_denom"),
             osmosis_proxy: osmosis_proxy_contract_addr.to_string(),
             staking_contract: staking_contract_addr.to_string(),
             pre_launch_contributors: String::from("labs"),
@@ -260,7 +260,7 @@ mod tests {
 
         let msg = ExecuteMsg::UpdateConfig { 
             owner: None, 
-            mbrn_denom: None,
+            tema_denom: None,
             osmosis_proxy: None,
             staking_contract: None,
             additional_allocation: Some( Uint128::new(20_000_000_000_000) ),
@@ -445,7 +445,7 @@ mod tests {
             //Update Config: Error Unauthorized
             let msg = ExecuteMsg::UpdateConfig { 
                 owner: None, 
-                mbrn_denom: None,
+                tema_denom: None,
                 osmosis_proxy: None,
                 staking_contract: None,
                 additional_allocation: None,
@@ -456,7 +456,7 @@ mod tests {
             //Update Config: Success
             let msg = ExecuteMsg::UpdateConfig { 
                 owner: Some( String::from("new_owner")), 
-                mbrn_denom: Some( String::from("new_denom") ), 
+                tema_denom: Some( String::from("new_denom") ), 
                 osmosis_proxy: Some( cw20_addr.to_string() ), 
                 staking_contract: Some( cw20_addr.to_string() ), 
                 additional_allocation: Some( Uint128::one() ),
@@ -475,7 +475,7 @@ mod tests {
                 Config { 
                     owner: Addr::unchecked(ADMIN), 
                     total_allocation: Uint128::new(50_000_000_000_001), 
-                    mbrn_denom: String::from("new_denom"), 
+                    tema_denom: String::from("new_denom"), 
                     osmosis_proxy: cw20_addr.clone(), 
                     staking_contract: cw20_addr.clone(), 
                 }
@@ -484,7 +484,7 @@ mod tests {
             //Update Config: Ownership transfer
             let msg = ExecuteMsg::UpdateConfig { 
                 owner: None,
-                mbrn_denom: None,
+                tema_denom: None,
                 osmosis_proxy: None,
                 staking_contract: None,
                 additional_allocation: None,
@@ -503,7 +503,7 @@ mod tests {
                 Config { 
                     owner: Addr::unchecked("new_owner"), 
                     total_allocation: Uint128::new(50_000_000_000_001), 
-                    mbrn_denom: String::from("new_denom"), 
+                    tema_denom: String::from("new_denom"), 
                     osmosis_proxy: cw20_addr.clone(), 
                     staking_contract: cw20_addr, 
                 }

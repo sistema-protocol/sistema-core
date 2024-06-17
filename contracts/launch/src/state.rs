@@ -17,7 +17,7 @@ pub struct LaunchAddrs {
     pub stability_pool: Addr,
     pub liq_queue: Addr,
     pub liquidity_check: Addr,
-    pub mbrn_auction: Addr,    
+    pub tema_auction: Addr,    
     pub discount_vault: Addr,
     pub system_discounts: Addr,
 }
@@ -32,4 +32,4 @@ pub const INCENTIVE_RATIOS: Item<Vec<UserRatio>> = Item::new("incentive_ratios")
 //Launch
 pub const ADDRESSES: Item<LaunchAddrs> = Item::new("addresses");
 pub const OSMO_POOL_ID: Item<u64> = Item::new("osmo_pool");
-pub const MBRN_POOL: Item<u64> = Item::new("mbrn_pool");
+pub const TEMA_POOL: Item<u64> = Item::new("tema_pool");

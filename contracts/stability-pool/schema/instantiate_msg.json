@@ -4,7 +4,7 @@
   "type": "object",
   "required": [
     "asset_pool",
-    "mbrn_denom",
+    "tema_denom",
     "minimum_deposit_amount",
     "osmosis_proxy",
     "positions_contract"
@@ -40,8 +40,8 @@
         }
       ]
     },
-    "mbrn_denom": {
-      "description": "MBRN denom",
+    "tema_denom": {
+      "description": "TEMA denom",
       "type": "string"
     },
     "minimum_deposit_amount": {

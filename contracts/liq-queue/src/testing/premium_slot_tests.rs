@@ -128,7 +128,7 @@ fn two_bidder_distribution() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::zero(),
@@ -139,7 +139,7 @@ fn two_bidder_distribution() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -169,7 +169,7 @@ fn two_bidder_distribution() {
         }, 
         collateral_amount: Uint256::from(4u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -179,7 +179,7 @@ fn two_bidder_distribution() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -208,7 +208,7 @@ fn two_bidder_distribution() {
         }, 
         collateral_amount: Uint256::from(6u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -219,7 +219,7 @@ fn two_bidder_distribution() {
     //First bidder participated in 2 liquidations
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -229,7 +229,7 @@ fn two_bidder_distribution() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "7"),
         ]
     );
@@ -238,7 +238,7 @@ fn two_bidder_distribution() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -253,7 +253,7 @@ fn two_bidder_distribution() {
     //2nd bidder participated in 1 liquidations
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -263,7 +263,7 @@ fn two_bidder_distribution() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "3"),
         ]
     );
@@ -272,7 +272,7 @@ fn two_bidder_distribution() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(2u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -303,7 +303,7 @@ fn two_bidder_distribution_big_number() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::zero(),
@@ -314,7 +314,7 @@ fn two_bidder_distribution_big_number() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -344,7 +344,7 @@ fn two_bidder_distribution_big_number() {
         }, 
         collateral_amount: Uint256::from(400_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -354,7 +354,7 @@ fn two_bidder_distribution_big_number() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -383,7 +383,7 @@ fn two_bidder_distribution_big_number() {
         }, 
         collateral_amount: Uint256::from(600_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -394,7 +394,7 @@ fn two_bidder_distribution_big_number() {
     //First bidder participated in 2 liquidations
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -404,7 +404,7 @@ fn two_bidder_distribution_big_number() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "700000000"),
         ]
     );
@@ -413,7 +413,7 @@ fn two_bidder_distribution_big_number() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -428,7 +428,7 @@ fn two_bidder_distribution_big_number() {
     //2nd bidder participated in 1 liquidations
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -438,7 +438,7 @@ fn two_bidder_distribution_big_number() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "300000000"),
         ]
     );
@@ -447,7 +447,7 @@ fn two_bidder_distribution_big_number() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(2u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -478,7 +478,7 @@ fn one_user_two_slots() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(5_000_000_000_000u128),
@@ -489,7 +489,7 @@ fn one_user_two_slots() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 5u8,
         },
@@ -509,7 +509,7 @@ fn one_user_two_slots() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -531,7 +531,7 @@ fn one_user_two_slots() {
         }, 
         collateral_amount: Uint256::from(5_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -542,7 +542,7 @@ fn one_user_two_slots() {
     //Bidder can claim 5
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -552,7 +552,7 @@ fn one_user_two_slots() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "5000000"),
         ]
     );
@@ -571,7 +571,7 @@ fn one_user_two_slots() {
         }, 
         collateral_amount: Uint256::from(10_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -582,7 +582,7 @@ fn one_user_two_slots() {
     //Bidder can claim 10
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -592,7 +592,7 @@ fn one_user_two_slots() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "9999999"), //Rounding favors the system (ie residue)
         ]
     );
@@ -601,7 +601,7 @@ fn one_user_two_slots() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -617,7 +617,7 @@ fn one_user_two_slots() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(2u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -626,7 +626,7 @@ fn one_user_two_slots() {
         res.attributes,
         vec![
             attr("method", "retract_bid"),
-            attr("bid_for", "osmo"),
+            attr("bid_for", "fury"),
             attr("bid_id", "2"),
             attr("amount", "59736835"), // 100 ust - 40.263165 = 59.736835 UST
         ]
@@ -651,7 +651,7 @@ fn completely_empty_pool() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(5_000_000_000_000u128),
@@ -662,7 +662,7 @@ fn completely_empty_pool() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -692,7 +692,7 @@ fn completely_empty_pool() {
         }, 
         collateral_amount: Uint256::from(20_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -702,7 +702,7 @@ fn completely_empty_pool() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -719,7 +719,7 @@ fn completely_empty_pool() {
 
     let msg = QueryMsg::Bid {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_id: Uint128::new(2u128),
     };
@@ -730,7 +730,7 @@ fn completely_empty_pool() {
 
     let msg = QueryMsg::PremiumSlot {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         premium: 0u64,
     };
@@ -760,7 +760,7 @@ fn completely_empty_pool() {
         }, 
         collateral_amount: Uint256::from(20_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -770,7 +770,7 @@ fn completely_empty_pool() {
     //First bidder can claim from 1st liq
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -780,7 +780,7 @@ fn completely_empty_pool() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "20000000"),
         ]
     );
@@ -789,7 +789,7 @@ fn completely_empty_pool() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -804,7 +804,7 @@ fn completely_empty_pool() {
     //2nd bidder participated in 1 liquidation as well
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -814,7 +814,7 @@ fn completely_empty_pool() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "20000000"),
         ]
     );
@@ -958,7 +958,7 @@ fn two_bidder_distribution_multiple_common_slots() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(5_000_000_000_000u128),
@@ -970,7 +970,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 5u8,
         },
@@ -991,7 +991,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 5u8,
         },
@@ -1010,7 +1010,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -1031,7 +1031,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -1060,7 +1060,7 @@ fn two_bidder_distribution_multiple_common_slots() {
         },
         collateral_amount: Uint256::from(32_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -1073,7 +1073,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     //  2nd: 5 col from the 5% pool, 11 col from the 10% pool
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -1083,7 +1083,7 @@ fn two_bidder_distribution_multiple_common_slots() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "15999999"), //Rounding error
         ]
     );
@@ -1091,7 +1091,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     //2nd bidder participated in 1 liquidations
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -1101,7 +1101,7 @@ fn two_bidder_distribution_multiple_common_slots() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "16000001"),
         ]
     );
@@ -1110,7 +1110,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(4u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -1119,7 +1119,7 @@ fn two_bidder_distribution_multiple_common_slots() {
         res.attributes,
         vec![
             attr("method", "retract_bid"),
-            attr("bid_for", "osmo"),
+            attr("bid_for", "fury"),
             attr("bid_id", "4"),
             attr("amount", "150736840"),
         ]
@@ -1129,7 +1129,7 @@ fn two_bidder_distribution_multiple_common_slots() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(3u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -1139,7 +1139,7 @@ fn two_bidder_distribution_multiple_common_slots() {
         res.attributes,
         vec![
             attr("method", "retract_bid"),
-            attr("bid_for", "osmo"),
+            attr("bid_for", "fury"),
             attr("bid_id", "3"),
             attr("amount", "150736839"),
         ]
@@ -1164,7 +1164,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(5_000_000_000_000u128),
@@ -1175,7 +1175,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -1195,7 +1195,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -1214,7 +1214,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -1244,7 +1244,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
         },
         collateral_amount: Uint256::from(100u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -1258,7 +1258,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -1278,7 +1278,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 0u8,
         },
@@ -1307,7 +1307,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
         },
         collateral_amount: Uint256::from(50u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -1319,7 +1319,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     // 20 from the first liquidations, 2 from the second
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: None,
     };
@@ -1329,7 +1329,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "22"),
         ]
     );
@@ -1338,7 +1338,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::from(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -1347,7 +1347,7 @@ fn scalable_reward_distribution_after_multiple_liquidations() {
         res.attributes,
         vec![
             attr("method", "retract_bid"),
-            attr("bid_for", "osmo"),
+            attr("bid_for", "fury"),
             attr("bid_id", "1"),
             attr("amount", "27"),
         ]
@@ -1372,7 +1372,7 @@ fn not_enough_bid_for_collateral() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::zero(),
@@ -1383,7 +1383,7 @@ fn not_enough_bid_for_collateral() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 6u8,
         },
@@ -1403,7 +1403,7 @@ fn not_enough_bid_for_collateral() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 6u8,
         },
@@ -1435,7 +1435,7 @@ fn not_enough_bid_for_collateral() {
         },
         collateral_amount: Uint256::from(100u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -1447,7 +1447,7 @@ fn not_enough_bid_for_collateral() {
         attr("action", "execute_bid"),
         attr("denom", "cdt"),
         attr("repay_amount", "200"),
-        attr("collateral_token", "osmo"),
+        attr("collateral_token", "fury"),
         attr("collateral_info", "native_token"),
         attr("collateral_amount", "70"),
     ]);

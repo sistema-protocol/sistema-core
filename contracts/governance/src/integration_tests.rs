@@ -389,7 +389,7 @@ mod tests {
                             duration: 0,
                         },
                         unstaking_period: 0,
-                        mbrn_denom: String::from("mbrn_denom"),
+                        tema_denom: String::from("tema_denom"),
                         max_commission_rate: Decimal::zero(),
                         keep_raw_cdt: false,
                         vesting_rev_multiplier: Decimal::zero(),
@@ -473,7 +473,7 @@ mod tests {
             bank.init_balance(
                 storage,
                 &Addr::unchecked("contract3"),
-                vec![coin(30_000_000_000_000, "mbrn_denom")],
+                vec![coin(30_000_000_000_000, "tema_denom")],
             )
             .unwrap(); //contract3 = Builders contract
             bank.init_balance(
@@ -536,7 +536,7 @@ mod tests {
         let gov_id = app.store_code(gov_contract());
 
         let msg = InstantiateMsg {
-            mbrn_staking_contract_addr: staking_contract_addr.to_string(),
+            tema_staking_contract_addr: staking_contract_addr.to_string(),
             vesting_contract_addr: bv_contract_addr.to_string(),
             vesting_voting_power_multiplier: Decimal::percent(33),
             proposal_voting_period: PROPOSAL_VOTING_PERIOD+1,
@@ -878,7 +878,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1345,7 +1345,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1425,7 +1425,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1576,7 +1576,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1718,7 +1718,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1789,7 +1789,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1861,7 +1861,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,
@@ -1986,7 +1986,7 @@ mod tests {
                     msg: cosmwasm_std::CosmosMsg::Wasm(WasmMsg::Execute {
                         contract_addr: gov_contract.addr().to_string(),
                         msg: to_binary(&ExecuteMsg::UpdateConfig(UpdateConfig {
-                            mbrn_denom: None,
+                            tema_denom: None,
                             staking_contract: None,
                             vesting_contract_addr: None,
                             vesting_voting_power_multiplier: None,

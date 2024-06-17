@@ -1,6 +1,6 @@
 # Table of contents
 
-* [What is Membrane?](README.md)
+* [What is Sistema?](README.md)
 
 ## Protocol
 
@@ -10,7 +10,7 @@
   * [Interest Rates](protocol/overview/interest-rates.md)
 * [Liquidation Mechanism](protocol/liquidation-mechanism.md)
 * [Risk Management](protocol/risk-management.md)
-* [MBRN Tokenomics](protocol/mbrn-tokenomics.md)
+* [TEMA Tokenomics](protocol/tema-tokenomics.md)
 
 ## Smart Contracts
 
@@ -21,7 +21,7 @@
 * [Staking](smart-contracts/staking.md)
 * [Governance](smart-contracts/gov.md)
 * [Oracle](smart-contracts/oracle.md)
-* [MBRN Auction](smart-contracts/mbrn-auction.md)
+* [TEMA Auction](smart-contracts/tema-auction.md)
 * [Osmosis Proxy](smart-contracts/osmosis-proxy.md)
 * [Liquidity Check](smart-contracts/liquidity-check.md)
 * [Margin Proxy](smart-contracts/margin-proxy.md)

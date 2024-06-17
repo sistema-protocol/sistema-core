@@ -32,7 +32,7 @@
       "type": "string"
     },
     "total_staked": {
-      "description": "Total MBRN staked",
+      "description": "Total TEMA staked",
       "allOf": [
         {
           "$ref": "#/definitions/Uint128"

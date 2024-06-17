@@ -30,7 +30,7 @@ fn instantiate_and_whitelist(deps: &mut OwnedDeps<MemoryStorage, MockApi, MockQu
         },
         osmosis_proxy: String::from("osmosis_proxy"),
         positions_contract: String::from("positions_contract"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         max_incentives: None,
     };

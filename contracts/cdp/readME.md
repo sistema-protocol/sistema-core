@@ -94,7 +94,7 @@ cAsset Addition Logic
 The 5% should be set as the max liquidation caller_fee during high traffic periods to guarantee users in the LQ will be in premium slots whose liquidations wouldn't automatically error to the router due to solvency limits.
 The default fee is the Stability Pool's liquidation fee since if the LQ doesn't liquidate the SP will at 10% and lower fees are better for the user & ecosystem. 
 - Add cAsset to collateral supply caps
-- Can't add the Basket's credit asset or the staking contract's MBRN denom
+- Can't add the Basket's credit asset or the staking contract's TEMA denom
 - No duplicate assets
 
 

@@ -45,18 +45,18 @@ pub fn instantiate(
         info.sender
     };
 
-    ///Query mbrn_denom
+    ///Query tema_denom
     let staking_contract = deps.api.addr_validate(&msg.staking_contract)?;
 
-    let mbrn_denom = deps.querier.query::<Staking_Config>(&QueryRequest::Wasm(WasmQuery::Smart {
+    let tema_denom = deps.querier.query::<Staking_Config>(&QueryRequest::Wasm(WasmQuery::Smart {
         contract_addr: staking_contract.to_string(),
         msg: to_binary(&Staking_QueryMsg::Config {})?,
     }))?
-    .mbrn_denom;
+    .tema_denom;
 
     config = Config {
         owner,
-        mbrn_denom,
+        tema_denom,
         positions_contract: deps.api.addr_validate(&msg.positions_contract)?,
         oracle_contract: deps.api.addr_validate(&msg.oracle_contract)?,
         staking_contract,
@@ -129,13 +129,13 @@ fn update_config(
     if let Some(addr) = update.staking_contract {
         config.staking_contract = deps.api.addr_validate(&addr)?;
         
-        let mbrn_denom = deps.querier.query::<Staking_Config>(&QueryRequest::Wasm(WasmQuery::Smart {
+        let tema_denom = deps.querier.query::<Staking_Config>(&QueryRequest::Wasm(WasmQuery::Smart {
             contract_addr: addr.to_string(),
             msg: to_binary(&Staking_QueryMsg::Config {})?,
         }))?
-        .mbrn_denom;
+        .tema_denom;
 
-        config.mbrn_denom = mbrn_denom;
+        config.tema_denom = tema_denom;
     }
     if let Some(addr) = update.stability_pool_contract {
         config.stability_pool_contract = deps.api.addr_validate(&addr)?;
@@ -238,10 +238,10 @@ fn get_user_value_in_network(
     };
     let credit_price = basket.clone().credit_price;
 
-    let mbrn_price_res = match querier.query::<PriceResponse>(&QueryRequest::Wasm(WasmQuery::Smart {
+    let tema_price_res = match querier.query::<PriceResponse>(&QueryRequest::Wasm(WasmQuery::Smart {
         contract_addr: config.clone().oracle_contract.to_string(),
         msg: to_binary(&Oracle_QueryMsg::Price {
-            asset_info: AssetInfo::NativeToken { denom: config.clone().mbrn_denom },
+            asset_info: AssetInfo::NativeToken { denom: config.clone().tema_denom },
             twap_timeframe: 60,
             oracle_time_limit: 600,
             basket_id: None,
@@ -273,7 +273,7 @@ fn get_user_value_in_network(
     // }
 
     total_value += get_sp_value(querier, config.clone(), env.clone().block.time.seconds(), user.clone())?;
-    total_value += get_staked_MBRN_value(querier, config.clone(), user.clone(), mbrn_price_res.clone(), credit_price.clone().price)?;
+    total_value += get_staked_TEMA_value(querier, config.clone(), user.clone(), tema_price_res.clone(), credit_price.clone().price)?;
     
     
     Ok( total_value )
@@ -350,12 +350,12 @@ fn get_discounts_vault_value(
 
 }
 
-// Return value of staked MBRN & pending rewards
-fn get_staked_MBRN_value(
+// Return value of staked TEMA & pending rewards
+fn get_staked_TEMA_value(
     querier: QuerierWrapper,
     config: Config,
     user: String,
-    mbrn_price_res: PriceResponse,
+    tema_price_res: PriceResponse,
     credit_price: Decimal,
 ) -> StdResult<Decimal>{
 
@@ -377,13 +377,13 @@ fn get_staked_MBRN_value(
     //Add accrued interest to user_stake
     user_stake += rewards.accrued_interest;
 
-    //Add MBRN value to staked_value
-    let value = mbrn_price_res.get_value(user_stake)?;
+    //Add TEMA value to staked_value
+    let value = tema_price_res.get_value(user_stake)?;
     
     Ok( value )
 }
 
-/// Return user's total Stability Pool value from credit & MBRN incentives 
+/// Return user's total Stability Pool value from credit & TEMA incentives 
 fn get_sp_value(
     querier: QuerierWrapper,
     config: Config,

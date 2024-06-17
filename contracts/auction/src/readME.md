@@ -1,6 +1,6 @@
 # Debt Auction Contract
 
-The Debt Auction contract is used to sell MBRN for debt tokens in the event of an insolvency that can't be covered by pending revenue
+The Debt Auction contract is used to sell TEMA for debt tokens in the event of an insolvency that can't be covered by pending revenue
 
 
 ## ExecuteMsg
@@ -15,11 +15,11 @@ The Debt Auction contract is used to sell MBRN for debt tokens in the event of a
 
 - Removes existing auction 
 
-### `swap_for_mbrn`
+### `swap_for_tema`
 
-- With the debt token of an ongoing auction, swap for MBRN at a discount
+- With the debt token of an ongoing auction, swap for TEMA at a discount
 - Discount is incremented on a timescale determined by the contract configuration
-- Allotted MBRN is minted to the sender
+- Allotted TEMA is minted to the sender
 - If there is enough debt token in the contract to fulfill a repayment, it is done. Generic sends are done incrementally.
 - Excess repayments are sent back to the sender to allow users to focus on speed of recapitaliziation rather than correctness
 

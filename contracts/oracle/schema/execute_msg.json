@@ -13,7 +13,7 @@
           "type": "object",
           "properties": {
             "osmo_usd_pyth_feed_id": {
-              "description": "OSMO/USD Pyth price feed id",
+              "description": "FURY/USD Pyth price feed id",
               "anyOf": [
                 {
                   "$ref": "#/definitions/Identifier"
@@ -38,7 +38,7 @@
               ]
             },
             "pools_for_usd_par_twap": {
-              "description": "Osmosis pools for OSMO/USD-par TWAP. Replaces saved state.",
+              "description": "Osmosis pools for FURY/USD-par TWAP. Replaces saved state.",
               "type": [
                 "array",
                 "null"
@@ -240,7 +240,7 @@
           ]
         },
         "pools_for_osmo_twap": {
-          "description": "Osmosis pools for OSMO TWAP",
+          "description": "Osmosis pools for FURY TWAP",
           "type": "array",
           "items": {
             "$ref": "#/definitions/TWAPPoolInfo"

@@ -1760,15 +1760,15 @@ pub fn edit_basket(
         let mut check = true;
         new_cAsset = added_cAsset.clone();
 
-        //new_cAsset can't be the basket credit_asset or MBRN 
+        //new_cAsset can't be the basket credit_asset or TEMA 
         if let Some(staking_contract) = config.clone().staking_contract {
-            let mbrn_denom = deps.querier.query::<Staking_Config>(&QueryRequest::Wasm(WasmQuery::Smart { 
+            let tema_denom = deps.querier.query::<Staking_Config>(&QueryRequest::Wasm(WasmQuery::Smart { 
                 contract_addr: staking_contract.to_string(), 
                 msg: to_binary(&Staking_QueryMsg::Config { })? 
             }))?
-            .mbrn_denom;
+            .tema_denom;
 
-            if new_cAsset.asset.info.to_string() == mbrn_denom {
+            if new_cAsset.asset.info.to_string() == tema_denom {
                 return Err(ContractError::InvalidCollateral {  } )
             }
         }
@@ -2169,7 +2169,7 @@ pub fn get_amount_from_LTV(
 /// Checks if any Basket caps are set to 0.
 /// If so the withdrawal assets have to either fully withdraw the asset from the position or only withdraw said asset.
 /// Otherwise users could just fully withdrawal other assets and create a new position.
-/// In a LUNA situation this would leave debt backed by an asset whose solvency Membrane has no faith in.
+/// In a LUNA situation this would leave debt backed by an asset whose solvency Sistema has no faith in.
 fn check_for_expunged(
     position_assets: Vec<cAsset>,
     withdrawal_assets: Vec<cAsset>,

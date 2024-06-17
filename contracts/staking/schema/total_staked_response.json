@@ -8,7 +8,7 @@
   ],
   "properties": {
     "total_not_including_vested": {
-      "description": "Total MBRN staked not including vested",
+      "description": "Total TEMA staked not including vested",
       "allOf": [
         {
           "$ref": "#/definitions/Uint128"

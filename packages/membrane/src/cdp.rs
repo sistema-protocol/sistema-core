@@ -28,7 +28,7 @@ pub struct InstantiateMsg {
     pub stability_pool: Option<String>,
     /// Apollo DEX Router contract
     pub dex_router: Option<String>,
-    /// MBRN Staking contract
+    /// TEMA Staking contract
     pub staking_contract: Option<String>,
     /// Oracle contract
     pub oracle_contract: Option<String>,
@@ -408,7 +408,7 @@ pub struct EditBasket {
     pub multi_asset_supply_caps: Option<Vec<MultiAssetSupplyCap>>,
     /// Base interest rate
     pub base_interest_rate: Option<Decimal>,
-    /// Osmosis Pool info for credit->OSMO TWAP price
+    /// Osmosis Pool info for credit->FURY TWAP price
     /// Non-USD denominated baskets don't work due to the debt minimum
     pub credit_asset_twap_price_source: Option<(TWAPPoolInfo)>,
     /// Toggle allowance negative redemption rate

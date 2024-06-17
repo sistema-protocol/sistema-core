@@ -37,7 +37,7 @@ pub fn instantiate(
     let mut config = Config {
         owner: info.sender,
         total_allocation: msg.initial_allocation,
-        mbrn_denom: msg.mbrn_denom,
+        tema_denom: msg.tema_denom,
         osmosis_proxy: deps.api.addr_validate(&msg.osmosis_proxy)?,
         staking_contract: deps.api.addr_validate(&msg.staking_contract)?,
     };
@@ -139,7 +139,7 @@ pub fn execute(
         ExecuteMsg::CastVote { proposal_id, vote } => cast_vote(deps, info, proposal_id, vote),
         ExecuteMsg::UpdateConfig {
             owner,
-            mbrn_denom,
+            tema_denom,
             osmosis_proxy,
             staking_contract,
             additional_allocation,
@@ -147,7 +147,7 @@ pub fn execute(
             deps,
             info,
             owner,
-            mbrn_denom,
+            tema_denom,
             osmosis_proxy,
             staking_contract,
             additional_allocation
@@ -293,7 +293,7 @@ fn claim_fees_for_recipient(deps: DepsMut, info: MessageInfo) -> Result<Response
     ]))
 }
 
-/// Claim staking rewards for allocated MBRN
+/// Claim staking rewards for allocated TEMA
 fn claim_fees_for_contract(
     storage: &mut dyn Storage,
     querier: QuerierWrapper,
@@ -385,12 +385,12 @@ fn claim_fees_for_contract(
 fn get_allocation_ratios(querier: QuerierWrapper, env: Env, config: Config, recipients: &mut Vec<Recipient>) -> StdResult<Vec<Decimal>> {
     let mut allocation_ratios: Vec<Decimal> = vec![];
 
-    //Get Contract's MBRN staked amount
+    //Get Contract's TEMA staked amount
     let res: StakerResponse = querier.query_wasm_smart(
         config.staking_contract, 
         &StakingQueryMsg::UserStake { staker: env.contract.address.to_string() }
     )?;
-    let staked_mbrn = res.total_staked;
+    let staked_tema = res.total_staked;
 
     for recipient in recipients.clone() {
         //Initialize allocation 
@@ -402,7 +402,7 @@ fn get_allocation_ratios(querier: QuerierWrapper, env: Env, config: Config, reci
                 allocation.amount - allocation.amount_withdrawn,
                 Uint128::new(1u128),
             ),
-            Decimal::from_ratio(staked_mbrn, Uint128::new(1u128)),
+            Decimal::from_ratio(staked_tema, Uint128::new(1u128)),
         )?);
     }
     
@@ -415,7 +415,7 @@ fn update_config(
     deps: DepsMut,
     info: MessageInfo,
     owner: Option<String>,
-    mbrn_denom: Option<String>,
+    tema_denom: Option<String>,
     osmosis_proxy: Option<String>,
     staking_contract: Option<String>,    
     additional_allocation: Option<Uint128>,
@@ -444,8 +444,8 @@ fn update_config(
     if let Some(osmosis_proxy) = osmosis_proxy {
         config.osmosis_proxy = deps.api.addr_validate(&osmosis_proxy)?;
     };
-    if let Some(mbrn_denom) = mbrn_denom {
-        config.mbrn_denom = mbrn_denom.clone();
+    if let Some(tema_denom) = tema_denom {
+        config.tema_denom = tema_denom.clone();
     };
     if let Some(staking_contract) = staking_contract {
         config.staking_contract = deps.api.addr_validate(&staking_contract)?;
@@ -461,7 +461,7 @@ fn update_config(
 }
 
 
-/// Withdraw unvested MBRN by minting the unlocked quantity
+/// Withdraw unvested TEMA by minting the unlocked quantity
 fn withdraw_unlocked(
     deps: DepsMut,
     env: Env,
@@ -501,7 +501,7 @@ fn withdraw_unlocked(
                 message = CosmosMsg::Wasm(WasmMsg::Execute { 
                     contract_addr: config.osmosis_proxy.to_string(), 
                     msg: to_binary(&OsmoExecuteMsg::MintTokens { 
-                        denom: config.mbrn_denom, 
+                        denom: config.tema_denom, 
                         amount: unlocked_amount, 
                         mint_to_address: info.sender.to_string(), 
                     })?, 

@@ -16,8 +16,8 @@ pub struct InstantiateMsg {
     pub pre_launch_contributors: String,
     /// Address receiving pre-launch community allocation
     pub pre_launch_community: Vec<String>,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
     /// Osomosis proxy contract address
     pub osmosis_proxy: String,
     /// Staking contract address
@@ -51,7 +51,7 @@ pub enum ExecuteMsg {
     },
     /// Withdraw unlocked tokens
     WithdrawUnlocked {},
-    /// Claim fees from MBRN staking for contract. 
+    /// Claim fees from TEMA staking for contract. 
     /// This is called to distribute rewards before "ClaimFeesforReceiver".
     ClaimFeesforContract {},
     /// Claim fees pro rata to recipient allocation
@@ -80,8 +80,8 @@ pub enum ExecuteMsg {
     UpdateConfig {
         /// Contract owner
         owner: Option<String>,
-        /// MBRN denom
-        mbrn_denom: Option<String>,
+        /// TEMA denom
+        tema_denom: Option<String>,
         /// Osmosis Proxy contract address
         osmosis_proxy: Option<String>,
         /// Staking contract address
@@ -120,8 +120,8 @@ pub struct Config {
     pub owner: Addr,
     /// Total allocation able to be distributed
     pub total_allocation: Uint128,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
     /// Osmosis Proxy contract address
     pub osmosis_proxy: Addr,
     /// Staking contract address

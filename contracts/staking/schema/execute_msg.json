@@ -63,8 +63,8 @@
                 }
               ]
             },
-            "mbrn_denom": {
-              "description": "MBRN denom",
+            "tema_denom": {
+              "description": "TEMA denom",
               "type": [
                 "string",
                 "null"
@@ -125,7 +125,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Stake MBRN tokens",
+      "description": "Stake TEMA tokens",
       "type": "object",
       "required": [
         "stake"
@@ -148,7 +148,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Unstake/Withdraw MBRN tokens & claim claimables",
+      "description": "Unstake/Withdraw TEMA tokens & claim claimables",
       "type": "object",
       "required": [
         "unstake"
@@ -157,8 +157,8 @@
         "unstake": {
           "type": "object",
           "properties": {
-            "mbrn_amount": {
-              "description": "MBRN amount",
+            "tema_amount": {
+              "description": "TEMA amount",
               "anyOf": [
                 {
                   "$ref": "#/definitions/Uint128"
@@ -175,7 +175,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Restake unstak(ed/ing) MBRN",
+      "description": "Restake unstak(ed/ing) TEMA",
       "type": "object",
       "required": [
         "restake"
@@ -184,11 +184,11 @@
         "restake": {
           "type": "object",
           "required": [
-            "mbrn_amount"
+            "tema_amount"
           ],
           "properties": {
-            "mbrn_amount": {
-              "description": "MBRN amount",
+            "tema_amount": {
+              "description": "TEMA amount",
               "allOf": [
                 {
                   "$ref": "#/definitions/Uint128"
@@ -215,7 +215,7 @@
           ],
           "properties": {
             "restake": {
-              "description": "Toggle to restake MBRN rewards",
+              "description": "Toggle to restake TEMA rewards",
               "type": "boolean"
             },
             "send_to": {
@@ -232,7 +232,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Delegate MBRN to a Governator",
+      "description": "Delegate TEMA to a Governator",
       "type": "object",
       "required": [
         "update_delegations"
@@ -260,7 +260,7 @@
               ]
             },
             "fluid": {
-              "description": "Set fluidity To change fluidity, you must undelegate & redelegate because your delegate may have delegated your MBRN",
+              "description": "Set fluidity To change fluidity, you must undelegate & redelegate because your delegate may have delegated your TEMA",
               "type": [
                 "boolean",
                 "null"
@@ -273,8 +273,8 @@
                 "null"
               ]
             },
-            "mbrn_amount": {
-              "description": "MBRN amount If None, act on total delegatible MBRN",
+            "tema_amount": {
+              "description": "TEMA amount If None, act on total delegatible TEMA",
               "anyOf": [
                 {
                   "$ref": "#/definitions/Uint128"
@@ -298,7 +298,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Delegate delegated MBRN i.e. MBRN that is fluid delegated to a governator Once delegated, the MBRN can't be undelegated by the governator, only the initial staker",
+      "description": "Delegate delegated TEMA i.e. TEMA that is fluid delegated to a governator Once delegated, the TEMA can't be undelegated by the governator, only the initial staker",
       "type": "object",
       "required": [
         "delegate_fluid_delegations"
@@ -314,8 +314,8 @@
               "description": "Governator address",
               "type": "string"
             },
-            "mbrn_amount": {
-              "description": "MBRN amount If None, act on total delegatible MBRN",
+            "tema_amount": {
+              "description": "TEMA amount If None, act on total delegatible TEMA",
               "anyOf": [
                 {
                   "$ref": "#/definitions/Uint128"

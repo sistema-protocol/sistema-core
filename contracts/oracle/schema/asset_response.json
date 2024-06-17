@@ -117,7 +117,7 @@
           ]
         },
         "pools_for_osmo_twap": {
-          "description": "Osmosis pools for OSMO TWAP",
+          "description": "Osmosis pools for FURY TWAP",
           "type": "array",
           "items": {
             "$ref": "#/definitions/TWAPPoolInfo"

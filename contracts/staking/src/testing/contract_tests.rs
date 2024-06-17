@@ -30,7 +30,7 @@ fn update_config(){
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -45,7 +45,7 @@ fn update_config(){
         positions_contract: Some(String::from("new_cdp")), 
         auction_contract: Some("new_auction".to_string()),
         governance_contract: Some("new_gov".to_string()),
-        mbrn_denom: Some(String::from("new_denom")), 
+        tema_denom: Some(String::from("new_denom")), 
         vesting_contract: Some(String::from("new_bv")), 
         incentive_schedule: Some(StakeDistribution { rate: Decimal::one(), duration: 0 }),
         max_commission_rate: Some(Decimal::percent(11)),
@@ -80,7 +80,7 @@ fn update_config(){
             positions_contract: Some( Addr::unchecked("new_cdp")), 
             auction_contract: Some(Addr::unchecked("new_auction")),
             governance_contract: Some(Addr::unchecked("new_gov")),
-            mbrn_denom: String::from("new_denom"), 
+            tema_denom: String::from("new_denom"), 
             vesting_contract: Some( Addr::unchecked("new_bv")),             
             incentive_schedule: StakeDistribution { rate: Decimal::percent(100), duration: 0 },
             max_commission_rate: Decimal::percent(11),
@@ -96,7 +96,7 @@ fn update_config(){
         positions_contract: None,
         auction_contract: None,
         governance_contract: None,
-        mbrn_denom: None,
+        tema_denom: None,
         vesting_contract: None,
         incentive_schedule: None,
         max_commission_rate: None,
@@ -120,7 +120,7 @@ fn update_config(){
         positions_contract: None,
         auction_contract: None,
         governance_contract: None,
-        mbrn_denom: None,
+        tema_denom: None,
         vesting_contract: None,
         incentive_schedule: None,
         max_commission_rate: None,
@@ -155,7 +155,7 @@ fn update_config(){
             positions_contract: Some( Addr::unchecked("new_cdp")), 
             auction_contract: Some(Addr::unchecked("new_auction")),
             governance_contract: Some(Addr::unchecked("new_gov")),
-            mbrn_denom: String::from("new_denom"), 
+            tema_denom: String::from("new_denom"), 
             vesting_contract: Some( Addr::unchecked("new_bv")),             
             incentive_schedule: StakeDistribution { rate: Decimal::percent(100), duration: 0 },
             max_commission_rate: Decimal::percent(11),  
@@ -177,7 +177,7 @@ fn stake() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -185,9 +185,9 @@ fn stake() {
     let info = mock_info("sender88", &[]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Stake non-MBRN asset
+    //Stake non-TEMA asset
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(10_000_000, "not-mbrn")]);
+    let info = mock_info("sender88", &[coin(10_000_000, "not-tema")]);
     let err = execute(deps.as_mut(), mock_env(), info, msg).unwrap_err();
     assert_eq!(
         err.to_string(),
@@ -196,7 +196,7 @@ fn stake() {
 
     //Successful Stake
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(10_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(10_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -209,7 +209,7 @@ fn stake() {
 
     //Successful Stake from vesting contract
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("vesting_contract", &[coin(11_000_000, "mbrn_denom")]);
+    let info = mock_info("vesting_contract", &[coin(11_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -297,7 +297,7 @@ fn delegate() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -305,20 +305,20 @@ fn delegate() {
     let info = mock_info("sender88", &[]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Stake MBRN: sender88
+    //Stake TEMA: sender88
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(10_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(10_000_000, "tema_denom")]);
     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Stake MBRN: placeholder99
+    //Stake TEMA: placeholder99
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("placeholder99", &[coin(10_000_000, "mbrn_denom")]);
+    let info = mock_info("placeholder99", &[coin(10_000_000, "tema_denom")]);
     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Delegate MBRN: Error can't delegate to self
+    //Delegate TEMA: Error can't delegate to self
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("sender88")), 
-        mbrn_amount: None, 
+        tema_amount: None, 
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None,
@@ -331,10 +331,10 @@ fn delegate() {
         "Custom Error val: \"Delegate cannot be the user\"".to_string()
     );   
 
-    //Delegate MBRN: success
+    //Delegate TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None,
@@ -399,10 +399,10 @@ fn delegate() {
         }        
     );
 
-    //Delegate MBRN: success from placeholder99
+    //Delegate TEMA: success from placeholder99
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("too_many_addr")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None,
@@ -414,7 +414,7 @@ fn delegate() {
     //Undelegate: Error
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: Some(false), 
         fluid: Some(true),
         voting_power_delegation: None,
@@ -427,7 +427,7 @@ fn delegate() {
     //Undelegate: Error
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("non_governator")), 
-        mbrn_amount: Some(Uint128::new(6_000_000)), 
+        tema_amount: Some(Uint128::new(6_000_000)), 
         delegate: Some(false), 
         fluid: Some(true),
         voting_power_delegation: None,
@@ -440,7 +440,7 @@ fn delegate() {
     //Undelegate partially, change commission, vp delegations & fluidity
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: Some(Uint128::new(6_000_000)), 
+        tema_amount: Some(Uint128::new(6_000_000)), 
         delegate: Some(false), 
         fluid: Some(true),
         voting_power_delegation: Some(false),
@@ -496,7 +496,7 @@ fn delegate() {
     //Undelegate fully 
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: None, //this will be more than 4 but it should work anyway
+        tema_amount: None, //this will be more than 4 but it should work anyway
         delegate: Some(false), 
         fluid: None, 
         voting_power_delegation: None,
@@ -532,7 +532,7 @@ fn commissions() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -540,15 +540,15 @@ fn commissions() {
     let info = mock_info("sender88", &[]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Stake MBRN: sender88
+    //Stake TEMA: sender88
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(10_000000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(10_000000, "tema_denom")]);
     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Delegate MBRN: success
+    //Delegate TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: Some(Uint128::new(5_000000)),
+        tema_amount: Some(Uint128::new(5_000000)),
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None,
@@ -560,7 +560,7 @@ fn commissions() {
     //Delegate sets commission
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: None,
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: None,
         fluid: None, 
         voting_power_delegation: None, 
@@ -604,7 +604,7 @@ fn fluid_delegations() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -612,15 +612,15 @@ fn fluid_delegations() {
     let info = mock_info("sender88", &[]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Stake MBRN: sender88
+    //Stake TEMA: sender88
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(10_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(10_000_000, "tema_denom")]);
     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Delegate MBRN: success
+    //Delegate TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: Some(true), 
         fluid: Some(true),
         voting_power_delegation: None,
@@ -629,10 +629,10 @@ fn fluid_delegations() {
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Delegate fluid MBRN: success
+    //Delegate fluid TEMA: success
     let msg = ExecuteMsg::DelegateFluidDelegations { 
         governator_addr: String::from("governator_too_addr"), 
-        mbrn_amount: Some(Uint128::new(4_000_000)),
+        tema_amount: Some(Uint128::new(4_000_000)),
     };
     let info = mock_info("governator_addr", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
@@ -707,7 +707,7 @@ fn fluid_delegations() {
     //Remove fluidity from delegations
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_addr")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: None,
         fluid: Some(false), 
         voting_power_delegation: None,
@@ -786,7 +786,7 @@ fn fluid_delegations() {
     //Remove fluidity from delegations
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_too_addr")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: None,
         fluid: Some(false), 
         voting_power_delegation: None,
@@ -798,17 +798,17 @@ fn fluid_delegations() {
     //Attempt to delegate solid delegations: failure
     let msg = ExecuteMsg::DelegateFluidDelegations { 
         governator_addr: String::from("governator_too_addr"), 
-        mbrn_amount: Some(Uint128::new(4_000_000)),
+        tema_amount: Some(Uint128::new(4_000_000)),
     };
     let info = mock_info("governator_addr", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap_err();
-    //Fluid delegatible amount is 0 so MBRN amount becomes 0
-    assert_eq!(res.to_string(), String::from("Custom Error val: \"MBRN amount must be greater than 1\""));
+    //Fluid delegatible amount is 0 so TEMA amount becomes 0
+    assert_eq!(res.to_string(), String::from("Custom Error val: \"TEMA amount must be greater than 1\""));
 
-    //Undelegate MBRN that was fluid delegated: success
+    //Undelegate TEMA that was fluid delegated: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("governator_too_addr")), 
-        mbrn_amount: Some(Uint128::new(4_000_000)),
+        tema_amount: Some(Uint128::new(4_000_000)),
         delegate: Some(false), 
         fluid: None, 
         voting_power_delegation: None, 
@@ -830,7 +830,7 @@ fn unstake() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -840,7 +840,7 @@ fn unstake() {
 
     //Successful Stake
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(10_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(10_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -852,7 +852,7 @@ fn unstake() {
     );
     //Successful Stake
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("first_delegate", &[coin(2_000_000, "mbrn_denom")]);
+    let info = mock_info("first_delegate", &[coin(2_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -863,10 +863,10 @@ fn unstake() {
         ]
     );
 
-    //Delegate partial staked MBRN: success
+    //Delegate partial staked TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("unstaking_barrier")), 
-        mbrn_amount: Some(Uint128::new(1000000)),
+        tema_amount: Some(Uint128::new(1000000)),
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None, 
@@ -874,10 +874,10 @@ fn unstake() {
     };
     let info = mock_info("first_delegate", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
-    //Delegate partial staked MBRN: success
+    //Delegate partial staked TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("second_conditional_test")), 
-        mbrn_amount: Some(Uint128::new(1000000)),
+        tema_amount: Some(Uint128::new(1000000)),
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None, 
@@ -885,10 +885,10 @@ fn unstake() {
     };
     let info = mock_info("first_delegate", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
-    //Delegate all staked MBRN: success
+    //Delegate all staked TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("unstaking_barrier")), 
-        mbrn_amount: None,
+        tema_amount: None,
         delegate: Some(true), 
         fluid: None, 
         voting_power_delegation: None, 
@@ -899,7 +899,7 @@ fn unstake() {
 
     //Successful Stake from vesting contract
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("vesting_contract", &[coin(11_000_000, "mbrn_denom")]);
+    let info = mock_info("vesting_contract", &[coin(11_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -918,7 +918,7 @@ fn unstake() {
     assert_eq!(resp.vested_total, Uint128::new(11000000));
 
     //Not a staker Error
-    let msg = ExecuteMsg::Unstake { mbrn_amount: None };
+    let msg = ExecuteMsg::Unstake { tema_amount: None };
     let info = mock_info("not_a_user", &[]);
     let err = execute(deps.as_mut(), mock_env(), info, msg).unwrap_err();
     assert_eq!(
@@ -929,7 +929,7 @@ fn unstake() {
     //Successful Unstake w/o withdrawals
     //Unstake more than Staked doesn't Error but doesn't over-unstake
     let msg = ExecuteMsg::Unstake {
-        mbrn_amount: Some(Uint128::new(11_000_000u128)),
+        tema_amount: Some(Uint128::new(11_000_000u128)),
     };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
@@ -952,7 +952,7 @@ fn unstake() {
 
     //Separate Staker: Unstake all of the 1st delegation, 1 of the 2nd
     let msg = ExecuteMsg::Unstake {
-        mbrn_amount: Some(Uint128::new(1_000_001u128)),
+        tema_amount: Some(Uint128::new(1_000_001u128)),
     };
     let info = mock_info("first_delegate", &[]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
@@ -964,7 +964,7 @@ fn unstake() {
     //Successful Restake to reset the deposits
     //Restake more than Unstaked doesn't Error but doesn't overrestake
     let msg = ExecuteMsg::Restake {
-        mbrn_amount: Uint128::new(11_000_000u128),
+        tema_amount: Uint128::new(11_000_000u128),
     };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap();
@@ -993,12 +993,12 @@ fn unstake() {
     env.block.time = env.block.time.plus_seconds(259200 *2); //6 days
 
     //Error: Unstake as a non_staker
-    let msg = ExecuteMsg::Unstake { mbrn_amount: None };
+    let msg = ExecuteMsg::Unstake { tema_amount: None };
     let info = mock_info("not_a_staker", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap_err();
 
     //Successful partial unstake w/o withdrawals to assert Restake
-    let msg = ExecuteMsg::Unstake { mbrn_amount: Some(Uint128::new(5000001)) };
+    let msg = ExecuteMsg::Unstake { tema_amount: Some(Uint128::new(5000001)) };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap();
     assert_eq!(
@@ -1029,7 +1029,7 @@ fn unstake() {
         
     //Unstake again to assert that the initial unstake time isn't reset & it unstakes a whole new 5M
     /// - consecutive unstakes don't reset the unstake period (done)
-    let msg = ExecuteMsg::Unstake { mbrn_amount: Some(Uint128::new(5000001)) };
+    let msg = ExecuteMsg::Unstake { tema_amount: Some(Uint128::new(5000001)) };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap();
     
@@ -1042,8 +1042,8 @@ fn unstake() {
     env.block.time = env.block.time.plus_seconds(86400 * 2); //2 days
 
     //Successful Unstake w/ withdrawals after unstaking period of the first unstake
-    /// - Withdrawing less than what has been unstaked doesn't add MBRN 
-    let msg = ExecuteMsg::Unstake { mbrn_amount: Some(Uint128::new(0)) };
+    /// - Withdrawing less than what has been unstaked doesn't add TEMA 
+    let msg = ExecuteMsg::Unstake { tema_amount: Some(Uint128::new(0)) };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap();
     assert_eq!(
@@ -1061,7 +1061,7 @@ fn unstake() {
             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute { 
                 contract_addr: String::from("osmosis_proxy"), 
                 msg: to_binary(&OsmoExecuteMsg::MintTokens { 
-                    denom: String::from("mbrn_denom"), 
+                    denom: String::from("tema_denom"), 
                     amount: Uint128::new(10), 
                     mint_to_address: String::from("cosmos2contract")
                 }).unwrap(), 
@@ -1070,7 +1070,7 @@ fn unstake() {
             //No bank send bc contract_tests doesn't have a bank contract & we check that the sending denoms are owned by the contract before sending
             // SubMsg::new(CosmosMsg::Bank(BankMsg::Send {
             //     to_address: String::from("sender88"),
-            //     amount: coins(5_000_001, "mbrn_denom"),
+            //     amount: coins(5_000_001, "tema_denom"),
             // }))
         ]
     );
@@ -1139,7 +1139,7 @@ fn unstake() {
     assert_eq!(resp.vested_total, Uint128::new(11_000000));
 
     //Unstake from first_delegate: This is testing that unstakes that hit both conditionals for undelegating work 
-    let msg = ExecuteMsg::Unstake { mbrn_amount: Some(Uint128::new(500001)) };
+    let msg = ExecuteMsg::Unstake { tema_amount: Some(Uint128::new(500001)) };
     let info = mock_info("first_delegate", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap();
 
@@ -1182,7 +1182,7 @@ fn unstake_v2() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -1192,29 +1192,29 @@ fn unstake_v2() {
 
     //Successful Stake
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(2_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(2_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(2_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(2_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(2_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(2_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(2_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(2_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(2_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(2_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     //Fake interest
     let msg = ExecuteMsg::Stake { user: None };
-    let info = mock_info("sender88", &[coin(1_000_000, "mbrn_denom")]);
+    let info = mock_info("sender88", &[coin(1_000_000, "tema_denom")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Delegate most of staked MBRN: success
+    //Delegate most of staked TEMA: success
     let msg = ExecuteMsg::UpdateDelegations { 
         governator_addr: Some(String::from("unstaking_barrier")), 
-        mbrn_amount: Some(Uint128::new(9_900_000)),
+        tema_amount: Some(Uint128::new(9_900_000)),
         delegate: Some(true), 
         fluid: Some(true), 
         voting_power_delegation: Some(true), 
@@ -1225,7 +1225,7 @@ fn unstake_v2() {
 
     //Successful Unstake w/o withdrawals: 9M
     let msg = ExecuteMsg::Unstake {
-        mbrn_amount: Some(Uint128::new(1_000_000)),
+        tema_amount: Some(Uint128::new(1_000_000)),
     };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), mock_env(), info.clone(), msg.clone()).unwrap();
@@ -1282,7 +1282,7 @@ fn unstake_v2() {
     assert_eq!(resp.accrued_interest, Uint128::new(4931u128));
 
     //Successful unstake w/ withdrawals
-    let msg = ExecuteMsg::Unstake { mbrn_amount: Some(Uint128::new(9_000_000)) };
+    let msg = ExecuteMsg::Unstake { tema_amount: Some(Uint128::new(9_000_000)) };
     let info = mock_info("sender88", &[]);
     let res = execute(deps.as_mut(), env.clone(), info, msg).unwrap();
 
@@ -1308,7 +1308,7 @@ fn declare_delegates() {
         governance_contract: Some("gov_contract".to_string()),
         osmosis_proxy: Some("osmosis_proxy".to_string()),
         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         unstaking_period: None,
     };
 
@@ -1548,7 +1548,7 @@ fn declare_delegates() {
 //         osmosis_proxy: Some("osmosis_proxy".to_string()),
 //         incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 1101 }),
 //         fee_wait_period: None,
-//         mbrn_denom: String::from("mbrn_denom"),
+//         tema_denom: String::from("tema_denom"),
 //         unstaking_period: None,
 //     };
 
@@ -1558,22 +1558,22 @@ fn declare_delegates() {
 
 //     //Successful Stake for User 1
 //     let msg = ExecuteMsg::Stake { user: None };
-//     let info = mock_info("user_1", &[coin(10_000_000, "mbrn_denom")]);
+//     let info = mock_info("user_1", &[coin(10_000_000, "tema_denom")]);
 //     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
 //     //Successful Stake for User 2
 //     let msg = ExecuteMsg::Stake { user: None };
-//     let info = mock_info("user_2", &[coin(10_000_000, "mbrn_denom")]);
+//     let info = mock_info("user_2", &[coin(10_000_000, "tema_denom")]);
 //     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
 //     //Successful Stake for User 3
 //     let msg = ExecuteMsg::Stake { user: None };
-//     let info = mock_info("user_3", &[coin(10_000_000, "mbrn_denom")]);
+//     let info = mock_info("user_3", &[coin(10_000_000, "tema_denom")]);
 //     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
 //     //Successful Stake for User 4
 //     let msg = ExecuteMsg::Stake { user: None };
-//     let info = mock_info("user_4", &[coin(10_000_000, "mbrn_denom")]);
+//     let info = mock_info("user_4", &[coin(10_000_000, "tema_denom")]);
 //     let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     
 //     //Successful DepositFee
@@ -1629,7 +1629,7 @@ fn declare_delegates() {
 //         send_to: None,
 //         restake: false,
 //     };
-//     let info = mock_info("not_a_staker", &[coin(10, "mbrn_denom")]);
+//     let info = mock_info("not_a_staker", &[coin(10, "tema_denom")]);
 //     let err = execute(deps.as_mut(), mock_env(), info.clone(), msg).unwrap_err();
 //     assert_eq!(
 //         err.to_string(),
@@ -1664,7 +1664,7 @@ fn declare_delegates() {
 //                 contract_addr: String::from("osmosis_proxy"),
 //                 funds: vec![],
 //                 msg: to_binary(&OsmoExecuteMsg::MintTokens {
-//                     denom: String::from("mbrn_denom"),
+//                     denom: String::from("tema_denom"),
 //                     amount: Uint128::new(8219u128),
 //                     mint_to_address: String::from("user_1")
 //                 })
@@ -1701,7 +1701,7 @@ fn declare_delegates() {
 //                 contract_addr: String::from("osmosis_proxy"),
 //                 funds: vec![],
 //                 msg: to_binary(&OsmoExecuteMsg::MintTokens {
-//                     denom: String::from("mbrn_denom"),
+//                     denom: String::from("tema_denom"),
 //                     amount: Uint128::new(8219u128),
 //                     mint_to_address: String::from("receiver")
 //                 })
@@ -1739,7 +1739,7 @@ fn declare_delegates() {
 //                 contract_addr: String::from("osmosis_proxy"),
 //                 funds: vec![],
 //                 msg: to_binary(&OsmoExecuteMsg::MintTokens {
-//                     denom: String::from("mbrn_denom"),
+//                     denom: String::from("tema_denom"),
 //                     amount: Uint128::new(1_008_219u128),
 //                     mint_to_address: String::from("user_1")
 //                 })
@@ -1769,7 +1769,7 @@ fn declare_delegates() {
 //                 contract_addr: String::from("osmosis_proxy"),
 //                 funds: vec![],
 //                 msg: to_binary(&OsmoExecuteMsg::MintTokens {
-//                     denom: String::from("mbrn_denom"),
+//                     denom: String::from("tema_denom"),
 //                     amount: Uint128::new(1_000_000),
 //                     mint_to_address: String::from("cosmos2contract")
 //                 })
@@ -1777,7 +1777,7 @@ fn declare_delegates() {
 //             })),
 //             SubMsg::new(CosmosMsg::Wasm(WasmMsg::Execute {
 //                 contract_addr: String::from("cosmos2contract"),
-//                 funds: vec![coin(1_000_000, "mbrn_denom")],
+//                 funds: vec![coin(1_000_000, "tema_denom")],
 //                 msg: to_binary(&ExecuteMsg::Stake {
 //                     user: Some(String::from("user_1")),
 //                 })
@@ -1803,7 +1803,7 @@ fn declare_delegates() {
 //             contract_addr: String::from("osmosis_proxy"),
 //             funds: vec![],
 //             msg: to_binary(&OsmoExecuteMsg::MintTokens {
-//                 denom: String::from("mbrn_denom"),
+//                 denom: String::from("tema_denom"),
 //                 amount: Uint128::new(1_000_000u128),
 //                 mint_to_address: String::from("receiver")
 //             })

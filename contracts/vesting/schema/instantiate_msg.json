@@ -4,7 +4,7 @@
   "type": "object",
   "required": [
     "initial_allocation",
-    "mbrn_denom",
+    "tema_denom",
     "osmosis_proxy",
     "pre_launch_community",
     "pre_launch_contributors",
@@ -19,8 +19,8 @@
         }
       ]
     },
-    "mbrn_denom": {
-      "description": "MBRN denom",
+    "tema_denom": {
+      "description": "TEMA denom",
       "type": "string"
     },
     "osmosis_proxy": {

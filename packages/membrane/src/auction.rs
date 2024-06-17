@@ -17,11 +17,11 @@ pub struct InstantiateMsg {
     pub governance_contract: String,
     /// Address of the staking contract
     pub staking_contract: String,
-    /// Timeframe for MBRN TWAP in minutes
+    /// Timeframe for TEMA TWAP in minutes
     pub twap_timeframe: u64,
-    /// Native Denom of MBRN
-    pub mbrn_denom: String,
-    /// Initial discount for MBRN
+    /// Native Denom of TEMA
+    pub tema_denom: String,
+    /// Initial discount for TEMA
     pub initial_discount: Decimal,
     /// Timeframe for increase of discount in seconds
     pub discount_increase_timeframe: u64,
@@ -32,7 +32,7 @@ pub struct InstantiateMsg {
 #[cw_serde]
 pub enum ExecuteMsg {
     /// Start or add to ongoing auction.
-    /// Callable by the owner (MBRN Governance) or Positions contract.
+    /// Callable by the owner (TEMA Governance) or Positions contract.
     StartAuction {
         /// Use auction to repay a position
         repayment_position_info: Option<UserInfo>,
@@ -42,8 +42,8 @@ pub enum ExecuteMsg {
         /// If not, use auction to sell fees for a desired asset
         auction_asset: Asset,
     },
-    /// Swap for discounted MBRN in any open CDT debt auction
-    SwapForMBRN {},
+    /// Swap for discounted TEMA in any open CDT debt auction
+    SwapForTEMA {},
     /// Swap for discounted fees with the configuration's desired asset
     SwapForFee { auction_asset: AssetInfo },
     /// Remove ongoing CDT auction, primarily for mistakes
@@ -77,8 +77,8 @@ pub struct Config {
     pub oracle_contract: Addr,
     /// Address of the osmosis proxy contract
     pub osmosis_proxy: Addr,
-    /// MBRN Denom
-    pub mbrn_denom: String,
+    /// TEMA Denom
+    pub tema_denom: String,
     /// CDT Denom
     pub cdt_denom: String,
     /// Asset to be bought by FeeAuctions
@@ -89,9 +89,9 @@ pub struct Config {
     pub governance_contract: Addr,
     /// Address of the staking contract
     pub staking_contract: Addr,
-    /// Timeframe for MBRN TWAP in minutes
+    /// Timeframe for TEMA TWAP in minutes
     pub twap_timeframe: u64,
-    /// Initial discount for MBRN in auction
+    /// Initial discount for TEMA in auction
     pub initial_discount: Decimal,
     /// Timeframe for increase of discount in seconds
     pub discount_increase_timeframe: u64, 
@@ -110,8 +110,8 @@ pub struct UpdateConfig {
     pub oracle_contract: Option<String>,
     /// Address of the osmosis proxy contract
     pub osmosis_proxy: Option<String>,
-    /// MBRN Denom
-    pub mbrn_denom: Option<String>,
+    /// TEMA Denom
+    pub tema_denom: Option<String>,
     /// CDT Denom
     pub cdt_denom: Option<String>,
     /// Asset to be bought by FeeAuctions
@@ -122,9 +122,9 @@ pub struct UpdateConfig {
     pub governance_contract: Option<String>,
     /// Address of the staking contract
     pub staking_contract: Option<String>,
-    /// Timeframe for MBRN TWAP in minutes
+    /// Timeframe for TEMA TWAP in minutes
     pub twap_timeframe: Option<u64>,
-    /// Initial discount for MBRN in auction
+    /// Initial discount for TEMA in auction
     pub initial_discount: Option<Decimal>,
     /// Timeframe for increase of discount in seconds
     pub discount_increase_timeframe: Option<u64>, 

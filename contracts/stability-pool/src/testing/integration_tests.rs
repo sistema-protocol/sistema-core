@@ -61,7 +61,7 @@ mod tests {
                         mint_to_address,
                         amount,
                     } => {
-                        if amount != Uint128::new(10_000u128) && amount != Uint128::new(20_000u128) || denom != "mbrn_denom" || mint_to_address != Some("user".to_string()) {
+                        if amount != Uint128::new(10_000u128) && amount != Uint128::new(20_000u128) || denom != "tema_denom" || mint_to_address != Some("user".to_string()) {
                             panic!("Params incorrect: {}, {}, {:?}", amount, denom, mint_to_address);
                         }
                         Ok(Response::default())
@@ -300,7 +300,7 @@ mod tests {
             bank.init_balance(
                 storage,
                 &Addr::unchecked("contract4"),
-                vec![coin(100_000, "mbrn_denom")],
+                vec![coin(100_000, "tema_denom")],
             )
             .unwrap();
 
@@ -396,7 +396,7 @@ mod tests {
                 deposits: vec![],
             },
             osmosis_proxy: osmosis_proxy_contract_addr.to_string(),
-            mbrn_denom: String::from("mbrn_denom"),
+            tema_denom: String::from("tema_denom"),
             incentive_rate: Some(Decimal::percent(10)),
             positions_contract: cdp_contract_addr.to_string(),
             oracle_contract: oracle_contract_addr.to_string(),
@@ -761,7 +761,7 @@ mod tests {
             assert_eq!(
                 res.claims,
                 vec![Coin {
-                    denom: String::from("mbrn_denom"),
+                    denom: String::from("tema_denom"),
                     amount: Uint128::new(10_000u128),
                 },]
             );
@@ -801,7 +801,7 @@ mod tests {
             assert_eq!(
                 res.claims,
                 vec![Coin {
-                    denom: String::from("mbrn_denom"),
+                    denom: String::from("tema_denom"),
                     amount: Uint128::new(10_000u128),
                 },]
             );
@@ -826,7 +826,7 @@ mod tests {
             assert_eq!(
                 res.claims,
                 vec![Coin {
-                        denom: String::from("mbrn_denom"),
+                        denom: String::from("tema_denom"),
                         amount: Uint128::new(10_000u128), //This +10k is from the restake->withdraw->1year->withdraw
                 },]
             );
@@ -908,7 +908,7 @@ mod tests {
                         amount: Uint128::new(100u128),
                     },
                     Coin {
-                        denom: String::from("mbrn_denom"),
+                        denom: String::from("tema_denom"),
                         amount: Uint128::new(10_000u128),
                     },
                 ]

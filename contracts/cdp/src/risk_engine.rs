@@ -304,7 +304,7 @@ pub fn get_basket_debt_caps(
     }
 
     //If the basket's proportion of it's debt cap is >= 1, negative rates are turned off
-    //This protects against perpetual devaluing of the credit asset as Membrane is disincentivizing new debt w/ high rates
+    //This protects against perpetual devaluing of the credit asset as Sistema is disincentivizing new debt w/ high rates
     //Note: This could be changed to "IF each asset's util is above desired"...
     //...but the current implementation turns them off faster, might as well be on the safe side
     if Decimal::from_ratio(basket.credit_asset.amount, debt_cap) >= Decimal::one() {

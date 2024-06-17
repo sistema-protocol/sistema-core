@@ -36,7 +36,7 @@ fn deposit() {
         osmosis_proxy: String::from("osmosis_proxy"),
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         max_incentives: None,
         minimum_deposit_amount: Uint128::new(5)
@@ -149,7 +149,7 @@ fn withdrawal() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -335,7 +335,7 @@ fn liquidate() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -423,7 +423,7 @@ fn liquidate_bignums() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -491,7 +491,7 @@ fn distribute() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -595,7 +595,7 @@ fn distribute() {
     let resp: ClaimsResponse = from_binary(&res).unwrap();
 
     assert_eq!(resp.claims[0].to_string(), "62debit".to_string());
-    assert_eq!(resp.claims[1].to_string(), "12328mbrn_denom".to_string());
+    assert_eq!(resp.claims[1].to_string(), "12328tema_denom".to_string());
 
     //Query and assert 2ndUser claimables
     let res = query(
@@ -610,7 +610,7 @@ fn distribute() {
     let resp: ClaimsResponse = from_binary(&res).unwrap();
 
     assert_eq!(resp.claims[0].to_string(), "23debit".to_string());
-    assert_eq!(resp.claims[1].to_string(), "7397mbrn_denom".to_string());
+    assert_eq!(resp.claims[1].to_string(), "7397tema_denom".to_string());
     assert_eq!(resp.claims[2].to_string(), "15second_debit_LP".to_string());
 
     //Query position data to make sure 0 is leftover for "user"
@@ -703,7 +703,7 @@ fn distribute() {
                 amount: Uint128::new(123)
             },
             Coin {
-                denom: "mbrn_denom".to_string(),
+                denom: "tema_denom".to_string(),
                 amount: Uint128::new(7397)
             },      
             Coin {
@@ -732,7 +732,7 @@ fn distribute_bignums() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -897,7 +897,7 @@ fn claims() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -1007,7 +1007,7 @@ fn claims() {
     //         deposits: vec![],
     //     },
     //     osmosis_proxy: String::from("osmosis_proxy"),
-    //     mbrn_denom: String::from("mbrn_denom"),
+    //     tema_denom: String::from("tema_denom"),
     //     incentive_rate: None,
     //     positions_contract: String::from("positions_contract"),
     //     max_incentives: None,
@@ -1175,7 +1175,7 @@ fn update_config(){
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),
@@ -1197,7 +1197,7 @@ fn update_config(){
         osmosis_proxy: Some(String::from("new_op")), 
         positions_contract: Some(String::from("new_cdp")),
         oracle_contract: Some(String::from("new_oracle")),
-        mbrn_denom: Some(String::from("new_denom")), 
+        tema_denom: Some(String::from("new_denom")), 
     });
 
     execute(
@@ -1228,7 +1228,7 @@ fn update_config(){
             osmosis_proxy: Addr::unchecked("new_op"), 
             oracle_contract: Addr::unchecked("new_oracle"),
             positions_contract: Addr::unchecked("new_cdp"), 
-            mbrn_denom: String::from("new_denom"), 
+            tema_denom: String::from("new_denom"), 
         },
     );
 
@@ -1242,7 +1242,7 @@ fn update_config(){
         osmosis_proxy: None,
         oracle_contract: None,
         positions_contract: None,
-        mbrn_denom: None,
+        tema_denom: None,
     });
 
     execute(
@@ -1273,7 +1273,7 @@ fn update_config(){
             osmosis_proxy: Addr::unchecked("new_op"), 
             positions_contract: Addr::unchecked("new_cdp"),
             oracle_contract: Addr::unchecked("new_oracle"), 
-            mbrn_denom: String::from("new_denom"), 
+            tema_denom: String::from("new_denom"), 
         },
     );
 }
@@ -1295,7 +1295,7 @@ fn capital_ahead_of_deposits() {
             deposits: vec![],
         },
         osmosis_proxy: String::from("osmosis_proxy"),
-        mbrn_denom: String::from("mbrn_denom"),
+        tema_denom: String::from("tema_denom"),
         incentive_rate: None,
         positions_contract: String::from("positions_contract"),
         oracle_contract: String::from("oracle_contract"),

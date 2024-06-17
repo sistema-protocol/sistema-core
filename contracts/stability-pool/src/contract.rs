@@ -50,7 +50,7 @@ pub fn instantiate(
             .unwrap_or_else(|| Uint128::new(10_000_000_000_000)),
         unstaking_period: 1u64,
         minimum_deposit_amount: msg.minimum_deposit_amount,
-        mbrn_denom: msg.mbrn_denom,
+        tema_denom: msg.tema_denom,
         osmosis_proxy: deps.api.addr_validate(&msg.osmosis_proxy)?,
         positions_contract: deps.api.addr_validate(&msg.positions_contract)?,
         oracle_contract: deps.api.addr_validate(&msg.oracle_contract)?,
@@ -160,8 +160,8 @@ fn update_config(
         OWNERSHIP_TRANSFER.save(deps.storage, &valid_addr)?;
         attrs.push(attr("owner_transfer", valid_addr));
     }
-    if let Some(mbrn_denom) = update.mbrn_denom {
-        config.mbrn_denom = mbrn_denom.clone();
+    if let Some(tema_denom) = update.tema_denom {
+        config.tema_denom = tema_denom.clone();
     }
     if let Some(osmosis_proxy) = update.osmosis_proxy {
         config.osmosis_proxy = deps.api.addr_validate(&osmosis_proxy)?;
@@ -293,7 +293,7 @@ fn accrue_incentives(
 
     let rate: Decimal = config.clone().incentive_rate;
     
-    //This calcs the amount of CDT to incentivize so the rate is acting as if MBRN = CDT (1:1) 
+    //This calcs the amount of CDT to incentivize so the rate is acting as if TEMA = CDT (1:1) 
     let mut incentives = accumulate_interest(stake, rate, time_elapsed)?;   
 
     //Get CDT Price
@@ -308,11 +308,11 @@ fn accrue_incentives(
     // };
     // let cdt_price: PriceResponse = basket.credit_price;
 
-    //Get MBRN price
-    // let mbrn_price: Decimal = match query_asset_price(
+    //Get TEMA price
+    // let tema_price: Decimal = match query_asset_price(
     //     querier, 
     //     config.clone().oracle_contract.into(), 
-    //     AssetInfo::NativeToken { denom: config.clone().mbrn_denom },
+    //     AssetInfo::NativeToken { denom: config.clone().tema_denom },
     //     60,
     //     None,
     // ){
@@ -320,10 +320,10 @@ fn accrue_incentives(
     //     Err(_) => cdt_price.price, //We default to CDT repayment price in the first hour of incentives
     // };
 
-    //Transmute CDT amount to MBRN incentive amount
+    //Transmute CDT amount to TEMA incentive amount
     // incentives = decimal_division(
     //     cdt_price.get_value(incentives)?
-    //     , mbrn_price)? * Uint128::one();
+    //     , tema_price)? * Uint128::one();
 
     let mut total_incentives = INCENTIVES.load(storage)?;
 
@@ -442,7 +442,7 @@ fn withdrawal_from_state(
     skip_unstaking: bool,
 ) -> Result<(Uint128, AssetPool), ContractError> {
     
-    let mut mbrn_incentives = Uint128::zero();
+    let mut tema_incentives = Uint128::zero();
 
     let mut error: Option<StdError> = None;
     let mut is_user = false;
@@ -474,7 +474,7 @@ fn withdrawal_from_state(
                         Uint128::zero()
                     }
                 };
-                mbrn_incentives += accrued_incentives;
+                tema_incentives += accrued_incentives;
 
                 /////Check if deposit is withdrawable
                 if !skip_unstaking {
@@ -578,7 +578,7 @@ fn withdrawal_from_state(
                         }
                     };
 
-                    mbrn_incentives += accrued_incentives;
+                    tema_incentives += accrued_incentives;
                     
                     withdrawal_amount = Decimal::zero();
 
@@ -624,7 +624,7 @@ fn withdrawal_from_state(
     }
     
     //If there are incentives
-    if !mbrn_incentives.is_zero() {
+    if !tema_incentives.is_zero() {
         //Add incentives to User Claims
         USERS.update(
             storage,
@@ -632,14 +632,14 @@ fn withdrawal_from_state(
             |user_claims| -> Result<User, ContractError> {
                 match user_claims {
                     Some(mut user) => {
-                        user.claimable_assets.add(&coin(mbrn_incentives.u128(), config.clone().mbrn_denom))?;
+                        user.claimable_assets.add(&coin(tema_incentives.u128(), config.clone().tema_denom))?;
                                 
                         Ok(user)
                     }
                     None => {
                         if is_user {
                             Ok(User {
-                                claimable_assets: Coins::from_str(&coin(mbrn_incentives.u128(), config.clone().mbrn_denom).to_string())?,
+                                claimable_assets: Coins::from_str(&coin(tema_incentives.u128(), config.clone().tema_denom).to_string())?,
                             })
                         } else {
                             Err(ContractError::CustomError {
@@ -724,13 +724,13 @@ fn restake(
             |user_claims| -> Result<User, ContractError> {
                 match user_claims {
                     Some(mut user) => {
-                        user.claimable_assets.add(&coin(incentives.u128(), config.clone().mbrn_denom))?;
+                        user.claimable_assets.add(&coin(incentives.u128(), config.clone().tema_denom))?;
 
                         Ok(user)
                     }
                     None => {
                         Ok(User {
-                            claimable_assets: Coins::from_str(&coin(incentives.u128(), config.clone().mbrn_denom).to_string())?,
+                            claimable_assets: Coins::from_str(&coin(incentives.u128(), config.clone().tema_denom).to_string())?,
                 })}}},
         )?;
     }
@@ -856,7 +856,7 @@ pub fn distribute_funds(
                         ..deposit.clone()
                     });
 
-                    //Calc MBRN incentives
+                    //Calc TEMA incentives
                     if env.block.time.seconds() > deposit.last_accrued {
                         let accrued_incentives = accrue_incentives(
                             deps.storage,
@@ -869,7 +869,7 @@ pub fn distribute_funds(
 
                         if !accrued_incentives.is_zero() {                 
                             //Add incentives to User Claims
-                            add_to_user_claims(deps.storage, deposit.user, AssetInfo::NativeToken { denom: config.clone().mbrn_denom }, accrued_incentives)?;
+                            add_to_user_claims(deps.storage, deposit.user, AssetInfo::NativeToken { denom: config.clone().tema_denom }, accrued_incentives)?;
                         }
                     }
                 } else {
@@ -878,7 +878,7 @@ pub fn distribute_funds(
                     distribution_list.push(deposit.clone());
                     
                     if env.block.time.seconds() > deposit.last_accrued { 
-                        //Calc MBRN incentives
+                        //Calc TEMA incentives
                         let accrued_incentives = accrue_incentives(
                             deps.storage,
                             deps.querier,
@@ -890,7 +890,7 @@ pub fn distribute_funds(
 
                         if !accrued_incentives.is_zero() {                            
                             //Add incentives to User Claims
-                            add_to_user_claims(deps.storage, deposit.user, AssetInfo::NativeToken { denom: config.clone().mbrn_denom }, accrued_incentives)?;
+                            add_to_user_claims(deps.storage, deposit.user, AssetInfo::NativeToken { denom: config.clone().tema_denom }, accrued_incentives)?;
                         }
                     }
                 }
@@ -1057,7 +1057,7 @@ pub fn claim(
 
     if !accrued_incentives.is_zero(){
         //Add incentives to User Claims
-        add_to_user_claims(deps.storage, info.clone().sender, AssetInfo::NativeToken { denom: config.clone().mbrn_denom }, accrued_incentives)?;
+        add_to_user_claims(deps.storage, info.clone().sender, AssetInfo::NativeToken { denom: config.clone().tema_denom }, accrued_incentives)?;
     }
     
     //Create claim msgs
@@ -1086,10 +1086,10 @@ fn user_claims_msgs(
 
     //Aggregate native token sends
     for asset in user.clone().claimable_assets.to_vec() {
-        //if asset is MBRN, add a MBRN mint message
-        if asset.denom == config.clone().mbrn_denom {
+        //if asset is TEMA, add a TEMA mint message
+        if asset.denom == config.clone().tema_denom {
             let mint_msg = OsmosisProxy_ExecuteMsg::MintTokens {
-                denom: config.clone().mbrn_denom,
+                denom: config.clone().tema_denom,
                 mint_to_address: info.sender.to_string(),
                 amount: asset.amount,
             };

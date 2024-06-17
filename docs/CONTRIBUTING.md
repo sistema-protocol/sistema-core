@@ -1,13 +1,13 @@
 
-# Contributing to Membrane
+# Contributing to Sistema
 
-Welcome! We are thrilled that you want to contribute to Membrane! Consider that there are many ways in which you can contribute, 
+Welcome! We are thrilled that you want to contribute to Sistema! Consider that there are many ways in which you can contribute, 
 it's not only about writing code. In this document we go through different ways you can get involved with the project.
 
 ## Crafting Code
 
 If you are a software developer and want to contribute writing code, the first step is to get familiar with 
-the Membrane architecture, which you can learn about in our [docs](https://membrane-finance.gitbook.io/membrane-docs-1/).
+the Sistema architecture, which you can learn about in our [docs](https://membrane-finance.gitbook.io/membrane-docs-1/).
 
 Before you can write any code, please take a look at the list of prerequisites below.  
 
@@ -34,7 +34,7 @@ $ rustup target add wasm32-unknown-unknown
 
 --- 
 Then fork the code and read it through. We encourage you to make your own contributions, though you might look at the 
-[issue tracker](https://github.com/MembraneFinance/membrane-core/issues) if you want to solve something that has 
+[issue tracker](https://github.com/SistemaFinance/membrane-core/issues) if you want to solve something that has 
 been pointed out already.
 
 Make a pull request to our repository once your work is complete. We will review it and discuss potential changes before
@@ -67,13 +67,13 @@ can be difficult! If you are not sure how to create tests, please refer to exist
 8. Push your changes to your repository.
     - `git push --set-upstream $YOUR_ORIGIN $YOUR_BRANCH_NAME`
 9. Create a pull request. Go to your repository and create a pull request 
-against Membrane's repository **main branch** as base.
+against Sistema's repository **main branch** as base.
 10. Follow up the discussions on the PR as there might be requests from other members.
 11. Wait for your PR to be approved and merged.
 
 ## Helping out in the issue tracker
 
-We use [Github issues](https://github.com/MembraneFinance/membrane-core/issues) to manage issues in our code. 
+We use [Github issues](https://github.com/SistemaFinance/membrane-core/issues) to manage issues in our code. 
 You can help out by resolving or commenting on existing issues or creating new issues for what you find. Whether you want 
 to report an issue or have a feature request, please fill the issue template and provide as much information as possible.
 
@@ -86,35 +86,35 @@ If the issue or feature request already exists, please add a 👍 reaction to sh
 
 ## Quality Assurance
 
-Code quality and security are two things we take seriously at Membrane. We strive for having high test coverage, and 
+Code quality and security are two things we take seriously at Sistema. We strive for having high test coverage, and 
 we make sure our code is safe by auditing via third party security firms. Nevertheless, we believe there's always room for improvement. 
 
 If you find a critical vulnerability, please do not report it publicly on the Github issues tracker. Instead, reach out to us 
 in private where we will discuss it in details.
 
-See how to [report security bugs](https://github.com/MembraneFinance/membrane-core/blob/main/docs/SECURITY.md).
+See how to [report security bugs](https://github.com/SistemaFinance/membrane-core/blob/main/docs/SECURITY.md).
 
 ## Engaging with the community
 
 If you are interested in developer relations, a great way to contribute is answering people's questions on our 
-[Discord](https://discord.gg/ksT6cdHpbVor or [Twitter](https://twitter.com/MembraneFinance), creating documentation, creating medium articles or even creating YouTube tutorials on how to use Membrane!
+[Discord](https://discord.gg/ksT6cdHpbVor or [Twitter](https://twitter.com/SistemaFinance), creating documentation, creating medium articles or even creating YouTube tutorials on how to use Sistema!
 
 ## Providing Suggestions
 
-Membrane is a community project, so we are curious to hear your ideas for the future! One way to provide feedback
+Sistema is a community project, so we are curious to hear your ideas for the future! One way to provide feedback
 is by doing to our [Discord channel](https://discord.com/channels/1060217330258432010/1060217330719789180). You can also
-submit a suggestion or feature request through [Github's issue tracker](https://github.com/MembraneFinance/membrane-core/issues). 
+submit a suggestion or feature request through [Github's issue tracker](https://github.com/SistemaFinance/membrane-core/issues). 
 When doing so, make sure to describe your idea as good as possible so that we understand what you envision.
 
 ## Bringing your expertise
 
 Are you a graphic designer and want to help out with some NFTs? Are you a copywriter seeing potential improvements in our communications?
-Whatever it is, we would love to hear from you and see how we can make Membrane better for everybody.
+Whatever it is, we would love to hear from you and see how we can make Sistema better for everybody.
 
 ## Docs
 When in doubt, please take a look at our [documentation](https://membrane-finance.gitbook.io/membrane-docs-1/).
 
 # Thank you!
 
-All contributions to Membrane are of great value and make this protocol possible. Thanks for taking the time to make 
-Membrane better! We really appreciate it.
+All contributions to Sistema are of great value and make this protocol possible. Thanks for taking the time to make 
+Sistema better! We really appreciate it.

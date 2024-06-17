@@ -37,9 +37,9 @@ pub fn instantiate(
         owner: info.sender,
         oracle_contract: deps.api.addr_validate(&msg.oracle_contract)?,
         osmosis_proxy: deps.api.addr_validate(&msg.osmosis_proxy)?,
-        mbrn_denom: msg.mbrn_denom,
+        tema_denom: msg.tema_denom,
         cdt_denom: String::new(),
-        desired_asset: String::from("uosmo"),
+        desired_asset: String::from("ufury"),
         positions_contract: deps.api.addr_validate(&msg.positions_contract)?,
         governance_contract: deps.api.addr_validate(&msg.governance_contract)?,
         staking_contract: deps.api.addr_validate(&msg.staking_contract)?,
@@ -83,7 +83,7 @@ pub fn execute(
             send_to,
             auction_asset,
         } => start_auction(deps, env, info, repayment_position_info, send_to, auction_asset),
-        ExecuteMsg::SwapForMBRN { } => swap_for_mbrn(deps, info, env),
+        ExecuteMsg::SwapForTEMA { } => swap_for_tema(deps, info, env),
         ExecuteMsg::SwapForFee { auction_asset } => swap_with_the_contracts_desired_asset(deps, info, env, auction_asset),
         ExecuteMsg::RemoveAuction { } => remove_auction(deps, info),
         ExecuteMsg::UpdateConfig ( update)  => update_config( deps, info, update),
@@ -136,8 +136,8 @@ fn update_config(
     if let Some(addr) = update.staking_contract {
         config.staking_contract = deps.api.addr_validate(&addr)?;
     }
-    if let Some(mbrn_denom) = update.mbrn_denom {
-        config.mbrn_denom = mbrn_denom;
+    if let Some(tema_denom) = update.tema_denom {
+        config.tema_denom = tema_denom;
     }
     if let Some(cdt_denom) = update.cdt_denom {
         config.cdt_denom = cdt_denom;
@@ -376,7 +376,7 @@ fn swap_with_the_contracts_desired_asset(deps: DepsMut, info: MessageInfo, env: 
     let mut msgs: Vec<CosmosMsg> = vec![];
     let mut attrs = vec![attr("method", "swap_with_contract_desired_asset")];
     
-    //Validate MBRN send
+    //Validate TEMA send
     if info.funds.len() != 1 {
         return Err(ContractError::Std(StdError::GenericErr { msg: String::from("Only one coin can be sent") }));
     }
@@ -552,16 +552,16 @@ fn get_discount_ratio(
     Ok(discount_ratio)
 }
 
-/// Swap the debt asset in the ongoing auction for MBRN at a discount.
+/// Swap the debt asset in the ongoing auction for TEMA at a discount.
 /// Handle Position repayments and arbitrary sends.
 /// Excess swap amount is returned to the sender.
-fn swap_for_mbrn(deps: DepsMut, info: MessageInfo, env: Env) -> Result<Response, ContractError> {
+fn swap_for_tema(deps: DepsMut, info: MessageInfo, env: Env) -> Result<Response, ContractError> {
     let config = CONFIG.load(deps.storage)?;
 
     let mut overpay = Uint128::zero();
 
     let mut msgs: Vec<CosmosMsg> = vec![];
-    let mut attrs = vec![attr("method", "swap_for_mbrn")];
+    let mut attrs = vec![attr("method", "swap_for_tema")];
 
     if info.funds.len() != 1 {
         return Err(ContractError::Std(StdError::GenericErr { msg: String::from("Only one coin can be sent") }));
@@ -571,7 +571,7 @@ fn swap_for_mbrn(deps: DepsMut, info: MessageInfo, env: Env) -> Result<Response,
     //Get DebtAuction
     let mut auction = DEBT_AUCTION.load(deps.storage)?;
 
-    //If the auction is active, i.e. there is still debt to be repaid, swap for MBRN
+    //If the auction is active, i.e. there is still debt to be repaid, swap for TEMA
     if !auction.remaining_recapitalization.is_zero() {
 
         let swap_amount = Decimal::from_ratio(coin.amount, Uint128::new(1u128));                
@@ -580,13 +580,13 @@ fn swap_for_mbrn(deps: DepsMut, info: MessageInfo, env: Env) -> Result<Response,
             config.clone().oracle_contract.to_string(), 
         &OracleQueryMsg::Price {
                 asset_info: AssetInfo::NativeToken {
-                    denom: config.clone().mbrn_denom,
+                    denom: config.clone().tema_denom,
                 },
                 twap_timeframe: config.clone().twap_timeframe,
                 oracle_time_limit: 600,
                 basket_id: None,
             })?;
-        let mbrn_price = res.price;
+        let tema_price = res.price;
 
         //Get credit price at peg to further incentivize recapitalization
         let basket_credit_price = deps
@@ -600,17 +600,17 @@ fn swap_for_mbrn(deps: DepsMut, info: MessageInfo, env: Env) -> Result<Response,
         //Get discount
         let discount_ratio = get_discount_ratio(env, auction.auction_start_time, config.clone())?;
 
-        //Mint MBRN for user
-        let discounted_mbrn_price = decimal_multiplication(mbrn_price, discount_ratio)?;
+        //Mint TEMA for user
+        let discounted_tema_price = decimal_multiplication(tema_price, discount_ratio)?;
         let credit_value = basket_credit_price.get_value(swap_amount.to_uint_floor())?;
-        let mbrn_mint_amount =
-            decimal_division(credit_value, discounted_mbrn_price)? * Uint128::new(1u128);
+        let tema_mint_amount =
+            decimal_division(credit_value, discounted_tema_price)? * Uint128::new(1u128);
 
         let message = CosmosMsg::Wasm(WasmMsg::Execute {
             contract_addr: config.clone().osmosis_proxy.to_string(),
             msg: to_binary(&OsmoExecuteMsg::MintTokens {
-                denom: config.clone().mbrn_denom,
-                amount: mbrn_mint_amount,
+                denom: config.clone().tema_denom,
+                amount: tema_mint_amount,
                 mint_to_address: info.clone().sender.to_string(),
             })?,
             funds: vec![],
@@ -618,10 +618,10 @@ fn swap_for_mbrn(deps: DepsMut, info: MessageInfo, env: Env) -> Result<Response,
         msgs.push(message);
 
         attrs.push(attr(
-            "mbrn_minted",
+            "tema_minted",
             format!(
-                "Swapped Asset: {}, MBRN Minted: {}",
-                coin.denom, mbrn_mint_amount
+                "Swapped Asset: {}, TEMA Minted: {}",
+                coin.denom, tema_mint_amount
             ),
         ));
         

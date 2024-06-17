@@ -29,7 +29,7 @@ fn query_liquidatible() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -40,7 +40,7 @@ fn query_liquidatible() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 1u8,
         },
@@ -59,7 +59,7 @@ fn query_liquidatible() {
 
     let msg = QueryMsg::CheckLiquidatible {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         collateral_price: PriceResponse {
             prices: vec![],
@@ -105,7 +105,7 @@ fn query_bid() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -116,7 +116,7 @@ fn query_bid() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 1u8,
         },
@@ -136,7 +136,7 @@ fn query_bid() {
     //Query Individual Bid
     let msg = QueryMsg::Bid {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_id: Uint128::from(1u128),
     };
@@ -163,7 +163,7 @@ fn query_bid() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -183,7 +183,7 @@ fn query_bid() {
     //Query User Bids
     let msg = QueryMsg::BidsByUser {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         user: String::from("owner0000"),
         limit: None,
@@ -241,7 +241,7 @@ fn query_slots_queues() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -336,7 +336,7 @@ fn query_slots_queues() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 1u8,
         },
@@ -356,7 +356,7 @@ fn query_slots_queues() {
     //Query a Slot
     let msg = QueryMsg::PremiumSlot {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         premium: 1u64,
     };
@@ -393,7 +393,7 @@ fn query_slots_queues() {
     //Query a QueueResponse
     let msg = QueryMsg::Queue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let res = query(deps.as_ref(), mock_env(), msg).unwrap();
@@ -416,7 +416,7 @@ fn query_slots_queues() {
     //Query QueueResponse w/ start after
     let msg = QueryMsg::Queues {
         start_after: Some(AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         }),
         limit: None,
     };

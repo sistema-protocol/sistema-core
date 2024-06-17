@@ -16,7 +16,7 @@ pub const MINIMUM_PROPOSAL_REQUIRED_QUORUM_PERCENTAGE: u64 = 33;
 pub const VOTING_PERIOD_INTERVAL: RangeInclusive<u64> = BLOCKS_PER_DAY..=14 * BLOCKS_PER_DAY; //1 to 14 days in blocks (6 seconds per block)
 pub const DELAY_INTERVAL: RangeInclusive<u64> = 0..=BLOCKS_PER_DAY; // from 0 to 1 day in blocks (6 seconds per block)
 pub const EXPIRATION_PERIOD_INTERVAL: RangeInclusive<u64> = BLOCKS_PER_DAY..=14 * BLOCKS_PER_DAY; //1 to 14 days in blocks (6 seconds per block)
-pub const STAKE_INTERVAL: RangeInclusive<u128> = 1000000000..=5000000000; // from 1000 to 5000 $MBRN
+pub const STAKE_INTERVAL: RangeInclusive<u128> = 1000000000..=5000000000; // from 1000 to 5000 $TEMA
 
 /// Proposal validation attributes
 const MIN_TITLE_LENGTH: usize = 4;
@@ -32,8 +32,8 @@ const SAFE_TEXT_CHARS: &str = "!&?#()*+'-./\"";
 /// This structure holds the parameters used for creating a Governance contract.
 #[cw_serde]
 pub struct InstantiateMsg {
-    /// MBRN Staking contract to query MBRN denom
-    pub mbrn_staking_contract_addr: String,
+    /// TEMA Staking contract to query TEMA denom
+    pub tema_staking_contract_addr: String,
     /// Address of the vesting contract
     pub vesting_contract_addr: String,
     ///Multiplier for vesting allocation voting power
@@ -168,11 +168,11 @@ pub enum QueryMsg {
 /// This structure stores general parameters for the Governance contract.
 #[cw_serde]
 pub struct Config {
-    /// MBRN native token fulldenom
-    pub mbrn_denom: String,
+    /// TEMA native token fulldenom
+    pub tema_denom: String,
     /// Minimum total stake required to submit a proposal
     pub minimum_total_stake: Uint128,
-    ///MBRN staking contract
+    ///TEMA staking contract
     pub staking_contract_addr: Addr,
     /// Address of the vesting contract
     pub vesting_contract_addr: Addr,
@@ -261,11 +261,11 @@ impl Config {
 /// This structure stores the params used when updating the main Governance contract params.
 #[cw_serde]
 pub struct UpdateConfig {
-    /// MBRN native token fulldenom
-    pub mbrn_denom: Option<String>,
+    /// TEMA native token fulldenom
+    pub tema_denom: Option<String>,
     /// Minimum total stake required to submit a proposal
     pub minimum_total_stake: Option<Uint128>,
-    /// MBRN staking contract
+    /// TEMA staking contract
     pub staking_contract: Option<String>,
     /// vesting' contract address
     pub vesting_contract_addr: Option<String>,

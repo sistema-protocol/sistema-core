@@ -63,18 +63,18 @@ pub fn instantiate(
     msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
 
-    //Need 20 OSMO for CreateDenom Msgs
-    // if deps.querier.query_balance(env.clone().contract.address, "uosmo")?.amount < Uint128::new(20_000_000){ return Err(ContractError::NeedOsmo {}) }
+    //Need 20 FURY for CreateDenom Msgs
+    // if deps.querier.query_balance(env.clone().contract.address, "ufury")?.amount < Uint128::new(20_000_000){ return Err(ContractError::NeedOsmo {}) }
 
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
 
     let config = Config {
-        mbrn_denom: String::from(""),
+        tema_denom: String::from(""),
         credit_denom: String::from(""),
         pre_launch_contributors: deps.api.addr_validate(&msg.pre_launch_contributors)?,
         pre_launch_community: msg.pre_launch_community,
         apollo_router: deps.api.addr_validate(&msg.apollo_router)?,
-        mbrn_launch_amount: Uint128::new(10_000_000_000_000),
+        tema_launch_amount: Uint128::new(10_000_000_000_000),
         osmosis_proxy_id: msg.osmosis_proxy_id,
         oracle_id: msg.oracle_id,
         staking_id: msg.staking_id,
@@ -84,12 +84,12 @@ pub fn instantiate(
         stability_pool_id: msg.stability_pool_id,
         liq_queue_id: msg.liq_queue_id,
         liquidity_check_id: msg.liquidity_check_id,
-        mbrn_auction_id: msg.mbrn_auction_id,
+        tema_auction_id: msg.tema_auction_id,
         system_discounts_id: msg.system_discounts_id,
         discount_vault_id: msg.discount_vault_id,
         atom_denom: String::from("ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2"), //testnet: ibc/A8C2D23A1E6F95DA4E48BA349667E322BD7A6C996D8A4AAE8BA72E190F3D1477
-        osmo_denom: String::from("uosmo"),
-        usdc_denom: String::from("ibc/D189335C6E4A68B513C10AB227BF1C1D38C746766278BA3EEB4FB14124F1D858"),  //axl wrapped usdc //testnet: 6F34E1BD664C36CE49ACC28E60D62559A5F96C4F9A6CCE4FC5A67B2852E24CFE
+        osmo_denom: String::from("ufury"),
+        usdc_denom: String::from("ibc/093231535A38351AD2FEEFF897D23CF8FE43A44F6EAA3611F55F4B3D62C45014"),  //axl wrapped usdc //testnet: 6F34E1BD664C36CE49ACC28E60D62559A5F96C4F9A6CCE4FC5A67B2852E24CFE
         atomosmo_pool_id: 1, //testnet is 12
         osmousdc_pool_id: 678, //axl wrapped usdc, testnet is 5
     };
@@ -105,7 +105,7 @@ pub fn instantiate(
         stability_pool: Addr::unchecked(""),
         liq_queue: Addr::unchecked(""),
         liquidity_check: Addr::unchecked(""),
-        mbrn_auction: Addr::unchecked(""),
+        tema_auction: Addr::unchecked(""),
         discount_vault: Addr::unchecked(""),
         system_discounts: Addr::unchecked(""),
     })?;
@@ -122,7 +122,7 @@ pub fn instantiate(
     //Instantiate Lockdrop 
     let lockdrop = Lockdrop {
         num_of_incentives: Uint128::new(10_000_000_000_000),
-        locked_asset: AssetInfo::NativeToken { denom: String::from("uosmo") },
+        locked_asset: AssetInfo::NativeToken { denom: String::from("ufury") },
         lock_up_ceiling: 365,
         start_time: env.block.time.seconds(),
         deposit_end: env.block.time.seconds() + (5 * SECONDS_PER_DAY), //5 days 
@@ -153,7 +153,7 @@ pub fn execute(
 ) -> Result<Response, ContractError> {
     match msg {
         ExecuteMsg::Lock { lock_up_duration } => lock(deps, env, info, lock_up_duration),
-        ExecuteMsg::ChangeLockDuration { uosmo_amount, old_lock_up_duration, new_lock_up_duration } => change_lockup_duration(deps, env, info, uosmo_amount, old_lock_up_duration, new_lock_up_duration),
+        ExecuteMsg::ChangeLockDuration { ufury_amount, old_lock_up_duration, new_lock_up_duration } => change_lockup_duration(deps, env, info, ufury_amount, old_lock_up_duration, new_lock_up_duration),
         ExecuteMsg::Withdraw { withdrawal_amount, lock_up_duration } => withdraw(deps, env, info, withdrawal_amount, lock_up_duration),
         ExecuteMsg::Claim { } => claim(deps, env, info),
         ExecuteMsg::Launch{ } => end_of_launch(deps, env),
@@ -162,7 +162,7 @@ pub fn execute(
     }
 }
 
-/// Deposit OSMO into the lockdrop & elect to lock MBRN rewards for a certain duration
+/// Deposit FURY into the lockdrop & elect to lock TEMA rewards for a certain duration
 fn lock(    
     deps: DepsMut,
     env: Env,
@@ -227,7 +227,7 @@ fn change_lockup_duration(
     deps: DepsMut,
     env: Env,
     info: MessageInfo,
-    uosmo_amount: Option<Uint128>,
+    ufury_amount: Option<Uint128>,
     old_lock_up_duration: u64,
     new_lock_up_duration: u64,
 ) -> Result<Response, ContractError>{    
@@ -244,8 +244,8 @@ fn change_lockup_duration(
 
         //Check if user has already locked up for this duration && if so, add to it
         if let Some((i, _)) = locked_user.deposits.clone().into_iter().enumerate().find(|(_, lock)| lock.lock_up_duration == old_lock_up_duration) {
-            //Validate uosmo amount
-            let change_amount = if let Some(amount) = uosmo_amount {
+            //Validate ufury amount
+            let change_amount = if let Some(amount) = ufury_amount {
                 //Take minimum of amount or deposit
                 min(amount, locked_user.deposits[i].deposit)
             } else {
@@ -298,7 +298,7 @@ fn change_lockup_duration(
         .add_attributes(attributes))
 }
 
-/// Withdraw OSMO from the lockdrop during the withdrawal period
+/// Withdraw FURY from the lockdrop during the withdrawal period
 fn withdraw(    
     deps: DepsMut,
     env: Env,
@@ -370,7 +370,7 @@ fn withdraw(
         ]))
 }
 
-/// Claim unlocked MBRN rewards
+/// Claim unlocked TEMA rewards
 fn claim(    
     deps: DepsMut,
     env: Env,
@@ -436,7 +436,7 @@ fn claim(
         //Calc locked incentives
         let locked_incentives = incentives.checked_sub(unlocked_incentives).unwrap_or_else(|_| Uint128::zero());
         if locked_incentives < Uint128::new(1_000_000) && locked_incentives > Uint128::zero() {
-            return Err(ContractError::CustomError { val: String::from("If you leave less than 1 MBRN still unlocking, it'll get stuck due to the minimum stake amount") })
+            return Err(ContractError::CustomError { val: String::from("If you leave less than 1 TEMA still unlocking, it'll get stuck due to the minimum stake amount") })
         }
 
         //Calc amount available to mint
@@ -465,7 +465,7 @@ fn claim(
         let mint_msg = CosmosMsg::Wasm(WasmMsg::Execute { 
             contract_addr: addrs.osmosis_proxy.to_string(), 
             msg: to_binary(&OPExecuteMsg::MintTokens { 
-                denom: config.clone().mbrn_denom, 
+                denom: config.clone().tema_denom, 
                 amount: amount_to_mint.clone(), 
                 mint_to_address: env.clone().contract.address.to_string(),
             })?, 
@@ -475,7 +475,7 @@ fn claim(
         let stake_msg = CosmosMsg::Wasm(WasmMsg::Execute { 
             contract_addr: addrs.staking.to_string(), 
             msg: to_binary(&StakingExecuteMsg::Stake { user: Some(info.clone().sender.to_string()) })?, 
-            funds: vec![coin(amount_to_mint.into(), config.clone().mbrn_denom)] 
+            funds: vec![coin(amount_to_mint.into(), config.clone().tema_denom)] 
         });
 
         Ok(Response::new()
@@ -590,9 +590,9 @@ fn validate_lockdrop_asset(info: MessageInfo, lockdrop_asset: AssetInfo) -> StdR
         .into_iter()
         .find(|coin| coin.denom == lockdrop_asset.to_string()){
 
-            // Assert Minimum OSMO amount: 1 OSMO
+            // Assert Minimum FURY amount: 1 FURY
             if lockdrop_asset.amount < Uint128::from(1_000_000u128) {
-                return Err(StdError::GenericErr { msg: format!("Minimum deposit is 1_000_000 uosmo") })
+                return Err(StdError::GenericErr { msg: format!("Minimum deposit is 1_000_000 ufury") })
             }
 
         Ok(Asset { 
@@ -619,8 +619,8 @@ fn update_config(
     if let Some(credit_denom) = update.credit_denom {
         config.credit_denom = credit_denom;
     }
-    if let Some(mbrn_denom) = update.mbrn_denom {
-        config.mbrn_denom = mbrn_denom;
+    if let Some(tema_denom) = update.tema_denom {
+        config.tema_denom = tema_denom;
     }
     if let Some(osmo_denom) = update.osmo_denom {
         config.osmo_denom = osmo_denom;
@@ -658,7 +658,7 @@ fn update_contract_configs(
     //             owner: Some(gov_contract.clone()),
     //             osmosis_proxy: None,
     //             staking_contract: None,
-    //             mbrn_denom: None,
+    //             tema_denom: None,
     //             additional_allocation: None,                
     //         })?,
     //         funds: vec![],
@@ -693,7 +693,7 @@ fn update_contract_configs(
     //Update Auction
     // msgs.push(
     //     CosmosMsg::Wasm(WasmMsg::Execute {
-    //         contract_addr: addresses.mbrn_auction.to_string(),
+    //         contract_addr: addresses.tema_auction.to_string(),
     //         msg: to_binary(&DAExecuteMsg::UpdateConfig(AuctionUpdateConfig {
     //             owner: Some(gov_contract.clone()),
     //             governance_contract: Some(gov_contract.clone()),
@@ -701,7 +701,7 @@ fn update_contract_configs(
     //             oracle_contract: None,
     //             osmosis_proxy: None,
     //             positions_contract: None,
-    //             mbrn_denom: None,
+    //             tema_denom: None,
     //             cdt_denom: None,
     //             desired_asset: None,
     //             twap_timeframe: None,
@@ -800,7 +800,7 @@ fn update_contract_configs(
     //             auction_contract: None,
     //             vesting_contract: None,
     //             osmosis_proxy: None,
-    //             mbrn_denom: None,
+    //             tema_denom: None,
     //             incentive_schedule: None,
     //             unstaking_period: None,
     //             max_commission_rate: None,
@@ -944,7 +944,7 @@ pub fn reply(deps: DepsMut, env: Env, msg: Reply) -> StdResult<Response> {
 }
 
 /// This gets called at the end of the lockdrop.
-/// Create MBRN & CDT pools and deposit into MBRN/OSMO pool.
+/// Create TEMA & CDT pools and deposit into TEMA/FURY pool.
 pub fn end_of_launch(
     deps: DepsMut,
     env: Env,
@@ -965,15 +965,15 @@ pub fn end_of_launch(
     let addrs = ADDRESSES.load(deps.storage)?;
     let mut sub_msgs: Vec<SubMsg> = vec![];
 
-    //Get uosmo contract balance
-    let uosmo_balance = get_contract_balances(deps.querier, env.clone(), vec![AssetInfo::NativeToken { denom: String::from("uosmo") }])?[0];
-    //Make sure to deduct the amount of OSMO used to create Pools. Contract balance - 1000uosmo * 2 pools - 1 OSMO to init CDT LP - 50 OSMO to create a gauge
-    let uosmo_pool_delegation_amount = (uosmo_balance - Uint128::new(2051_000_000)).to_string(); 
+    //Get ufury contract balance
+    let ufury_balance = get_contract_balances(deps.querier, env.clone(), vec![AssetInfo::NativeToken { denom: String::from("ufury") }])?[0];
+    //Make sure to deduct the amount of FURY used to create Pools. Contract balance - 1000ufury * 2 pools - 1 FURY to init CDT LP - 50 FURY to create a gauge
+    let ufury_pool_delegation_amount = (ufury_balance - Uint128::new(2051_000_000)).to_string(); 
     
-    //Mint MBRN for LP
+    //Mint TEMA for LP
     let msg = OPExecuteMsg::MintTokens { 
-        denom: config.clone().mbrn_denom, 
-        amount: Uint128::new(1_000_000_000_000), //1M mbrn
+        denom: config.clone().tema_denom, 
+        amount: Uint128::new(1_000_000_000_000), //1M tema
         mint_to_address: env.clone().contract.address.to_string(),
     };
     let msg = CosmosMsg::Wasm(WasmMsg::Execute { 
@@ -983,7 +983,7 @@ pub fn end_of_launch(
     });
     sub_msgs.push(SubMsg::new(msg));
     
-    //Create & deposit into MBRN-OSMO LP 
+    //Create & deposit into TEMA-FURY LP 
     let msg = MsgCreateBalancerPool {
         sender: env.contract.address.to_string(),
         pool_params: Some(PoolParams {
@@ -993,11 +993,11 @@ pub fn end_of_launch(
         }),
         pool_assets: vec![
             PoolAsset { 
-                token: Some(Coin { denom: config.clone().mbrn_denom, amount: "1_000_000_000_000".to_string() }), 
+                token: Some(Coin { denom: config.clone().tema_denom, amount: "1_000_000_000_000".to_string() }), 
                 weight: String::from("50") 
             },
             PoolAsset { 
-                token: Some(Coin { denom: config.clone().osmo_denom, amount: uosmo_pool_delegation_amount }), 
+                token: Some(Coin { denom: config.clone().osmo_denom, amount: ufury_pool_delegation_amount }), 
                 weight: String::from("50") 
             }
         ],
@@ -1019,7 +1019,7 @@ pub fn end_of_launch(
     });
     sub_msgs.push(SubMsg::new(msg));
 
-    //Create OSMO CDT pool
+    //Create FURY CDT pool
     let msg: CosmosMsg = MsgCreateBalancerPool {
         sender: env.contract.address.to_string(),
         pool_params: Some(PoolParams {
@@ -1072,18 +1072,18 @@ pub fn migrate(deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Response, C
 
     //Add recipients to vesting contract
     let pre_launch_community =  vec![
-        "osmo1ssgz49n7a6uc0xvxwmx59t60mgktnk238m5yf0",
-        "osmo1d9ryqp7yfmr92vkk2yal96824pewf2g5wx0h2r",
-        "osmo10k0qxqh39fwk2khv49g0n673kfqwe778f09ffg",
-        "osmo1ks3p0rtxkph9us3rg5z3as2hl4gfq4fua5d0vh",
-        "osmo1xaaxw8xzyxh6cflqd4g2xqmypsa4x8hzl8t4nc",
-        "osmo1dxrfdpxju5jmcqz3lffn5qj4kqvtpuvjdet49z",
-        "osmo1w7tql40ad8m4hzw65ahlcgd72vm4zwfq6uw68j",
-        "osmo1t7f0rmcjxvmdmftsfsy66k2yny9zq703hwa9qg",
-        "osmo1vg5gzyfqfnqz7l6hqh307q9mczjrns266a2q06",
-        "osmo1pgsya6vgfr0rzxuc24wn5t3x9azy6r83mumygz"
+        "furya1934eyhu6ddufxehfvl99qr3uuhv77adp0nf803",
+        "furya197lfuc8s5amj4lhkmyv5dex7qsdu3m5jh40tp6",
+        "furya1gatr22regf89le2tvfrczheduqujtpnam9hvf7",
+        "furya1zh9939lz2uegfje7agkjnmcnqqk4pawan3m53l",
+        "furya1hz4yjs3yfyhxkwjg45r65zaluuhrp8c4tyg2gz",
+        "furya16w6chfrrg930cqcfewdzse6szgjk657764dll7",
+        "furya1am27r4lpshq8vpztwrzwn77hzjn0cavyx0xwj8",
+        "furya1lgywmn83r6fqrgh34leca3atk93lfsul7gy5g9",
+        "furya1tjs54s5y077auvqcqt9rhv6cndyvlmh22ngw6z",
+        "furya1lda0fwkwmhzqtyuu06858rzjzq3wfcjfd0kgyt"
     ];
-    let founder = "osmo1988s5h45qwkaqch8km4ceagw2e08vdw28mwk4n";
+    let founder = "furya16w6chfrrg930cqcfewdzse6szgjk657764dll7";
     
     let mut msgs: Vec<CosmosMsg> = vec![];
     //Loop through pre_launch_community to create add_recipient messages

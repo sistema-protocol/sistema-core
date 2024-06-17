@@ -34,17 +34,17 @@ fn update_config(){
         stability_pool_id: 0,
         liq_queue_id: 0,
         liquidity_check_id: 0,
-        mbrn_auction_id: 0,
+        tema_auction_id: 0,
         system_discounts_id: 0,
         discount_vault_id: 0,
     };
     //Instantiating contract
-    let info = mock_info("sender88", &[coin(20_000_000, "uosmo")]);
+    let info = mock_info("sender88", &[coin(20_000_000, "ufury")]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
     
     let msg = ExecuteMsg::UpdateConfig(UpdateConfig {
         credit_denom: Some(String::from("new_credit_denom")),
-        mbrn_denom: Some(String::from("new_mbrn_denom")),
+        tema_denom: Some(String::from("new_tema_denom")),
         osmo_denom: Some(String::from("new_osmo_denom")),
         usdc_denom: Some(String::from("new_usdc_denom")),
     });
@@ -67,8 +67,8 @@ fn update_config(){
     let config: Config = from_binary(&res).unwrap();
 
     assert_eq!(
-        config.mbrn_denom,        
-        String::from("new_mbrn_denom"),
+        config.tema_denom,        
+        String::from("new_tema_denom"),
     );
     assert_eq!(
         config.credit_denom,        
@@ -103,36 +103,36 @@ fn lock() {
         stability_pool_id: 0,
         liq_queue_id: 0,
         liquidity_check_id: 0,
-        mbrn_auction_id: 0,    
+        tema_auction_id: 0,    
         system_discounts_id: 0,
         discount_vault_id: 0,
     };
 
     //Instantiating contract
-    let info = mock_info("sender88", &[coin(20_000_000, "uosmo")]);
+    let info = mock_info("sender88", &[coin(20_000_000, "ufury")]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
     //Invalid lock asset
     let msg = ExecuteMsg::Lock { lock_up_duration: 0u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "not_uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "not_ufury")]);
     let err = execute(deps.as_mut(), mock_env(), info, msg).unwrap_err();
     assert_eq!(
         err.to_string(),
-        "Generic error: No valid lockdrop asset, looking for uosmo".to_string()
+        "Generic error: No valid lockdrop asset, looking for ufury".to_string()
     ); 
 
     //Invalid lock duration
     let msg = ExecuteMsg::Lock { lock_up_duration: 366u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "not_uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "not_ufury")]);
     let err = execute(deps.as_mut(), mock_env(), info, msg).unwrap_err();
     assert_eq!(
         err.to_string(),
         "Custom Error val: Can't lock that long".to_string()
     ); 
     
-    //Lock uosmo for 7 days
+    //Lock ufury for 7 days
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -140,13 +140,13 @@ fn lock() {
             attr("method", "deposit"),
             attr("user", "user1"),
             attr("lock_up_duration", "7"),
-            attr("deposit", "10000000 uosmo"),
+            attr("deposit", "10000000 ufury"),
         ]
     ); 
 
-    //Lock uosmo for 7 days & assert its added to the same deposit
+    //Lock ufury for 7 days & assert its added to the same deposit
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
     //Query and Assert lock
@@ -168,16 +168,16 @@ fn lock() {
     
     //Error at lock under minimum
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10, "uosmo")]);
+    let info = mock_info("user1", &[coin(10, "ufury")]);
     let err = execute(deps.as_mut(), mock_env(), info, msg).unwrap_err();
     assert_eq!(
         err.to_string(),
-        "Generic error: Minimum deposit is 1_000_000 uosmo".to_string()
+        "Generic error: Minimum deposit is 1_000_000 ufury".to_string()
     );
 
     //Lock attempt after deposit period
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     
     let mut env = mock_env();
     env.block.time = env.block.time.plus_seconds(5 * SECONDS_PER_DAY + 1); // 5 days + 1
@@ -207,18 +207,18 @@ fn edit_lockup_duration() {
         stability_pool_id: 0,
         liq_queue_id: 0,
         liquidity_check_id: 0,
-        mbrn_auction_id: 0,    
+        tema_auction_id: 0,    
         system_discounts_id: 0,
         discount_vault_id: 0,
     };
 
     //Instantiating contract
-    let info = mock_info("sender88", &[coin(20_000_000, "uosmo")]);
+    let info = mock_info("sender88", &[coin(20_000_000, "ufury")]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
     
-    //Lock uosmo for 7 days
+    //Lock ufury for 7 days
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     let res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     assert_eq!(
         res.attributes,
@@ -226,13 +226,13 @@ fn edit_lockup_duration() {
             attr("method", "deposit"),
             attr("user", "user1"),
             attr("lock_up_duration", "7"),
-            attr("deposit", "10000000 uosmo"),
+            attr("deposit", "10000000 ufury"),
         ]
     ); 
 
     //Split lock up duration to a 14 day
     let msg = ExecuteMsg::ChangeLockDuration {
-        uosmo_amount: Some(Uint128::new(5_000_000)),
+        ufury_amount: Some(Uint128::new(5_000_000)),
         old_lock_up_duration: 7u64,
         new_lock_up_duration: 14u64, 
         };    
@@ -262,7 +262,7 @@ fn edit_lockup_duration() {
 
     //Change lock up duration to a 30 day
     let msg = ExecuteMsg::ChangeLockDuration {
-        uosmo_amount: Some(Uint128::new(5_000_001)), //over allo is set to the minimum
+        ufury_amount: Some(Uint128::new(5_000_001)), //over allo is set to the minimum
         old_lock_up_duration: 7u64,
         new_lock_up_duration: 30u64, 
         };    
@@ -292,11 +292,11 @@ fn edit_lockup_duration() {
     
     //Change attempt after deposit period
     let msg = ExecuteMsg::ChangeLockDuration {
-        uosmo_amount: Some(Uint128::new(5_000_000)),
+        ufury_amount: Some(Uint128::new(5_000_000)),
         old_lock_up_duration: 7u64,
         new_lock_up_duration: 14u64, 
         };    
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     
     let mut env = mock_env();
     env.block.time = env.block.time.plus_seconds(5 * SECONDS_PER_DAY + 1); // 5 days + 1
@@ -327,18 +327,18 @@ fn withdraw() {
         stability_pool_id: 0,
         liq_queue_id: 0,
         liquidity_check_id: 0,
-        mbrn_auction_id: 0,    
+        tema_auction_id: 0,    
         system_discounts_id: 0,
         discount_vault_id: 0,
     };
 
     //Instantiating contract
-    let info = mock_info("sender88", &[coin(20_000_000, "uosmo")]);
+    let info = mock_info("sender88", &[coin(20_000_000, "ufury")]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Lock uosmo for 7 days
+    //Lock ufury for 7 days
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
     //Withdraw during deposit period: Error
@@ -368,7 +368,7 @@ fn withdraw() {
     assert_eq!(res.messages, vec![
         SubMsg::new(CosmosMsg::Bank(BankMsg::Send {
             to_address: String::from("user1"),
-            amount: coins(5_000_000, "uosmo"),
+            amount: coins(5_000_000, "ufury"),
         }))
     ] );    
 
@@ -418,30 +418,30 @@ fn claim() {
         stability_pool_id: 0,
         liq_queue_id: 0,
         liquidity_check_id: 0,
-        mbrn_auction_id: 0,    
+        tema_auction_id: 0,    
         system_discounts_id: 0,
         discount_vault_id: 0,
     };
 
     //Instantiating contract
-    let info = mock_info("sender88", &[coin(20_000_000, "uosmo")]);
+    let info = mock_info("sender88", &[coin(20_000_000, "ufury")]);
     let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Lock uosmo for 7 days
+    //Lock ufury for 7 days
     let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-    //Lock uosmo for 14 days
+    //Lock ufury for 14 days
     let msg = ExecuteMsg::Lock { lock_up_duration: 14u64 };
-    let info = mock_info("user1", &[coin(10_000_000, "uosmo")]);
+    let info = mock_info("user1", &[coin(10_000_000, "ufury")]);
     execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
     //Overload user calculations
     for i in 0..90000{
-        //Lock uosmo for 7 days
+        //Lock ufury for 7 days
         let msg = ExecuteMsg::Lock { lock_up_duration: 7u64 };
-        let info = mock_info(&i.to_string(), &[coin(1_000_000, "uosmo")]);
+        let info = mock_info(&i.to_string(), &[coin(1_000_000, "ufury")]);
         execute(deps.as_mut(), mock_env(), info, msg).unwrap();
     }    
 
@@ -565,7 +565,7 @@ fn claim() {
     let info = mock_info("user1", &[]);
     env.block.time = env.block.time.plus_seconds(6 * SECONDS_PER_DAY + 86000);
     let err = execute(deps.as_mut(), env.clone(), info, msg).unwrap_err();
-    assert_eq!(err.to_string(), "Custom Error val: If you leave less than 1 MBRN still unlocking, it'll get stuck due to the minimum stake amount".to_string());
+    assert_eq!(err.to_string(), "Custom Error val: If you leave less than 1 TEMA still unlocking, it'll get stuck due to the minimum stake amount".to_string());
 
     //Claim after lock time of 2nd deposit: Rest of Mint
     let msg = ExecuteMsg::Claim {  };

@@ -80,13 +80,13 @@ mod tests {
                         amount,
                         mint_to_address,
                     } => {
-                        if (amount != Uint128::new(8_219) || denom != String::from("mbrn_denom") || mint_to_address != String::from("user_1")) 
-                        && (amount != Uint128::new(8219) || denom != String::from("mbrn_denom") || mint_to_address != String::from("contract4")) 
-                        && (amount != Uint128::new(1095) || denom != String::from("mbrn_denom") || mint_to_address != String::from("contract4"))
-                        && (amount != Uint128::new(8) || denom != String::from("mbrn_denom") || mint_to_address != String::from("user_1"))
-                        && (amount != Uint128::new(78082) || denom != String::from("mbrn_denom") || mint_to_address != String::from("user_1"))
-                        && (amount != Uint128::new(156164) || denom != String::from("mbrn_denom") || mint_to_address != String::from("user_1"))
-                        && (amount != Uint128::new(4109) || denom != String::from("mbrn_denom") || mint_to_address != String::from("governator_addr")){
+                        if (amount != Uint128::new(8_219) || denom != String::from("tema_denom") || mint_to_address != String::from("user_1")) 
+                        && (amount != Uint128::new(8219) || denom != String::from("tema_denom") || mint_to_address != String::from("contract4")) 
+                        && (amount != Uint128::new(1095) || denom != String::from("tema_denom") || mint_to_address != String::from("contract4"))
+                        && (amount != Uint128::new(8) || denom != String::from("tema_denom") || mint_to_address != String::from("user_1"))
+                        && (amount != Uint128::new(78082) || denom != String::from("tema_denom") || mint_to_address != String::from("user_1"))
+                        && (amount != Uint128::new(156164) || denom != String::from("tema_denom") || mint_to_address != String::from("user_1"))
+                        && (amount != Uint128::new(4109) || denom != String::from("tema_denom") || mint_to_address != String::from("governator_addr")){
                             // panic!("MintTokens called with incorrect parameters, {}, {}, {}", amount, denom, mint_to_address);
                         }
                         Ok(Response::default())
@@ -253,13 +253,13 @@ mod tests {
             bank.init_balance(
                 storage,
                 &Addr::unchecked("coin_God"),
-                vec![coin(100_000_000, "debit"), coin(100_000_000, "2nddebit"), coin(100_000_000, "mbrn_denom")]
+                vec![coin(100_000_000, "debit"), coin(100_000_000, "2nddebit"), coin(100_000_000, "tema_denom")]
             )
             .unwrap();
             bank.init_balance(
                 storage,
                 &Addr::unchecked("user_1"),
-                vec![coin(10_000_000, "mbrn_denom")],
+                vec![coin(10_000_000, "tema_denom")],
             )
             .unwrap();
             bank.init_balance(
@@ -271,7 +271,7 @@ mod tests {
             // bank.init_balance(
             //     storage,
             //     &Addr::unchecked("contract4"), //staking contract
-            //     vec![coin(1, "mbrn_denom")], //This should make claim's check reply error
+            //     vec![coin(1, "tema_denom")], //This should make claim's check reply error
             // )
             // .unwrap();
 
@@ -343,7 +343,7 @@ mod tests {
             governance_contract: Some("gov_contract".to_string()),
             osmosis_proxy: Some(osmosis_proxy_contract_addr.to_string()),
             incentive_schedule: Some(StakeDistribution { rate: Decimal::percent(10), duration: 90 }),
-            mbrn_denom: String::from("mbrn_denom"),
+            tema_denom: String::from("tema_denom"),
             unstaking_period: None,
         };
 
@@ -367,15 +367,15 @@ mod tests {
         fn commission_claims() {
             let (mut app, staking_contract, auction_contract) = proper_instantiate();
 
-            //Stake MBRN as user
+            //Stake TEMA as user
             let msg = ExecuteMsg::Stake { user: None };
-            let cosmos_msg = staking_contract.call(msg, vec![coin(10_000000, "mbrn_denom")]).unwrap();
+            let cosmos_msg = staking_contract.call(msg, vec![coin(10_000000, "tema_denom")]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
 
-            //Delegate MBRN to governator
+            //Delegate TEMA to governator
             let msg = ExecuteMsg::UpdateDelegations { 
                 governator_addr: Some(String::from("governator_addr")), 
-                mbrn_amount: Some(Uint128::new(5_000000)),
+                tema_amount: Some(Uint128::new(5_000000)),
                 delegate: Some(true), 
                 fluid: None, 
                 voting_power_delegation: None,
@@ -394,7 +394,7 @@ mod tests {
             //Update delegate commission
             let msg = ExecuteMsg::UpdateDelegations { 
                 governator_addr: None,
-                mbrn_amount: None,
+                tema_amount: None,
                 delegate: None,
                 fluid: None, 
                 voting_power_delegation: None,
@@ -490,7 +490,7 @@ mod tests {
             //Undelegate
             let msg = ExecuteMsg::UpdateDelegations { 
                 governator_addr: Some(String::from("governator_addr")), 
-                mbrn_amount: Some(Uint128::new(5_000000)),
+                tema_amount: Some(Uint128::new(5_000000)),
                 delegate: Some(false), 
                 fluid: None, 
                 voting_power_delegation: None,
@@ -538,7 +538,7 @@ mod tests {
                 vec![coin(49, "credit_fulldenom")]
             );
 
-            ////MBRN amount doesn't change for either bc they are restaked////
+            ////TEMA amount doesn't change for either bc they are restaked////
                 
             //Claim: Assert claim was saved and can't be double claimed
             let claim_msg = ExecuteMsg::ClaimRewards {
@@ -567,9 +567,9 @@ mod tests {
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked(ADMIN), cosmos_msg).unwrap_err();
 
-            //Stake MBRN as user
+            //Stake TEMA as user
             let msg = ExecuteMsg::Stake { user: None };
-            let cosmos_msg = staking_contract.call(msg, vec![coin(1_000_000, "mbrn_denom")]).unwrap();
+            let cosmos_msg = staking_contract.call(msg, vec![coin(1_000_000, "tema_denom")]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
 
             //Pass 1 second to enable fees
@@ -675,7 +675,7 @@ mod tests {
             //Check that the rewards were sent
             assert_eq!(
                 app.wrap().query_all_balances("user_1").unwrap(),
-                vec![coin(833, "credit_fulldenom"), coin(833, "fee_asset"), coin(9_000_000, "mbrn_denom")]
+                vec![coin(833, "credit_fulldenom"), coin(833, "fee_asset"), coin(9_000_000, "tema_denom")]
             );
                 
             //Assert Vesting Claims
@@ -761,9 +761,9 @@ mod tests {
         fn vesting_claims_multiplier() {
             let (mut app, staking_contract, auction_contract) = proper_instantiate();
 
-            //Stake MBRN as user
+            //Stake TEMA as user
             let msg = ExecuteMsg::Stake { user: None };
-            let cosmos_msg = staking_contract.call(msg, vec![coin(1_000_000, "mbrn_denom")]).unwrap();
+            let cosmos_msg = staking_contract.call(msg, vec![coin(1_000_000, "tema_denom")]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
             
             //Add stake rewards & enable fees
@@ -786,7 +786,7 @@ mod tests {
                 positions_contract: None,
                 auction_contract: None,
                 governance_contract: None,
-                mbrn_denom: None,
+                tema_denom: None,
                 vesting_contract: None,
                 incentive_schedule: None,
                 max_commission_rate: None,
@@ -807,7 +807,7 @@ mod tests {
             //Check that the rewards were sent
             assert_eq!(
                 app.wrap().query_all_balances("user_1").unwrap(),
-                vec![coin(833, "credit_fulldenom"), coin(9_000_000, "mbrn_denom")]
+                vec![coin(833, "credit_fulldenom"), coin(9_000_000, "tema_denom")]
             );
                 
             //Assert Vesting Claims
@@ -861,7 +861,7 @@ mod tests {
                 positions_contract: None,
                 auction_contract: None,
                 governance_contract: None,
-                mbrn_denom: None,
+                tema_denom: None,
                 vesting_contract: None,
                 incentive_schedule: None,
                 max_commission_rate: None,
@@ -986,14 +986,14 @@ mod tests {
         fn unstaking(){
             let (mut app, staking_contract, auction_contract) = proper_instantiate();
 
-            //Stake MBRN as user
+            //Stake TEMA as user
             let msg = ExecuteMsg::Stake { user: None };
-            let cosmos_msg = staking_contract.call(msg, vec![coin(1_000_000, "mbrn_denom")]).unwrap();
+            let cosmos_msg = staking_contract.call(msg, vec![coin(1_000_000, "tema_denom")]).unwrap();
             app.execute(Addr::unchecked("coin_God"), cosmos_msg).unwrap();
             
-            //Stake MBRN as user
+            //Stake TEMA as user
             let msg = ExecuteMsg::Stake { user: None };
-            let cosmos_msg = staking_contract.call(msg, vec![coin(10_000_000, "mbrn_denom")]).unwrap();
+            let cosmos_msg = staking_contract.call(msg, vec![coin(10_000_000, "tema_denom")]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
 
             //Query and Assert totals
@@ -1009,21 +1009,21 @@ mod tests {
 
             //Not a staker Error
             let msg = ExecuteMsg::Unstake {
-                mbrn_amount: Some(Uint128::new(1u128)),
+                tema_amount: Some(Uint128::new(1u128)),
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("not_a_staker"), cosmos_msg).unwrap_err();
 
             //Successful Unstake all w/o withdrawals
             let msg = ExecuteMsg::Unstake {
-                mbrn_amount: None
+                tema_amount: None
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
 
             //Successful Restake to reset the deposits
             let msg = ExecuteMsg::Restake {
-                mbrn_amount: Uint128::new(10_000_000u128),
+                tema_amount: Uint128::new(10_000_000u128),
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
@@ -1036,19 +1036,19 @@ mod tests {
 
             //Successful Unstake Some, no withdrawal
             let msg = ExecuteMsg::Unstake {
-                mbrn_amount: Some(Uint128::new(4_500_000u128))
+                tema_amount: Some(Uint128::new(4_500_000u128))
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
             //Error: Unstake Some that is more than current staked or unstakable amount
             let msg = ExecuteMsg::Unstake {
-                mbrn_amount: Some(Uint128::new(6_500_000u128))
+                tema_amount: Some(Uint128::new(6_500_000u128))
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap_err();
             //Successful Unstake Some, no withdrawal
             let msg = ExecuteMsg::Unstake {
-                mbrn_amount: Some(Uint128::new(4_500_000u128))
+                tema_amount: Some(Uint128::new(4_500_000u128))
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
@@ -1080,7 +1080,7 @@ mod tests {
             //- staking totals isn't updated when creating a position for the accrued_interest
             //- unstaking time was reset
             let msg = ExecuteMsg::Unstake {
-                mbrn_amount: Some(Uint128::new(11_000_000u128))
+                tema_amount: Some(Uint128::new(11_000_000u128))
             };
             let cosmos_msg = staking_contract.call(msg, vec![]).unwrap();
             app.execute(Addr::unchecked("user_1"), cosmos_msg).unwrap();
@@ -1088,7 +1088,7 @@ mod tests {
             //Assert withdrawal 
             assert_eq!(
                 app.wrap().query_all_balances(Addr::unchecked("user_1")).unwrap(),
-                vec![coin(9000000, "mbrn_denom")]
+                vec![coin(9000000, "tema_denom")]
             );
 
             //Query and Assert totals

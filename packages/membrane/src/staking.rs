@@ -21,8 +21,8 @@ pub struct InstantiateMsg {
     pub incentive_schedule: Option<StakeDistribution>,
     /// Unstaking period in days
     pub unstaking_period: Option<u64>,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
 }
 
 #[cw_serde]
@@ -40,8 +40,8 @@ pub enum ExecuteMsg {
         governance_contract: Option<String>,
         /// Osmosis Proxy contract address
         osmosis_proxy: Option<String>,
-        /// MBRN denom
-        mbrn_denom: Option<String>,
+        /// TEMA denom
+        tema_denom: Option<String>,
         /// Incentive scheduling
         incentive_schedule: Option<StakeDistribution>,
         /// Unstaking period in days
@@ -56,54 +56,54 @@ pub enum ExecuteMsg {
         /// WARNING: SETTING TO 0 IS PERMANENT
         vesting_rev_multiplier: Option<Decimal>,
     },
-    /// Stake MBRN tokens
+    /// Stake TEMA tokens
     Stake {
         /// User address
         user: Option<String>,
     },
-    /// Unstake/Withdraw MBRN tokens & claim claimables
+    /// Unstake/Withdraw TEMA tokens & claim claimables
     Unstake {
-        /// MBRN amount 
-        mbrn_amount: Option<Uint128>,
+        /// TEMA amount 
+        tema_amount: Option<Uint128>,
     },
-    /// Restake unstak(ed/ing) MBRN
+    /// Restake unstak(ed/ing) TEMA
     Restake {
-        /// MBRN amount
-        mbrn_amount: Uint128,
+        /// TEMA amount
+        tema_amount: Uint128,
     },
     /// Claim all claimables
     ClaimRewards {
-        /// Send MBRN rewards to address, other fees are automatically sent to the sender
+        /// Send TEMA rewards to address, other fees are automatically sent to the sender
         send_to: Option<String>,
-        /// Toggle to restake MBRN rewards
+        /// Toggle to restake TEMA rewards
         restake: bool,
     },
-    /// Delegate MBRN to a Governator
+    /// Delegate TEMA to a Governator
     UpdateDelegations {
         /// Governator address
         governator_addr: Option<String>,
-        /// MBRN amount
-        /// If None, act on total delegatible MBRN
-        mbrn_amount: Option<Uint128>,
+        /// TEMA amount
+        /// If None, act on total delegatible TEMA
+        tema_amount: Option<Uint128>,
         /// Delegate or Undelegate
         delegate: Option<bool>,
         /// Set fluidity
-        /// To change fluidity, you must undelegate & redelegate because your delegate may have delegated your MBRN
+        /// To change fluidity, you must undelegate & redelegate because your delegate may have delegated your TEMA
         fluid: Option<bool>,
         /// Update commission rate
         commission: Option<Decimal>,
         /// Toggle voting power delegation
         voting_power_delegation: Option<bool>,
     },
-    /// Delegate delegated MBRN
-    /// i.e. MBRN that is fluid delegated to a governator
-    /// Once delegated, the MBRN can't be undelegated by the governator, only the initial staker
+    /// Delegate delegated TEMA
+    /// i.e. TEMA that is fluid delegated to a governator
+    /// Once delegated, the TEMA can't be undelegated by the governator, only the initial staker
     DelegateFluidDelegations {
         /// Governator address
         governator_addr: String,
-        /// MBRN amount
-        /// If None, act on total delegatible MBRN
-        mbrn_amount: Option<Uint128>,
+        /// TEMA amount
+        /// If None, act on total delegatible TEMA
+        tema_amount: Option<Uint128>,
     },
     /// Declare as Delegate
     DeclareDelegate {
@@ -173,7 +173,7 @@ pub enum QueryMsg {
         /// Start after timestamp in seconds
         start_after: Option<u64>,
     },
-    /// Returns total MBRN staked
+    /// Returns total TEMA staked
     TotalStaked {},
     /// Returns progress of current incentive schedule
     IncentiveSchedule {},
@@ -183,8 +183,8 @@ pub enum QueryMsg {
 pub struct Config {
     /// Contract owner
     pub owner: Addr,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
     /// Incentive schedule
     pub incentive_schedule: StakeDistribution,
     /// Unstaking period, in days
@@ -214,7 +214,7 @@ pub struct Config {
 pub struct StakerResponse {
     /// Staker address
     pub staker: String,
-    /// Total MBRN staked
+    /// Total TEMA staked
     pub total_staked: Uint128,
     /// Deposit list 
     pub deposit_list: Vec<OldStakeDeposit>,
@@ -242,7 +242,7 @@ pub struct Totals {
 
 #[cw_serde]
 pub struct TotalStakedResponse {
-    /// Total MBRN staked not including vested
+    /// Total TEMA staked not including vested
     pub total_not_including_vested: Uint128,
     /// Total vested stake
     pub vested_total: Uint128,

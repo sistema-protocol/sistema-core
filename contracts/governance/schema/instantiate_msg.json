@@ -5,7 +5,7 @@
   "type": "object",
   "required": [
     "expedited_proposal_voting_period",
-    "mbrn_staking_contract_addr",
+    "tema_staking_contract_addr",
     "proposal_effective_delay",
     "proposal_expiration_period",
     "proposal_required_quorum",
@@ -23,8 +23,8 @@
       "format": "uint64",
       "minimum": 0.0
     },
-    "mbrn_staking_contract_addr": {
-      "description": "MBRN Staking contract to query MBRN denom",
+    "tema_staking_contract_addr": {
+      "description": "TEMA Staking contract to query TEMA denom",
       "type": "string"
     },
     "proposal_effective_delay": {

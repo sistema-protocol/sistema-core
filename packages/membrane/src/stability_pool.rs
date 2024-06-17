@@ -22,8 +22,8 @@ pub struct InstantiateMsg {
     pub positions_contract: String,
     /// Oracle contract address
     pub oracle_contract: String,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
 }
 
 #[cw_serde]
@@ -45,7 +45,7 @@ pub enum ExecuteMsg {
         /// Debt token amount
         restake_amount: Decimal,
     },
-    /// Claim ALL liquidation revenue && MBRN incentives
+    /// Claim ALL liquidation revenue && TEMA incentives
     ClaimRewards {},
     /// Use assets from an Asset pool to liquidate for a Position (Positions Contract)
     Liquidate {
@@ -117,8 +117,8 @@ pub struct Config {
     pub unstaking_period: u64,
     /// Minimum bid amount
     pub minimum_deposit_amount: Uint128,
-    /// MBRN denom
-    pub mbrn_denom: String,
+    /// TEMA denom
+    pub tema_denom: String,
     /// Osmosis Proxy contract address
     pub osmosis_proxy: Addr,
     /// Positions contract address
@@ -145,8 +145,8 @@ pub struct UpdateConfig {
     pub positions_contract: Option<String>,
     /// Oracle contract address
     pub oracle_contract: Option<String>,
-    /// MBRN denom
-    pub mbrn_denom: Option<String>,
+    /// TEMA denom
+    pub tema_denom: Option<String>,
 }
 
 #[cw_serde]

@@ -8,7 +8,7 @@
     "governance_id",
     "liq_queue_id",
     "liquidity_check_id",
-    "mbrn_auction_id",
+    "tema_auction_id",
     "oracle_id",
     "osmosis_proxy_id",
     "positions_id",
@@ -48,8 +48,8 @@
       "format": "uint64",
       "minimum": 0.0
     },
-    "mbrn_auction_id": {
-      "description": "MBRN Auction contract id",
+    "tema_auction_id": {
+      "description": "TEMA Auction contract id",
       "type": "integer",
       "format": "uint64",
       "minimum": 0.0

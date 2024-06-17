@@ -208,7 +208,7 @@ fn submit_bid() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000u128),
@@ -235,7 +235,7 @@ fn submit_bid() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -255,7 +255,7 @@ fn submit_bid() {
     let info = mock_info(
         "addr0000",
         &[Coin {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
             amount: Uint128::from(1000000u128),
         }],
     );
@@ -293,7 +293,7 @@ fn submit_bid() {
     let invalid_msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 1u8,
         },
@@ -320,7 +320,7 @@ fn submit_bid() {
     let invalid_msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 15u8,
         },
@@ -389,7 +389,7 @@ fn submit_bid() {
             mock_env(),
             QueryMsg::Bid {
                 bid_for: AssetInfo::NativeToken {
-                    denom: "osmo".to_string(),
+                    denom: "fury".to_string(),
                 },
                 bid_id: Uint128::from(1u128),
             },
@@ -541,7 +541,7 @@ fn retract_bid() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -552,7 +552,7 @@ fn retract_bid() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 10u8,
         },
@@ -573,7 +573,7 @@ fn retract_bid() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::new(0u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -590,7 +590,7 @@ fn retract_bid() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::new(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: Some(Uint256::from(999999u128)),
     };
@@ -605,7 +605,7 @@ fn retract_bid() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::new(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -626,7 +626,7 @@ fn retract_bid() {
     let msg = ExecuteMsg::RetractBid {
         bid_id: Uint128::new(1u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         amount: None,
     };
@@ -658,7 +658,7 @@ fn execute_bid() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -669,7 +669,7 @@ fn execute_bid() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 1u8,
         },
@@ -701,7 +701,7 @@ fn execute_bid() {
         },
         collateral_amount: Uint256::from(500_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
 
@@ -743,7 +743,7 @@ fn execute_bid() {
         attr("action", "execute_bid"),
         attr("denom", "cdt"),
         attr("repay_amount", "5000"),
-        attr("collateral_token", "osmo"),
+        attr("collateral_token", "fury"),
         attr("collateral_info", "native_token"),
         attr("collateral_amount", "5050"),
     ]);
@@ -761,7 +761,7 @@ fn execute_bid() {
         },
         collateral_amount: Uint256::from(500_000_000_000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
 
@@ -770,7 +770,7 @@ fn execute_bid() {
         attr("action", "execute_bid"),
         attr("denom", "cdt"),
         attr("repay_amount", "0"),
-        attr("collateral_token", "osmo"),
+        attr("collateral_token", "fury"),
         attr("collateral_info", "native_token"),
         attr("collateral_amount", "0"),
     ]);
@@ -794,7 +794,7 @@ fn claim_liquidations() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -805,7 +805,7 @@ fn claim_liquidations() {
     let msg = ExecuteMsg::SubmitBid {
         bid_input: BidInput {
             bid_for: AssetInfo::NativeToken {
-                denom: "osmo".to_string(),
+                denom: "fury".to_string(),
             },
             liq_premium: 1u8,
         },
@@ -835,7 +835,7 @@ fn claim_liquidations() {
         },
         collateral_amount: Uint256::from(5000u128),
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
     let info = mock_info("positions_contract", &[]);
@@ -848,7 +848,7 @@ fn claim_liquidations() {
         claims,
         vec![
             ClaimsResponse { 
-                bid_for: String::from("osmo"), 
+                bid_for: String::from("fury"), 
                 pending_liquidated_collateral: Uint256::from(5000u128),
             },
         ],
@@ -856,7 +856,7 @@ fn claim_liquidations() {
 
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: Some(vec![Uint128::new(1u128), Uint128::new(1u128)]),
     };
@@ -866,7 +866,7 @@ fn claim_liquidations() {
 
     let msg = ExecuteMsg::ClaimLiquidations {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         bid_ids: Some(vec![Uint128::new(1u128)]),
     };
@@ -876,7 +876,7 @@ fn claim_liquidations() {
         res.attributes,
         vec![
             attr("action", "claim_liquidations"),
-            attr("collateral_token", "osmo"),
+            attr("collateral_token", "fury"),
             attr("collateral_amount", "5000"),
         ]
     );
@@ -900,7 +900,7 @@ fn update_queue() {
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(1_000_000_000u128),
@@ -915,7 +915,7 @@ fn update_queue() {
 
     let query_msg = QueryMsg::Queue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
     };
 
@@ -931,7 +931,7 @@ fn update_queue() {
     //Successful update
     let msg = ExecuteMsg::UpdateQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Some(Uint128::new(20u128)),
         bid_threshold: Some(Uint256::from(5_000_000u128)),
@@ -950,7 +950,7 @@ fn update_queue() {
     //Query Slots to Assert increase
     let query_msg = QueryMsg::PremiumSlots { 
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         start_after: None,
         limit: None, 

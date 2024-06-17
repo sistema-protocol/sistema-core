@@ -134,7 +134,7 @@ fn instantiate_and_whitelist(deps: &mut OwnedDeps<MemoryStorage, MockApi, MockQu
 
     let msg = ExecuteMsg::AddQueue {
         bid_for: AssetInfo::NativeToken {
-            denom: "osmo".to_string(),
+            denom: "fury".to_string(),
         },
         max_premium: Uint128::new(10u128), //A slot for each premium is created when queue is created
         bid_threshold: Uint256::from(10_000_000_000_000u128),
@@ -163,7 +163,7 @@ fn simulate_bids_with_2_liq_amounts(
         let msg = ExecuteMsg::SubmitBid {
             bid_input: BidInput {
                 bid_for: AssetInfo::NativeToken {
-                    denom: "osmo".to_string(),
+                    denom: "fury".to_string(),
                 },
                 liq_premium: 0u8,
             },
@@ -189,7 +189,7 @@ fn simulate_bids_with_2_liq_amounts(
                 collateral_price: asset_price,
                 collateral_amount: Uint256::from(liq_amount_1),
                 bid_for: AssetInfo::NativeToken {
-                    denom: "osmo".to_string(),
+                    denom: "fury".to_string(),
                 },
                 position_id: Uint128::new(1u128),
                 position_owner: "owner01".to_string(),
@@ -210,7 +210,7 @@ fn simulate_bids_with_2_liq_amounts(
                 collateral_price: asset_price,
                 collateral_amount: Uint256::from(liq_amount_2),
                 bid_for: AssetInfo::NativeToken {
-                    denom: "osmo".to_string(),
+                    denom: "fury".to_string(),
                 },
                 position_id: Uint128::new(1u128),
                 position_owner: "owner01".to_string(),
@@ -234,7 +234,7 @@ fn simulate_bids_with_2_liq_amounts(
                 mock_env(),
                 QueryMsg::BidsByUser {
                     bid_for: AssetInfo::NativeToken {
-                        denom: "osmo".to_string(),
+                        denom: "fury".to_string(),
                     },
                     user: "owner0000".to_string(),
                     limit: Some(30u32),

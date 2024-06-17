@@ -239,7 +239,7 @@ mod tests {
                     pools_for_osmo_twap: vec![TWAPPoolInfo {
                         pool_id: 1u64,
                         base_asset_denom: String::from("credit_fulldenom"),
-                        quote_asset_denom: String::from("uosmo"),
+                        quote_asset_denom: String::from("ufury"),
                     }],
                     is_usd_par: false,
                     lp_pool_info: None,
@@ -260,7 +260,7 @@ mod tests {
                     pools_for_osmo_twap: vec![TWAPPoolInfo {
                         pool_id: 1u64,
                         base_asset_denom: String::from("credit_fulldenom"),
-                        quote_asset_denom: String::from("uosmo"),
+                        quote_asset_denom: String::from("ufury"),
                     }],
                     is_usd_par: false,
                     lp_pool_info: None,
@@ -281,7 +281,7 @@ mod tests {
                     pools_for_osmo_twap: vec![TWAPPoolInfo {
                         pool_id: 1u64,
                         base_asset_denom: String::from("removable"),
-                        quote_asset_denom: String::from("uosmo"),
+                        quote_asset_denom: String::from("ufury"),
                     }],
                     is_usd_par: false,
                     lp_pool_info: None,
@@ -348,7 +348,7 @@ mod tests {
                     pools_for_osmo_twap: vec![TWAPPoolInfo {
                         pool_id: 2u64,
                         base_asset_denom: String::from("credit_fulldenom"),
-                        quote_asset_denom: String::from("uosmo"),
+                        quote_asset_denom: String::from("ufury"),
                     }],
                     is_usd_par: false,
                     lp_pool_info: None,
@@ -384,7 +384,7 @@ mod tests {
                     pools_for_osmo_twap: vec![TWAPPoolInfo {
                         pool_id: 1u64,
                         base_asset_denom: String::from("debit"),
-                        quote_asset_denom: String::from("uosmo"),
+                        quote_asset_denom: String::from("ufury"),
                     }],
                     is_usd_par: false,
                     lp_pool_info: None,
@@ -440,7 +440,7 @@ mod tests {
         //                 TWAPPoolInfo {
         //                     pool_id: 2u64,
         //                     base_asset_denom: String::from("axlusdc"),
-        //                     quote_asset_denom: String::from("uosmo"),
+        //                     quote_asset_denom: String::from("ufury"),
         //                 },
         //             ],
         //             static_price: None,

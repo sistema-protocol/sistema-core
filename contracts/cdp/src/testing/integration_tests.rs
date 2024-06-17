@@ -1170,7 +1170,7 @@ mod tests {
                     Staking_MockQueryMsg::Config {  } => {
                         Ok(to_binary(&Staking_Config {
                             owner: Addr::unchecked(""),
-                            mbrn_denom: String::from("mbrn_denom"),
+                            tema_denom: String::from("tema_denom"),
                             incentive_schedule: StakeDistribution { rate: Decimal::zero(), duration: 0 },
                             keep_raw_cdt: false,
                             vesting_rev_multiplier: Decimal::zero(),

@@ -3,7 +3,7 @@
   "title": "ExecuteMsg",
   "oneOf": [
     {
-      "description": "Deposit OSMO to earned locked MBRN rewards for a specified duration",
+      "description": "Deposit FURY to earned locked TEMA rewards for a specified duration",
       "type": "object",
       "required": [
         "lock"
@@ -16,7 +16,7 @@
           ],
           "properties": {
             "lock_up_duration": {
-              "description": "Lock duration of MBRN rewards, in days",
+              "description": "Lock duration of TEMA rewards, in days",
               "type": "integer",
               "format": "uint64",
               "minimum": 0.0
@@ -42,19 +42,19 @@
           ],
           "properties": {
             "new_lock_up_duration": {
-              "description": "Lock duration of MBRN rewards, in days",
+              "description": "Lock duration of TEMA rewards, in days",
               "type": "integer",
               "format": "uint64",
               "minimum": 0.0
             },
             "old_lock_up_duration": {
-              "description": "Lock duration of MBRN rewards, in days",
+              "description": "Lock duration of TEMA rewards, in days",
               "type": "integer",
               "format": "uint64",
               "minimum": 0.0
             },
-            "uosmo_amount": {
-              "description": "Amount of uosmo to change lock duration of",
+            "ufury_amount": {
+              "description": "Amount of ufury to change lock duration of",
               "anyOf": [
                 {
                   "$ref": "#/definitions/Uint128"
@@ -71,7 +71,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Withdraw OSMO from a specified lockup duration",
+      "description": "Withdraw FURY from a specified lockup duration",
       "type": "object",
       "required": [
         "withdraw"
@@ -85,13 +85,13 @@
           ],
           "properties": {
             "lock_up_duration": {
-              "description": "Lock duration of MBRN rewards, in days",
+              "description": "Lock duration of TEMA rewards, in days",
               "type": "integer",
               "format": "uint64",
               "minimum": 0.0
             },
             "withdrawal_amount": {
-              "description": "OSMO amount to withdraw",
+              "description": "FURY amount to withdraw",
               "allOf": [
                 {
                   "$ref": "#/definitions/Uint128"
@@ -105,7 +105,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Claim MBRN rewards from a specified lockup duration. Must be past the lockup duration to claim rewards.",
+      "description": "Claim TEMA rewards from a specified lockup duration. Must be past the lockup duration to claim rewards.",
       "type": "object",
       "required": [
         "claim"
@@ -119,7 +119,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Create MBRN & CDT LPs. Incentivize CDT stableswap. Deposit into MBRN OSMO LP.",
+      "description": "Create TEMA & CDT LPs. Incentivize CDT stableswap. Deposit into TEMA FURY LP.",
       "type": "object",
       "required": [
         "launch"
@@ -184,15 +184,15 @@
             "null"
           ]
         },
-        "mbrn_denom": {
-          "description": "MBRN token denom",
+        "tema_denom": {
+          "description": "TEMA token denom",
           "type": [
             "string",
             "null"
           ]
         },
         "osmo_denom": {
-          "description": "OSMO denom",
+          "description": "FURY denom",
           "type": [
             "string",
             "null"

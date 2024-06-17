@@ -145,7 +145,7 @@ mod tests {
                 match msg {
                     Osmo_MockQueryMsg::PoolState { id } => {
                         Ok(to_binary(&PoolStateResponse {
-                            assets: vec![coin(50, "uosmo").into(), coin(50, "cdt").into()],
+                            assets: vec![coin(50, "ufury").into(), coin(50, "cdt").into()],
                             shares: coin(100, format!("gamm/pool/{}", id)).into(),
                         })?)
                     }

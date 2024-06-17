@@ -28,8 +28,8 @@ pub struct InstantiateMsg {
     pub liq_queue_id: u64,
     /// Liquidity Check contract id
     pub liquidity_check_id: u64,
-    /// MBRN Auction contract id
-    pub mbrn_auction_id: u64,
+    /// TEMA Auction contract id
+    pub tema_auction_id: u64,
     /// System Discounts contract id
     pub system_discounts_id: u64,
     /// Discount Vault contract id
@@ -38,33 +38,33 @@ pub struct InstantiateMsg {
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    /// Deposit OSMO to earned locked MBRN rewards for a specified duration
+    /// Deposit FURY to earned locked TEMA rewards for a specified duration
     Lock {
-        /// Lock duration of MBRN rewards, in days
+        /// Lock duration of TEMA rewards, in days
         lock_up_duration: u64, 
     },
     /// Change lockup duration of a subset of locked deposits.
     ChangeLockDuration {
-        /// Amount of uosmo to change lock duration of
-        uosmo_amount: Option<Uint128>,
-        /// Lock duration of MBRN rewards, in days
+        /// Amount of ufury to change lock duration of
+        ufury_amount: Option<Uint128>,
+        /// Lock duration of TEMA rewards, in days
         old_lock_up_duration: u64,
-        /// Lock duration of MBRN rewards, in days
+        /// Lock duration of TEMA rewards, in days
         new_lock_up_duration: u64,
     },
-    /// Withdraw OSMO from a specified lockup duration
+    /// Withdraw FURY from a specified lockup duration
     Withdraw {
-        /// OSMO amount to withdraw
+        /// FURY amount to withdraw
         withdrawal_amount: Uint128,
-        /// Lock duration of MBRN rewards, in days 
+        /// Lock duration of TEMA rewards, in days 
         lock_up_duration: u64,
     },
-    /// Claim MBRN rewards from a specified lockup duration.
+    /// Claim TEMA rewards from a specified lockup duration.
     /// Must be past the lockup duration to claim rewards.
     Claim {},
-    /// Create MBRN & CDT LPs.
+    /// Create TEMA & CDT LPs.
     /// Incentivize CDT stableswap.
-    /// Deposit into MBRN OSMO LP.
+    /// Deposit into TEMA FURY LP.
     Launch {},
     /// Update Config
     UpdateConfig(UpdateConfig),
@@ -83,7 +83,7 @@ pub enum QueryMsg {
     Lockdrop {},
     /// Return Protocol Addresses
     ContractAddresses {},
-    /// Returns MBRN lockup distributions
+    /// Returns TEMA lockup distributions
     IncentiveDistribution {},
     /// Returns User incentive distribution
     UserIncentives { user: String },
@@ -93,8 +93,8 @@ pub enum QueryMsg {
 
 #[cw_serde]
 pub struct Config {
-    /// MBRN token denom
-    pub mbrn_denom: String,
+    /// TEMA token denom
+    pub tema_denom: String,
     /// Basket credit asset denom
     pub credit_denom: String,
     /// Pre launch contributors address
@@ -103,17 +103,17 @@ pub struct Config {
     pub pre_launch_community: Vec<String>,
     /// Apollo router address
     pub apollo_router: Addr,
-    /// Amount of MBRN for launch incentives & LPs
-    pub mbrn_launch_amount: Uint128,
+    /// Amount of TEMA for launch incentives & LPs
+    pub tema_launch_amount: Uint128,
     /// Osmosis ATOM denom
     pub atom_denom: String,
-    /// OSMO denom
+    /// FURY denom
     pub osmo_denom: String,
     /// Axelar USDC denom
     pub usdc_denom: String,
-    /// ATOM/OSMO pool id
+    /// ATOM/FURY pool id
     pub atomosmo_pool_id: u64,
-    /// USDC/OSMO pool id
+    /// USDC/FURY pool id
     pub osmousdc_pool_id: u64,
     /// Osmosis Proxy contract id
     pub osmosis_proxy_id: u64,
@@ -133,8 +133,8 @@ pub struct Config {
     pub liq_queue_id: u64,
     /// Liquidity Check contract id
     pub liquidity_check_id: u64,
-    /// MBRN Auction contract id
-    pub mbrn_auction_id: u64,   
+    /// TEMA Auction contract id
+    pub tema_auction_id: u64,   
     /// System Discounts contract id
     pub system_discounts_id: u64,
     /// Discount Vault contract id
@@ -143,11 +143,11 @@ pub struct Config {
 
 #[cw_serde]
 pub struct UpdateConfig {
-    /// MBRN token denom
-    pub mbrn_denom: Option<String>,   
+    /// TEMA token denom
+    pub tema_denom: Option<String>,   
     /// Basket credit asset denom
     pub credit_denom: Option<String>,
-    /// OSMO denom
+    /// FURY denom
     pub osmo_denom: Option<String>,
     /// Axelar USDC denom
     pub usdc_denom: Option<String>,

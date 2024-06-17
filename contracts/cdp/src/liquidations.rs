@@ -590,7 +590,7 @@ fn per_asset_fulfillments(
     });
     caller_fee_messages.push(msg);
     
-    //Create Msg to send all native token liq fees for MBRN to the staking contract
+    //Create Msg to send all native token liq fees for TEMA to the staking contract
     let protocol_fee_msg = CosmosMsg::Wasm(WasmMsg::Execute {
         contract_addr: config.clone().staking_contract.unwrap_or_else(|| Addr::unchecked("")).to_string(),
         msg: to_binary(&StakingExecuteMsg::DepositFee {})?,
