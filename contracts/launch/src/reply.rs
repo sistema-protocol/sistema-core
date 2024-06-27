@@ -81,7 +81,7 @@ pub fn handle_op_reply(deps: DepsMut, env: Env, msg: Reply) -> StdResult<Respons
                     subdenom: String::from("ucdt"), 
                     max_supply: None,
                 })?, 
-                funds: coins(10_000_000, "ufury"),
+                funds: coins(100_000_000, "ufury"),
             });            
             let create_denom_submsg = CosmosMsg::Wasm(WasmMsg::Execute { 
                 contract_addr: addrs.clone().osmosis_proxy.to_string(), 
@@ -89,7 +89,7 @@ pub fn handle_op_reply(deps: DepsMut, env: Env, msg: Reply) -> StdResult<Respons
                     subdenom: String::from("utema"), 
                     max_supply: None,
                 })?, 
-                funds: coins(10_000_000, "ufury"),
+                funds: coins(100_000_000, "ufury"),
             });
             sub_msgs.push(SubMsg::reply_on_success(create_denom_submsg, CREATE_DENOM_REPLY_ID));
 
