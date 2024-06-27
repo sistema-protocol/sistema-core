@@ -78,10 +78,10 @@ pub fn handle_op_reply(deps: DepsMut, env: Env, msg: Reply) -> StdResult<Respons
             let create_denom_msg = CosmosMsg::Wasm(WasmMsg::Execute { 
                 contract_addr: addrs.clone().osmosis_proxy.to_string(), 
                 msg: to_binary(&OPExecuteMsg::CreateDenom { 
-                    subdenom: String::from("ucdt"), 
+                    subdenom: String::from("ufcd"), 
                     max_supply: None,
                 })?, 
-                funds: coins(10_000_000, "ufury"),
+                funds: coins(100_000_000, "ufury"),
             });            
             let create_denom_submsg = CosmosMsg::Wasm(WasmMsg::Execute { 
                 contract_addr: addrs.clone().osmosis_proxy.to_string(), 
@@ -89,7 +89,7 @@ pub fn handle_op_reply(deps: DepsMut, env: Env, msg: Reply) -> StdResult<Respons
                     subdenom: String::from("utema"), 
                     max_supply: None,
                 })?, 
-                funds: coins(10_000_000, "ufury"),
+                funds: coins(100_000_000, "ufury"),
             });
             sub_msgs.push(SubMsg::reply_on_success(create_denom_submsg, CREATE_DENOM_REPLY_ID));
 
@@ -308,7 +308,7 @@ pub fn handle_vesting_reply(deps: DepsMut, env: Env, msg: Reply)-> StdResult<Res
                     proposal_required_threshold: String::from(PROPOSAL_REQUIRED_THRESHOLD),
                     whitelisted_links: vec![
                         String::from("https://discord.com/channels/1060217330258432010/"),
-                        String::from("https://commonwealth.im/membrane/")
+                        String::from("https://commonwealth.im/sistema/")
                         ],
                 })?, 
                 funds: vec![], 

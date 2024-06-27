@@ -78,11 +78,11 @@ pub fn instantiate(
             //FCD
             AssetInfo::NativeToken { denom: "factory/furya1f9eh8dh7j4nqe8nfq0lhpnr2elh5jr2w4nngt2/ufcd".to_string() },
             //CDT LP
-            AssetInfo::NativeToken { denom: "gamm/pool/1226".to_string() },
+            AssetInfo::NativeToken { denom: "gamm/pool/1".to_string() },
             //axlUSDC
             AssetInfo::NativeToken { denom: "ibc/093231535A38351AD2FEEFF897D23CF8FE43A44F6EAA3611F55F4B3D62C45014".to_string() },
             //FURY axlUSDC LP
-            AssetInfo::NativeToken { denom: "gamm/pool/678".to_string() },
+            AssetInfo::NativeToken { denom: "gamm/pool/2".to_string() },
             //USDC
             AssetInfo::NativeToken { denom: "ibc/498A0751C798A0D9A389AA3691123DADA57DAA4FE165D5C75894505B876BA6E4".to_string() },
         ] })?;
