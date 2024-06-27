@@ -91,7 +91,7 @@ pub fn instantiate(
         osmo_denom: String::from("ufury"),
         usdc_denom: String::from("ibc/093231535A38351AD2FEEFF897D23CF8FE43A44F6EAA3611F55F4B3D62C45014"),  //axl wrapped usdc //testnet: 6F34E1BD664C36CE49ACC28E60D62559A5F96C4F9A6CCE4FC5A67B2852E24CFE
         atomosmo_pool_id: 1, //testnet is 12
-        osmousdc_pool_id: 678, //axl wrapped usdc, testnet is 5
+        osmousdc_pool_id: 2, //axl wrapped usdc, testnet is 5
     };
     CONFIG.save(deps.storage, &config)?;
 
